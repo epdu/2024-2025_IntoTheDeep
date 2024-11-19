@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.teleops
 
 import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.DcMotor
@@ -10,7 +9,6 @@ import com.qualcomm.robotcore.hardware.DcMotorEx
 
 
 @TeleOp
-
 class MotorPositionTester : OpMode () {
     private lateinit var collectionArm: DcMotorEx
     private lateinit var scoringArm: DcMotorEx

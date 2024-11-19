@@ -60,8 +60,8 @@ abstract class CompetitionTeleop : OpMode() {
         g1.update()
         g2.update()
 
-        // update running actions
-        val packet = TelemetryPacket()
+        //run and update actions
+        val packet = PandaTelemetryPacket(telemetry)
 
         val newActions: MutableList<Action> = ArrayList()
         for (action in runningActions) {
@@ -69,7 +69,6 @@ abstract class CompetitionTeleop : OpMode() {
             if (action.run(packet)) {
                 newActions.add(action)
             }
-
         }
         runningActions = newActions
 
