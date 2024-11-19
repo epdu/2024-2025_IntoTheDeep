@@ -10,12 +10,18 @@ import com.qualcomm.robotcore.hardware.HardwareMap
 class ScoringArm(hardwareMap: HardwareMap) {
 
 
-    private val motor = hardwareMap.get(DcMotor::class.java, "scoringArmMotor")
-    private val scoringPosition = 0 //INPUT SCORING MOTOR POSITION HERE
-    private val collectionPosition = 0 //INPUT COLLECTION MOTOR POSITION HERE
+    private val motor = hardwareMap.get(DcMotor::class.java, "scoringArm")
+    private val scoringPosition = 2170 //INPUT SCORING MOTOR POSITION HERE
+    private val collectionPosition = 40 //INPUT COLLECTION MOTOR POSITION HERE
     private val minPosition = 0
-    private val maxPosition = 1000
+    private val maxPosition = 2800
     private val motorPower = 0.6
+
+    init {
+        motor.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
+        motor.targetPosition = 0
+        motor.mode = DcMotor.RunMode.RUN_TO_POSITION
+    }
 
     inner class GoToPosition (private val position: Int) : Action {
         private var initialized = false
@@ -32,11 +38,12 @@ class ScoringArm(hardwareMap: HardwareMap) {
         }
     }
 
+
     fun score(): Action = GoToPosition(scoringPosition)
     fun collect(): Action = GoToPosition(collectionPosition)
     fun manual(input: Double): Action {
-        val stepSize = 5.0
-        var targetPosition = (motor.currentPosition + input * stepSize)
+        val maxSpeed = 5.0
+        var targetPosition = (motor.currentPosition + input * maxSpeed)
         targetPosition = clamp(targetPosition, minPosition.toDouble(), maxPosition.toDouble())
         return GoToPosition(targetPosition.toInt())
     }

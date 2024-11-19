@@ -19,4 +19,3 @@ public class BlueAutoLeft extends LinearOpMode {
                         .build());
     }
 }
-

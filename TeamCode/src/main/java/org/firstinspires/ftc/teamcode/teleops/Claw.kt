@@ -9,8 +9,8 @@ import com.qualcomm.robotcore.hardware.Servo
 
 class Claw (hardwareMap: HardwareMap) {
 
-    private val leftServo: Servo = hardwareMap.get(Servo::class.java, "leftServo")
-    private val rightServo: Servo = hardwareMap.get(Servo::class.java, "rightServo")
+    private val leftClaw: Servo = hardwareMap.get(Servo::class.java, "leftClaw")
+    private val rightClaw: Servo = hardwareMap.get(Servo::class.java, "rightClaw")
 
     inner class SetPosition(val dt: Double, private val leftPosition: Double, private val rightPosition: Double) : Action {
         private var beginTs = -1.0
@@ -18,8 +18,8 @@ class Claw (hardwareMap: HardwareMap) {
         override fun run(p: TelemetryPacket): Boolean {
             if (beginTs < 0) {
                 beginTs = now()
-                leftServo.position = leftPosition
-                rightServo.position = rightPosition
+                leftClaw.position = leftPosition
+                rightClaw.position = rightPosition
             }
             val t = now() - beginTs
             p.put("test", true)
@@ -29,7 +29,7 @@ class Claw (hardwareMap: HardwareMap) {
     }
 
     fun close(): Action = SetPosition(1.0, 0.46, 0.7)
-    fun open(): Action = SetPosition(1.0, 0.6, 0.53)
+    fun open(): Action = SetPosition(1.0, 0.495, 0.645)
     fun inBox(): Action = SetPosition(1.0, 1.0, 0.0)
-    fun approach(): Action = SetPosition(1.0, 0.675, 0.45)
+    fun approach(): Action = SetPosition(1.0, 0.6, 0.6)
 }
