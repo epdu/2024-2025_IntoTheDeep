@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.Gamepad
 import org.firstinspires.ftc.teamcode.teleops.PandaGamepad.ControllerElementState.*
 import kotlin.math.abs
 
-class PandaGamepad(var gamepad: Gamepad) {
+class PandaGamepad(val gamepad: Gamepad) {
     val a = ButtonComponent()
     val b = ButtonComponent()
     val x = ButtonComponent()
@@ -67,7 +67,7 @@ class PandaGamepad(var gamepad: Gamepad) {
             }
         }
 
-        fun justActive() = state == Held
+        fun justActive() = state == Pressed
         fun isActive() = state == Held
         fun justInactive() = state == Released
         fun isInactive() = state == Idle

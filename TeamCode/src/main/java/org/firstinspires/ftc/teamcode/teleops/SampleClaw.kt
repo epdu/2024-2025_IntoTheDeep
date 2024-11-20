@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.Servo
 
 class SampleClaw (hardwareMap: HardwareMap) {
 
-    private val pulley: Servo = hardwareMap.get(Servo::class.java, "sampleServo")
+    private val pulley: Servo = hardwareMap.get(Servo::class.java, "sampleCollection")
 
     inner class SetPosition(val dt: Double, private val pulleyPosition: Double) : Action {
         private var beginTs = -1.0
