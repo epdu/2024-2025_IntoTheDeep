@@ -6,8 +6,8 @@ import com.acmerobotics.roadrunner.Pose2d
 import com.acmerobotics.roadrunner.PoseVelocity2d
 import com.acmerobotics.roadrunner.Rotation2d
 import com.acmerobotics.roadrunner.Vector2d
+import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import org.firstinspires.ftc.teamcode.roadrunner.PinpointDrive
 
 abstract class CompetitionTeleop : OpMode() {
@@ -18,6 +18,7 @@ abstract class CompetitionTeleop : OpMode() {
     private lateinit var sampleClaw: SampleClaw
     private lateinit var collectionArm: CollectionArm
     private lateinit var scoringArm: ScoringArm
+    private lateinit var climbing: DcMotor
     private var headingOffset: Double = 0.0
     private val dash: FtcDashboard = FtcDashboard.getInstance()
     private var runningActions: MutableList<Action> = ArrayList()
@@ -31,30 +32,22 @@ abstract class CompetitionTeleop : OpMode() {
         sampleClaw = SampleClaw(hardwareMap)
         collectionArm = CollectionArm(hardwareMap)
         scoringArm = ScoringArm(hardwareMap)
-        scoringArm.minPosition = -1000
+        scoringArm.minPosition = -1000  //Remove soon, but now now -(E)
+        climbing = hardwareMap.get(DcMotor::class.java, "climbing")
     }
 
-    fun nearest_compass (curHeading: Double, direction: String): Double {
-        var head_out = 0.0
-        if (curHeading >= 0 && curHeading < 90){ head_out = 90.0 }
-        else if (curHeading >= 90 && curHeading < 180){ head_out = 180.0}
-        else if (curHeading >= -180 && curHeading < -90){ head_out = -90.0}
-        else if (curHeading >= -90 && curHeading < 0){ head_out = 0.0 }
+    override fun start() { lastTime = runtime }
 
-        if (direction ==  "left") {return head_out - 90.0}
-        else if (direction == "right") {return head_out}
-        else {return 0.0}
-    }
-
-    override fun start() {
-        lastTime = runtime
-    }
-
-    override fun loop() {
-        // measure time between loops
+    fun getDeltaTime(): Double {
         val newTime = runtime
         val deltaTime: Double = newTime - lastTime
         lastTime = newTime
+        return deltaTime
+    }
+
+    override fun loop() {
+        //update delta time
+        val deltaTime = getDeltaTime()
         telemetry.addData("Delta Time", deltaTime)
 
         //update gamepad values
@@ -94,6 +87,10 @@ abstract class CompetitionTeleop : OpMode() {
                     ((gamepad1.left_trigger - gamepad1.right_trigger) * 1 / 2).toDouble()
                 )
             )
+        //Climbing**********
+        if (g1.dpadUp.isActive()) climbing.setPower(0.5)
+        else if (g1.dpadDown.isActive()) climbing.setPower(-0.5)
+        else climbing.setPower(0.0)
 
         if (g1.b.justPressed()) headingOffset = rawHeading
         /*
@@ -121,20 +118,42 @@ abstract class CompetitionTeleop : OpMode() {
         }
         */
         /* driver 2 */
-        // Sample Arm***********************************************************
-        if (g2.dpadDown.justPressed()) runningActions.add(scoringClaw.approach())
-        if (g2.dpadLeft.justPressed()) runningActions.add(scoringClaw.close())
-        if (g2.dpadRight.justPressed()) runningActions.add(scoringClaw.open())
-        if (g2.dpadUp.justPressed()) runningActions.add(scoringClaw.close())
-        if (g2.leftBumper.justActive()) runningActions.add(scoringClaw.inBox())
+        // Specimen Arm***********************************************************
+        if (g2.dpadDown.justPressed()) {
+            runningActions.add(scoringClaw.approach())
+            runningActions.add(scoringArm.collect())}
+        if (g2.dpadLeft.justPressed()) {
+            runningActions.add(scoringClaw.close())
+            runningActions.add(scoringArm.score())}
+        if (g2.dpadRight.justPressed()) {
+            runningActions.add(scoringClaw.open())
+            runningActions.add(scoringArm.goThroughBars())}
+        if (g2.dpadUp.justPressed()) runningActions.add(scoringClaw.open())
+        if (g2.leftBumper.justActive()) {   //ONLY USE IN COLLECTION POSE
+            runningActions.add(scoringClaw.inBox())
+            scoringArm.resetArmPosition()
+        }
 
-        if (g2.y.justPressed()) runningActions.add(sampleClaw.close())
-        if (g2.x.justPressed()) runningActions.add(sampleClaw.open())
-
-
-        if (g2.a.justPressed()) runningActions.add(scoringArm.score())
-        if (g2.b.justPressed()) runningActions.add(scoringArm.collect())
         if (g2.leftStickY.isActive()) runningActions.add(scoringArm.manual(g2.leftStickY.component * deltaTime))
+
+
+        //Collection System*************************************
+        if (g2.rightTrigger.isActive()) runningActions.add(collectionArm.deployArm())
+        if (g2.y.justPressed()) {
+            runningActions.add(sampleClaw.close())
+            runningActions.add(collectionArm.retract())
+        }
+        if (g2.x.justPressed()) {
+            runningActions.add(sampleClaw.open())
+        }
+        if (g2.a.justPressed()) {
+            runningActions.add(sampleClaw.open())
+            runningActions.add(collectionArm.extend())
+        }
+        //The below doesn't work yet!!! -(E)
+        if (g2.rightStickY.isActive()) runningActions.add(collectionArm.manual(g2.rightStickY.component * deltaTime))
+
+
 
     }
 

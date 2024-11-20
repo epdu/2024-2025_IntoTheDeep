@@ -26,6 +26,6 @@ class SampleClaw (hardwareMap: HardwareMap) {
         }
     }
 
-    fun close(): Action = SetPosition(1.0, 0.46)
-    fun open(): Action = SetPosition(1.0, 0.3)
+    fun close(): Action = SetPosition(1.0, 0.18)
+    fun open(): Action = SetPosition(1.0, 0.43)
 }

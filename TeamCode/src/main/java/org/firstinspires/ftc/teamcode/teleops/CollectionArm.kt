@@ -2,10 +2,13 @@ package org.firstinspires.ftc.teamcode.teleops
 
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.acmerobotics.roadrunner.Action
+import com.acmerobotics.roadrunner.clamp
+import com.acmerobotics.roadrunner.now
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.hardware.HardwareMap
+import com.qualcomm.robotcore.hardware.Servo
 
 
 class CollectionArm(hardwareMap: HardwareMap) {
@@ -13,12 +16,32 @@ class CollectionArm(hardwareMap: HardwareMap) {
     private val motorPower = 0.6
     private val collectionValue = -2800 // amount and direction for collection
     private val retractionValue = 2800 // amount and direction for retraction
+    private val extendRetractDelta = 780
+    private var pos = 0
+    private val deploy: Servo = hardwareMap.get(Servo::class.java, "armRelease")
+    private val deployStart = 0.5
 
     init {
         motor.direction = DcMotorSimple.Direction.REVERSE
         motor.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
         motor.targetPosition = 0
         motor.mode = DcMotor.RunMode.RUN_TO_POSITION
+        deploy.position = deployStart
+    }
+
+    inner class DeployArm(val dt: Double, private val dropPosition: Double) : Action {
+        private var beginTs = -1.0
+
+        override fun run(p: TelemetryPacket): Boolean {
+            if (beginTs < 0) {
+                beginTs = now()
+                deploy.position = dropPosition
+            }
+            val t = now() - beginTs
+            p.put("test", true)
+
+            return t < dt
+        }
     }
 
     inner class Extend : Action {
@@ -26,10 +49,10 @@ class CollectionArm(hardwareMap: HardwareMap) {
         override fun run(packet: TelemetryPacket): Boolean {
             if (!initialized) {
                 motor.power = motorPower
-                motor.targetPosition = motor.currentPosition + collectionValue
+                motor.targetPosition = motor.currentPosition - extendRetractDelta
                 initialized = true
             }
-            val pos = motor.currentPosition
+            pos = motor.currentPosition
             packet.put("collectionArmPosition", pos)
             return motor.isBusy
         }
@@ -40,14 +63,29 @@ class CollectionArm(hardwareMap: HardwareMap) {
         override fun run(packet: TelemetryPacket): Boolean {
             if (!initialized) {
                 motor.power = motorPower
-                motor.targetPosition = motor.currentPosition - retractionValue
+                motor.targetPosition = motor.currentPosition + extendRetractDelta
                 initialized = true
             }
-            val pos = motor.currentPosition
+            pos = motor.currentPosition
             packet.put("collectionArmPosition", pos)
             return motor.isBusy
         }
     }
+
+    inner class Manual (private val input: Double) : Action {
+        val maxSpeed = 600.0
+        //THIS DOESN'T WORK YET!!!
+
+        @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
+        override fun run(packet: TelemetryPacket): Boolean {
+            var targetPosition = pos + input * maxSpeed
+            motor.targetPosition = targetPosition.toInt()
+            packet.put("Target Position", motor.targetPosition)
+            packet.put("Current Position", motor.currentPosition)
+            return false
+        }
+    }
+
     fun extend(): Action {
         return Extend()
     }
@@ -55,4 +93,9 @@ class CollectionArm(hardwareMap: HardwareMap) {
     fun retract(): Action {
         return Retract()
     }
+
+    fun manual(input: Double): Action = Manual(input)
+
+    fun deployArm(): Action = DeployArm(1.0, 0.2)
+
 }

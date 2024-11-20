@@ -30,6 +30,6 @@ class Claw (hardwareMap: HardwareMap) {
 
     fun close(): Action = SetPosition(1.0, 0.46, 0.7)
     fun open(): Action = SetPosition(1.0, 0.495, 0.645)
-    fun inBox(): Action = SetPosition(1.0, 1.0, 0.0)
+    fun inBox(): Action = SetPosition(1.0, 0.83, 0.0)
     fun approach(): Action = SetPosition(1.0, 0.6, 0.6)
 }
