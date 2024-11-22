@@ -16,7 +16,7 @@ public class BlueAutoRight extends LinearOpMode {
         waitForStart();
         Actions.runBlocking(
                 drive.actionBuilder(beginPose)
-                        .strafeTo(new Vector2d(-65.5, 64))
+                        .strafeTo(new Vector2d(-60.5, 64))
                         .build());
     }
 }

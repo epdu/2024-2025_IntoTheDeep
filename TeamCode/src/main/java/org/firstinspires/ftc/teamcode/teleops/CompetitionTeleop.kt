@@ -9,14 +9,18 @@ import com.acmerobotics.roadrunner.Vector2d
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.hardware.DcMotor
 import org.firstinspires.ftc.teamcode.roadrunner.PinpointDrive
-import org.firstinspires.ftc.teamcode.teleops.Claw.ClawState
-import org.firstinspires.ftc.teamcode.teleops.ScoringArm.ArmState
+import org.firstinspires.ftc.teamcode.subsystems.CollectionArm
+import org.firstinspires.ftc.teamcode.subsystems.SampleClaw
+import org.firstinspires.ftc.teamcode.subsystems.ScoringArm
+import org.firstinspires.ftc.teamcode.subsystems.SpecimenClaw
+import org.firstinspires.ftc.teamcode.subsystems.SpecimenClaw.ClawState
+import org.firstinspires.ftc.teamcode.subsystems.ScoringArm.ArmState
 
 abstract class CompetitionTeleop : OpMode() {
     private lateinit var drive: PinpointDrive
     private lateinit var g1: PandaGamepad
     private lateinit var g2: PandaGamepad
-    private lateinit var scoringClaw: Claw
+    private lateinit var scoringClaw: SpecimenClaw
     private lateinit var sampleClaw: SampleClaw
     private lateinit var collectionArm: CollectionArm
     private lateinit var scoringArm: ScoringArm
@@ -31,7 +35,7 @@ abstract class CompetitionTeleop : OpMode() {
         drive = PinpointDrive(hardwareMap, Pose2d(0.0, 0.0, 0.0))
         g1 = PandaGamepad(gamepad1)
         g2 = PandaGamepad(gamepad2)
-        scoringClaw = Claw(hardwareMap)
+        scoringClaw = SpecimenClaw(hardwareMap)
         sampleClaw = SampleClaw(hardwareMap)
         collectionArm = CollectionArm(hardwareMap)
         scoringArm = ScoringArm(hardwareMap)
@@ -100,20 +104,30 @@ abstract class CompetitionTeleop : OpMode() {
             g1.leftStickY.component.toDouble(),
             -g1.leftStickX.component.toDouble()
         )
-        if (g1.rightBumper.isInactive() and g1.leftBumper.isInactive()) //don't set drive if bumpers
-            drive.setDrivePowers(
-                PoseVelocity2d(
-                    heading.inverse().times(input),
-                    ((gamepad1.left_trigger - gamepad1.right_trigger) * 1 / 4).toDouble()
+        if (g1.rightBumper.isInactive() and g1.leftBumper.isInactive()) { //don't set drive if bumpers
+            if (g1.y.isActive()) {
+                drive.setDrivePowers(
+                    PoseVelocity2d(
+                        heading.inverse().times(input),
+                        ((gamepad1.left_trigger - gamepad1.right_trigger) * 1 / 2).toDouble()
+                    )
                 )
-            )
-        //Climbing**********
+            }
+            else {
+                drive.setDrivePowers(
+                    PoseVelocity2d(
+                        heading.inverse().times(input),
+                        ((gamepad1.left_trigger - gamepad1.right_trigger) * 1 / 4).toDouble()
+                    )
+                )
+            }
+        }
+        //Climbing****************************
         if (g1.dpadUp.isActive()) climbing.power = 0.5
         else if (g1.dpadDown.isActive()) climbing.power = -0.5
         else climbing.power = 0.0
 
         if (g1.b.justPressed()) headingOffset = rawHeading
-
         /*90 degree turn idea
         if (g1.leftBumper.justPressed()) {
             //Turn left to the nearest 90 degree increment
@@ -124,6 +138,7 @@ abstract class CompetitionTeleop : OpMode() {
                 drive.actionBuilder(curPose)
                     .turnTo(headTo)
                     .build()
+                    .ligmaBalls();
             )
         }
         if (g1.rightBumper.justPressed()){
