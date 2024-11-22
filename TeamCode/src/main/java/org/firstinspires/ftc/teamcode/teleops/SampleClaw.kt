@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap
 import com.qualcomm.robotcore.hardware.Servo
 
 
-class SampleClaw (hardwareMap: HardwareMap) {
+class SampleClaw(hardwareMap: HardwareMap) {
 
     private val pulley: Servo = hardwareMap.get(Servo::class.java, "sampleCollection")
     var sampleClawState = SampleClawState.Close

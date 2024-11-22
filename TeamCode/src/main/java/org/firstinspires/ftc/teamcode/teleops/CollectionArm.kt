@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.teleops
 
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.acmerobotics.roadrunner.Action
-import com.acmerobotics.roadrunner.clamp
 import com.acmerobotics.roadrunner.now
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorEx
@@ -14,8 +13,6 @@ import com.qualcomm.robotcore.hardware.Servo
 class CollectionArm(hardwareMap: HardwareMap) {
     private val motor: DcMotorEx = hardwareMap.get(DcMotorEx::class.java, "collectionArm")
     private val motorPower = 0.8
-    private val collectionValue = -2800 // amount and direction for collection
-    private val retractionValue = 2800 // amount and direction for retraction
     private val extendRetractDelta = 1300
     private var pos = 0
     private val deploy: Servo = hardwareMap.get(Servo::class.java, "armRelease")
@@ -74,7 +71,7 @@ class CollectionArm(hardwareMap: HardwareMap) {
         }
     }
 
-    inner class Manual (private val input: Double) : Action {
+    inner class Manual(private val input: Double) : Action {
         val maxSpeed = 600.0
 
         @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")

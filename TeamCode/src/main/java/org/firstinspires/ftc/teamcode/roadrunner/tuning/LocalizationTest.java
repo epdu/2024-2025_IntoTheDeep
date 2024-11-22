@@ -10,9 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.roadrunner.Drawing;
-import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
 import org.firstinspires.ftc.teamcode.roadrunner.PinpointDrive;
-import org.firstinspires.ftc.teamcode.roadrunner.TankDrive;
 
 @TeleOp
 
@@ -43,8 +41,8 @@ public class LocalizationTest extends LinearOpMode {
                 telemetry.update();
 
                 TelemetryPacket packet = new TelemetryPacket();
-                packet.field().setRotation(Math.PI/2);
-                packet.fieldOverlay().setRotation(-Math.PI/2);
+                packet.field().setRotation(Math.PI / 2);
+                packet.fieldOverlay().setRotation(-Math.PI / 2);
                 packet.fieldOverlay().setStroke("#3F51B5");
                 Drawing.drawRobot(packet.fieldOverlay(), drive.pose);
                 FtcDashboard.getInstance().sendTelemetryPacket(packet);

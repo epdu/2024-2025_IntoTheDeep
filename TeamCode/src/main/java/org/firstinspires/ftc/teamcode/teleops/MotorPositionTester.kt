@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx
 
 
 @TeleOp
-class MotorPositionTester : OpMode () {
+class MotorPositionTester : OpMode() {
     private lateinit var collectionArm: DcMotorEx
     private lateinit var scoringArm: DcMotorEx
     private lateinit var g2: PandaGamepad

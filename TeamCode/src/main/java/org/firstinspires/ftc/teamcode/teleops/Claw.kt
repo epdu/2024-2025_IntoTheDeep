@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap
 import com.qualcomm.robotcore.hardware.Servo
 
 
-class Claw (hardwareMap: HardwareMap) {
+class Claw(hardwareMap: HardwareMap) {
 
     private val leftClaw: Servo = hardwareMap.get(Servo::class.java, "leftClaw")
     private val rightClaw: Servo = hardwareMap.get(Servo::class.java, "rightClaw")
@@ -37,7 +37,6 @@ class Claw (hardwareMap: HardwareMap) {
         InBox(0.83, 0.0),
         Approach(0.6, 0.6)
     }
-
 
 
     fun close(): Action = SetPosition(2.0, ClawState.Close)

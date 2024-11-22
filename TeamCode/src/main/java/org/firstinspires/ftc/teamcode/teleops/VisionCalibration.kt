@@ -28,7 +28,7 @@ class VisionCalibration : OpMode() {
         )
         pipeline = CalibrationPipeline()
         webcam.setPipeline(pipeline)
-        FtcDashboard.getInstance().startCameraStream(webcam, 0.0);
+        FtcDashboard.getInstance().startCameraStream(webcam, 0.0)
     }
 
     override fun init_loop() {

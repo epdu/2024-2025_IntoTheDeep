@@ -6,9 +6,8 @@ import com.acmerobotics.roadrunner.Pose2d
 import com.acmerobotics.roadrunner.PoseVelocity2d
 import com.acmerobotics.roadrunner.Rotation2d
 import com.acmerobotics.roadrunner.Vector2d
-import com.acmerobotics.roadrunner.ftc.runBlocking
-import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
+import com.qualcomm.robotcore.hardware.DcMotor
 import org.firstinspires.ftc.teamcode.roadrunner.PinpointDrive
 import org.firstinspires.ftc.teamcode.teleops.Claw.ClawState
 import org.firstinspires.ftc.teamcode.teleops.ScoringArm.ArmState
@@ -41,7 +40,9 @@ abstract class CompetitionTeleop : OpMode() {
 
     }
 
-    override fun start() { lastTime = runtime }
+    override fun start() {
+        lastTime = runtime
+    }
 
     fun getDeltaTime(): Double {
         val newTime = runtime
@@ -107,9 +108,9 @@ abstract class CompetitionTeleop : OpMode() {
                 )
             )
         //Climbing**********
-        if (g1.dpadUp.isActive()) climbing.setPower(0.5)
-        else if (g1.dpadDown.isActive()) climbing.setPower(-0.5)
-        else climbing.setPower(0.0)
+        if (g1.dpadUp.isActive()) climbing.power = 0.5
+        else if (g1.dpadDown.isActive()) climbing.power = -0.5
+        else climbing.power = 0.0
 
         if (g1.b.justPressed()) headingOffset = rawHeading
 
@@ -180,7 +181,6 @@ abstract class CompetitionTeleop : OpMode() {
         if (g2.b.justPressed()) runningActions.add(sampleClaw.close())
 
         if (g2.rightStickY.isActive()) runningActions.add(collectionArm.manual(g2.rightStickY.component * deltaTime))
-
 
 
     }
