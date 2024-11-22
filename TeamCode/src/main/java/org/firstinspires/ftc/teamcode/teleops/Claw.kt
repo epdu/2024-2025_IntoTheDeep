@@ -11,15 +11,18 @@ class Claw (hardwareMap: HardwareMap) {
 
     private val leftClaw: Servo = hardwareMap.get(Servo::class.java, "leftClaw")
     private val rightClaw: Servo = hardwareMap.get(Servo::class.java, "rightClaw")
+    var clawState: ClawState = ClawState.InBox
 
-    inner class SetPosition(val dt: Double, private val leftPosition: Double, private val rightPosition: Double) : Action {
+
+    inner class SetPosition(val dt: Double, val state: ClawState) : Action {
         private var beginTs = -1.0
 
         override fun run(p: TelemetryPacket): Boolean {
             if (beginTs < 0) {
                 beginTs = now()
-                leftClaw.position = leftPosition
-                rightClaw.position = rightPosition
+                leftClaw.position = state.leftPosition
+                rightClaw.position = state.rightPosition
+                clawState = state
             }
             val t = now() - beginTs
             p.put("test", true)
@@ -28,8 +31,17 @@ class Claw (hardwareMap: HardwareMap) {
         }
     }
 
-    fun close(): Action = SetPosition(1.0, 0.46, 0.7)
-    fun open(): Action = SetPosition(1.0, 0.495, 0.645)
-    fun inBox(): Action = SetPosition(1.0, 0.83, 0.0)
-    fun approach(): Action = SetPosition(1.0, 0.6, 0.6)
+    enum class ClawState(val leftPosition: Double, val rightPosition: Double) {
+        Open(0.495, 0.645),
+        Close(0.43, 0.73),
+        InBox(0.83, 0.0),
+        Approach(0.6, 0.6)
+    }
+
+
+
+    fun close(): Action = SetPosition(2.0, ClawState.Close)
+    fun open(): Action = SetPosition(1.0, ClawState.Open)
+    fun inBox(): Action = SetPosition(1.0, ClawState.InBox)
+    fun approach(): Action = SetPosition(1.0, ClawState.Approach)
 }

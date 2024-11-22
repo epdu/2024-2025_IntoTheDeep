@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.roadrunner.PinpointDrive;
 
 @Autonomous
 public class BlueAutoRight extends LinearOpMode {
-    public void runOpMode() throws InterruptedException {
+    public void runOpMode() {
         Pose2d beginPose = new Pose2d(-17.5, 66, -Math.PI/2);
         PinpointDrive drive = new PinpointDrive(hardwareMap, beginPose);
         waitForStart();

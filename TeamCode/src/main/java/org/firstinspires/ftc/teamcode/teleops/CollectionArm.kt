@@ -13,13 +13,14 @@ import com.qualcomm.robotcore.hardware.Servo
 
 class CollectionArm(hardwareMap: HardwareMap) {
     private val motor: DcMotorEx = hardwareMap.get(DcMotorEx::class.java, "collectionArm")
-    private val motorPower = 0.6
+    private val motorPower = 0.8
     private val collectionValue = -2800 // amount and direction for collection
     private val retractionValue = 2800 // amount and direction for retraction
-    private val extendRetractDelta = 780
+    private val extendRetractDelta = 1300
     private var pos = 0
     private val deploy: Servo = hardwareMap.get(Servo::class.java, "armRelease")
     private val deployStart = 0.5
+    private var targetPosition = 0.0
 
     init {
         motor.direction = DcMotorSimple.Direction.REVERSE
@@ -27,6 +28,7 @@ class CollectionArm(hardwareMap: HardwareMap) {
         motor.targetPosition = 0
         motor.mode = DcMotor.RunMode.RUN_TO_POSITION
         deploy.position = deployStart
+        motor.power = motorPower
     }
 
     inner class DeployArm(val dt: Double, private val dropPosition: Double) : Action {
@@ -74,17 +76,17 @@ class CollectionArm(hardwareMap: HardwareMap) {
 
     inner class Manual (private val input: Double) : Action {
         val maxSpeed = 600.0
-        //THIS DOESN'T WORK YET!!!
 
         @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
         override fun run(packet: TelemetryPacket): Boolean {
-            var targetPosition = pos + input * maxSpeed
+            targetPosition += input * maxSpeed
             motor.targetPosition = targetPosition.toInt()
             packet.put("Target Position", motor.targetPosition)
             packet.put("Current Position", motor.currentPosition)
             return false
         }
     }
+
 
     fun extend(): Action {
         return Extend()

@@ -6,9 +6,12 @@ import com.acmerobotics.roadrunner.Pose2d
 import com.acmerobotics.roadrunner.PoseVelocity2d
 import com.acmerobotics.roadrunner.Rotation2d
 import com.acmerobotics.roadrunner.Vector2d
+import com.acmerobotics.roadrunner.ftc.runBlocking
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import org.firstinspires.ftc.teamcode.roadrunner.PinpointDrive
+import org.firstinspires.ftc.teamcode.teleops.Claw.ClawState
+import org.firstinspires.ftc.teamcode.teleops.ScoringArm.ArmState
 
 abstract class CompetitionTeleop : OpMode() {
     private lateinit var drive: PinpointDrive
@@ -24,6 +27,7 @@ abstract class CompetitionTeleop : OpMode() {
     private var runningActions: MutableList<Action> = ArrayList()
     private var lastTime: Double = 0.0
 
+
     override fun init() {
         drive = PinpointDrive(hardwareMap, Pose2d(0.0, 0.0, 0.0))
         g1 = PandaGamepad(gamepad1)
@@ -34,6 +38,7 @@ abstract class CompetitionTeleop : OpMode() {
         scoringArm = ScoringArm(hardwareMap)
         scoringArm.minPosition = -1000  //Remove soon, but now now -(E)
         climbing = hardwareMap.get(DcMotor::class.java, "climbing")
+
     }
 
     override fun start() { lastTime = runtime }
@@ -43,6 +48,20 @@ abstract class CompetitionTeleop : OpMode() {
         val deltaTime: Double = newTime - lastTime
         lastTime = newTime
         return deltaTime
+    }
+
+    fun nearestCompass(currentHeading: Double, direction: String): Double {
+        //Finds nearest 90 degree increment to current heading
+        var headOut: Double = 0.0
+
+        if ((currentHeading < 90) and (currentHeading <= 0)) headOut = 90.0
+        else if ((currentHeading < 180) and (currentHeading <= 90)) headOut = 180.0
+        else if ((currentHeading < -90) and (currentHeading <= -180)) headOut = -90.0
+        else if ((currentHeading < 0) and (currentHeading <= -90)) headOut = 0.0
+
+        if (direction == "right") return headOut
+        else if (direction == "left") return headOut - 90
+        else return 0.0
     }
 
     override fun loop() {
@@ -78,13 +97,13 @@ abstract class CompetitionTeleop : OpMode() {
 
         val input = Vector2d(
             g1.leftStickY.component.toDouble(),
-            g1.leftStickX.component.toDouble()
+            -g1.leftStickX.component.toDouble()
         )
         if (g1.rightBumper.isInactive() and g1.leftBumper.isInactive()) //don't set drive if bumpers
             drive.setDrivePowers(
                 PoseVelocity2d(
                     heading.inverse().times(input),
-                    ((gamepad1.left_trigger - gamepad1.right_trigger) * 1 / 2).toDouble()
+                    ((gamepad1.left_trigger - gamepad1.right_trigger) * 1 / 4).toDouble()
                 )
             )
         //Climbing**********
@@ -93,42 +112,52 @@ abstract class CompetitionTeleop : OpMode() {
         else climbing.setPower(0.0)
 
         if (g1.b.justPressed()) headingOffset = rawHeading
-        /*
+
+        /*90 degree turn idea
         if (g1.leftBumper.justPressed()) {
             //Turn left to the nearest 90 degree increment
-            val beginPose = Pose2d(0.0, 0.0, rawHeading-headingOffset)
-            var headTo = nearest_compass(rawHeading-headingOffset, "left")
+            curPose = drive.getPinpoint().positionRR
+            var headTo = nearestCompass(rawHeading-headingOffset, "left")
             headTo += -headingOffset
             runBlocking(
-                drive.actionBuilder(beginPose)
+                drive.actionBuilder(curPose)
                     .turnTo(headTo)
                     .build()
             )
         }
         if (g1.rightBumper.justPressed()){
             //Turn right to the nearest 90 degree increment
-            val beginPose = Pose2d(0.0, 0.0, rawHeading-headingOffset)
-            var headTo = nearest_compass(rawHeading-headingOffset, "right")
+            curPose = Pose2d(0.0, 0.0, rawHeading-headingOffset)
+            var headTo = nearestCompass(rawHeading-headingOffset, "right")
             headTo += -headingOffset
             runBlocking(
-                drive.actionBuilder(beginPose)
-                    .turnTo(-90.0)
+                drive.actionBuilder(curPose)
+                    .turnTo(headTo)
                     .build()
             )
-        }
-        */
+        }*/
+
         /* driver 2 */
         // Specimen Arm***********************************************************
         if (g2.dpadDown.justPressed()) {
-            runningActions.add(scoringClaw.approach())
-            runningActions.add(scoringArm.collect())}
+            runningActions.add(scoringArm.collect())
+            if (scoringClaw.clawState == ClawState.Close && scoringArm.armState == ArmState.Down) {
+                runningActions.add(scoringClaw.approach())
+            } else {
+                runningActions.add(scoringClaw.close())
+            }
+        }
         if (g2.dpadLeft.justPressed()) {
-            runningActions.add(scoringClaw.close())
-            runningActions.add(scoringArm.score())}
-        if (g2.dpadRight.justPressed()) {
-            runningActions.add(scoringClaw.open())
-            runningActions.add(scoringArm.goThroughBars())}
-        if (g2.dpadUp.justPressed()) runningActions.add(scoringClaw.open())
+            runningActions.add(scoringArm.goThroughBars())
+        }
+        if (g2.dpadUp.justPressed()) {
+            runningActions.add(scoringArm.score())
+            if (scoringClaw.clawState == ClawState.Close && scoringArm.armState == ArmState.Up) {
+                runningActions.add(scoringClaw.open())
+            } else {
+                runningActions.add(scoringClaw.close())
+            }
+        }
         if (g2.leftBumper.justActive()) {   //ONLY USE IN COLLECTION POSE
             runningActions.add(scoringClaw.inBox())
             scoringArm.resetArmPosition()
@@ -143,14 +172,13 @@ abstract class CompetitionTeleop : OpMode() {
             runningActions.add(sampleClaw.close())
             runningActions.add(collectionArm.retract())
         }
-        if (g2.x.justPressed()) {
-            runningActions.add(sampleClaw.open())
-        }
+        if (g2.x.justPressed()) runningActions.add(sampleClaw.open())
         if (g2.a.justPressed()) {
             runningActions.add(sampleClaw.open())
             runningActions.add(collectionArm.extend())
         }
-        //The below doesn't work yet!!! -(E)
+        if (g2.b.justPressed()) runningActions.add(sampleClaw.close())
+
         if (g2.rightStickY.isActive()) runningActions.add(collectionArm.manual(g2.rightStickY.component * deltaTime))
 
 

@@ -10,14 +10,21 @@ import com.qualcomm.robotcore.hardware.Servo
 class SampleClaw (hardwareMap: HardwareMap) {
 
     private val pulley: Servo = hardwareMap.get(Servo::class.java, "sampleCollection")
+    var sampleClawState = SampleClawState.Close
 
-    inner class SetPosition(val dt: Double, private val pulleyPosition: Double) : Action {
+    enum class SampleClawState(val position: Double) {
+        Open(0.5),
+        Close(0.1),
+    }
+
+    inner class SetPosition(val dt: Double, val state: SampleClawState) : Action {
         private var beginTs = -1.0
 
         override fun run(p: TelemetryPacket): Boolean {
             if (beginTs < 0) {
                 beginTs = now()
-                pulley.position = pulleyPosition
+                pulley.position = state.position
+                sampleClawState = state
             }
             val t = now() - beginTs
             p.put("test", true)
@@ -26,6 +33,6 @@ class SampleClaw (hardwareMap: HardwareMap) {
         }
     }
 
-    fun close(): Action = SetPosition(1.0, 0.18)
-    fun open(): Action = SetPosition(1.0, 0.43)
+    fun close(): Action = SetPosition(1.0, SampleClawState.Close)
+    fun open(): Action = SetPosition(1.0, SampleClawState.Open)
 }
