@@ -39,7 +39,6 @@ abstract class CompetitionTeleop : OpMode() {
         sampleClaw = SampleClaw(hardwareMap)
         collectionArm = CollectionArm(hardwareMap)
         scoringArm = ScoringArm(hardwareMap)
-        scoringArm.minPosition = -1000  //Remove soon, but now now -(E)
         climbing = hardwareMap.get(DcMotor::class.java, "climbing")
 
     }
@@ -123,8 +122,8 @@ abstract class CompetitionTeleop : OpMode() {
             }
         }
         //Climbing****************************
-        if (g1.dpadUp.isActive()) climbing.power = 0.5
-        else if (g1.dpadDown.isActive()) climbing.power = -0.5
+        if (g1.dpadUp.isActive()) climbing.power = 1.0
+        else if (g1.dpadDown.isActive()) climbing.power = -1.0
         else climbing.power = 0.0
 
         if (g1.b.justPressed()) headingOffset = rawHeading
@@ -157,18 +156,21 @@ abstract class CompetitionTeleop : OpMode() {
         // Specimen Arm***********************************************************
         if (g2.dpadDown.justPressed()) {
             runningActions.add(scoringArm.collect())
-            if (scoringClaw.clawState == ClawState.Close && scoringArm.armState == ArmState.Down) {
+            if (scoringClaw.clawState == ClawState.Close && scoringArm.armState == ArmState.Collect) {
                 runningActions.add(scoringClaw.approach())
             } else {
                 runningActions.add(scoringClaw.close())
             }
         }
         if (g2.dpadLeft.justPressed()) {
-            runningActions.add(scoringArm.goThroughBars())
+            runningActions.add(scoringArm.throughBars())
+        }
+        if (g2.dpadRight.justPressed()) {
+            runningActions.add(scoringArm.throughBars())
         }
         if (g2.dpadUp.justPressed()) {
             runningActions.add(scoringArm.score())
-            if (scoringClaw.clawState == ClawState.Close && scoringArm.armState == ArmState.Up) {
+            if (scoringClaw.clawState == ClawState.Close && scoringArm.armState == ArmState.Score) {
                 runningActions.add(scoringClaw.open())
             } else {
                 runningActions.add(scoringClaw.close())

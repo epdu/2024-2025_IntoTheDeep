@@ -30,7 +30,7 @@ public class SpecimenParkBlueRight extends OpMode {
         Actions.runBlocking(
                 drive.actionBuilder(beginPose)
                         .strafeTo(new Vector2d(-6, 42))
-                        .strafeTo(new Vector2d(-6, 38))
+                        .strafeTo(new Vector2d(-6, 35))
                         .build()
         );
         Actions.runBlocking(scoringClaw.open());
@@ -44,6 +44,8 @@ public class SpecimenParkBlueRight extends OpMode {
                         //.splineToConstantHeading(new Vector2d(-42, 28), Math.PI)
                         .build()
         );
+        Actions.runBlocking(scoringClaw.close());
+        Actions.runBlocking(scoringArm.collect());
     }
 
     public void loop() {}
