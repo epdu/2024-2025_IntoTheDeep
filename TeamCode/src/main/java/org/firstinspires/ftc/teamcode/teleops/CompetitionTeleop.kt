@@ -5,6 +5,7 @@ import com.acmerobotics.roadrunner.Action
 import com.acmerobotics.roadrunner.Pose2d
 import com.acmerobotics.roadrunner.PoseVelocity2d
 import com.acmerobotics.roadrunner.Rotation2d
+import com.acmerobotics.roadrunner.SequentialAction
 import com.acmerobotics.roadrunner.Vector2d
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.hardware.DcMotor
@@ -12,9 +13,9 @@ import org.firstinspires.ftc.teamcode.roadrunner.PinpointDrive
 import org.firstinspires.ftc.teamcode.subsystems.CollectionArm
 import org.firstinspires.ftc.teamcode.subsystems.SampleClaw
 import org.firstinspires.ftc.teamcode.subsystems.ScoringArm
+import org.firstinspires.ftc.teamcode.subsystems.ScoringArm.ArmState
 import org.firstinspires.ftc.teamcode.subsystems.SpecimenClaw
 import org.firstinspires.ftc.teamcode.subsystems.SpecimenClaw.ClawState
-import org.firstinspires.ftc.teamcode.subsystems.ScoringArm.ArmState
 
 abstract class CompetitionTeleop : OpMode() {
     private lateinit var drive: PinpointDrive
@@ -111,8 +112,7 @@ abstract class CompetitionTeleop : OpMode() {
                         ((gamepad1.left_trigger - gamepad1.right_trigger) * 1 / 2).toDouble()
                     )
                 )
-            }
-            else {
+            } else {
                 drive.setDrivePowers(
                     PoseVelocity2d(
                         heading.inverse().times(input),
@@ -154,9 +154,18 @@ abstract class CompetitionTeleop : OpMode() {
 
         /* driver 2 */
         // Specimen Arm***********************************************************
+        telemetry.addData("scoringArm position", scoringArm.targetPosition)
         if (g2.dpadDown.justPressed()) {
-            runningActions.add(scoringArm.collect())
-            if (scoringClaw.clawState == ClawState.Close && scoringArm.armState == ArmState.Collect) {
+            val notCollecting = scoringArm.targetPosition - scoringArm.scoringArmOffset >= ArmState.ThroughBars.position-100
+            if (notCollecting) {
+                runningActions.add(scoringArm.collect())
+                runningActions.add(
+                    SequentialAction(
+                        scoringClaw.close(),
+                        scoringClaw.approach()
+                    )
+                )
+            } else if (scoringClaw.clawState == ClawState.Close) {
                 runningActions.add(scoringClaw.approach())
             } else {
                 runningActions.add(scoringClaw.close())
@@ -169,8 +178,11 @@ abstract class CompetitionTeleop : OpMode() {
             runningActions.add(scoringArm.throughBars())
         }
         if (g2.dpadUp.justPressed()) {
-            runningActions.add(scoringArm.score())
-            if (scoringClaw.clawState == ClawState.Close && scoringArm.armState == ArmState.Score) {
+            val notScoring = scoringArm.targetPosition - scoringArm.scoringArmOffset <= ArmState.ThroughBars.position+100
+            if (notScoring) {
+                runningActions.add(scoringArm.score())
+                runningActions.add(scoringClaw.close())
+            } else if (scoringClaw.clawState == ClawState.Close) {
                 runningActions.add(scoringClaw.open())
             } else {
                 runningActions.add(scoringClaw.close())
@@ -179,6 +191,7 @@ abstract class CompetitionTeleop : OpMode() {
         if (g2.leftBumper.justActive()) {   //ONLY USE IN COLLECTION POSE
             runningActions.add(scoringClaw.inBox())
             scoringArm.resetArmPosition()
+            runningActions.add(scoringArm.collect())
         }
 
         if (g2.leftStickY.isActive()) runningActions.add(scoringArm.manual(g2.leftStickY.component * deltaTime))

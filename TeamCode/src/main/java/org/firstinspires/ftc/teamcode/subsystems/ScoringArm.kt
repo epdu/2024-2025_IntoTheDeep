@@ -14,9 +14,9 @@ class ScoringArm(hardwareMap: HardwareMap) {
      * know the position of the scoringArm
      */
     enum class ArmState(val position: Int) {
-        Score(2400),
+        Score(2515), // lol funny number
         ThroughBars(1500),
-        Collect(40),
+        Collect(70),
         Manual(-1)
     }
 
@@ -26,7 +26,7 @@ class ScoringArm(hardwareMap: HardwareMap) {
 
     private val power = 0.75
 
-    private var scoringArmOffset = 0 //offset used to reset the arm positions mid-match
+    var scoringArmOffset = 0 //offset used to reset the arm positions mid-match
     var targetPosition = 0.0
 
     init {
@@ -49,8 +49,8 @@ class ScoringArm(hardwareMap: HardwareMap) {
         @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
         override fun run(packet: TelemetryPacket): Boolean {
             if (!initialized) {
-                targetPosition = state.position.toDouble() - scoringArmOffset
-                scoringArm.targetPosition = targetPosition.toInt()
+                targetPosition = state.position.toDouble()
+                scoringArm.targetPosition = targetPosition.toInt() - scoringArmOffset
                 armState = state
                 initialized = true
             }
@@ -73,7 +73,7 @@ class ScoringArm(hardwareMap: HardwareMap) {
         override fun run(packet: TelemetryPacket): Boolean {
             armState = ArmState.Manual
             targetPosition += input * maxSpeed
-            scoringArm.targetPosition = targetPosition.toInt()
+            scoringArm.targetPosition = targetPosition.toInt() - scoringArmOffset
             packet.put("Target Position", scoringArm.targetPosition)
             packet.put("Current Position", scoringArm.currentPosition)
             return false
@@ -81,7 +81,8 @@ class ScoringArm(hardwareMap: HardwareMap) {
     }
 
     /**
-     * Only use in the collect position; used to reset the positions of the arm
+     * Only use in the collect position; used to reset the positions of the arm; should be called
+     * alongside a collect action
      */
     fun resetArmPosition() {
         scoringArmOffset = ArmState.Collect.position - scoringArm.currentPosition

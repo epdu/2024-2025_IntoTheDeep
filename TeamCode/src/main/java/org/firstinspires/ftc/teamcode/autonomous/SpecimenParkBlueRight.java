@@ -29,8 +29,8 @@ public class SpecimenParkBlueRight extends OpMode {
         Actions.runBlocking(scoringArm.score());
         Actions.runBlocking(
                 drive.actionBuilder(beginPose)
-                        .strafeTo(new Vector2d(-6, 42))
-                        .strafeTo(new Vector2d(-6, 35))
+                        .strafeTo(new Vector2d(-4, 42))
+                        .strafeTo(new Vector2d(-4, 35))
                         .build()
         );
         Actions.runBlocking(scoringClaw.open());
