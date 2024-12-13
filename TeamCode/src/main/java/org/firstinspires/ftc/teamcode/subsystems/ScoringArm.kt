@@ -57,7 +57,8 @@ class ScoringArm(hardwareMap: HardwareMap) {
             scoringArm.currentPosition
             packet.put("Target Position", scoringArm.targetPosition)
             packet.put("Current Position", scoringArm.currentPosition)
-            return scoringArm.isBusy
+            //TODO: make this scoringArm.isbusy so that it will actually do smth :)
+            return false
         }
     }
 
