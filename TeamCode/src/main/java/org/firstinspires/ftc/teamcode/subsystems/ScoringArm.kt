@@ -14,9 +14,9 @@ class ScoringArm(hardwareMap: HardwareMap) {
      * know the position of the scoringArm
      */
     enum class ArmState(val position: Int) {
-        Score(2515), // lol funny number
-        ThroughBars(1500),
-        Collect(70),
+        Score(1600), // was 2515 with geared arm
+        ThroughBars(1600), // was 1500 with geared arm
+        Collect(60), // was 70 with geared arm
         Manual(-1)
     }
 
@@ -58,7 +58,7 @@ class ScoringArm(hardwareMap: HardwareMap) {
             packet.put("Target Position", scoringArm.targetPosition)
             packet.put("Current Position", scoringArm.currentPosition)
             //TODO: make this scoringArm.isbusy so that it will actually do smth :)
-            return false
+            return scoringArm.isBusy
         }
     }
 
