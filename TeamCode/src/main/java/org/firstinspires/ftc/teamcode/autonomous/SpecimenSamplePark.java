@@ -11,6 +11,7 @@ import org.firstinspires.ftc.teamcode.roadrunner.PinpointDrive;
 import org.firstinspires.ftc.teamcode.subsystems.ScoringArm;
 import org.firstinspires.ftc.teamcode.subsystems.SpecimenClaw;
 
+
 @Autonomous
 public class SpecimenSamplePark extends OpMode {
     SpecimenClaw scoringClaw;
@@ -86,12 +87,14 @@ public class SpecimenSamplePark extends OpMode {
         //// goes to first sample
         //Actions.runBlocking(drive.actionBuilder(drive.getPose())
         //        .setTangent(Math.PI / 2)
-        //        .splineToConstantHeading(new Vector2d(-24, 48), Math.PI)
+        //        .splineToConstan
+        //        hctHeading(new Vector2d(-24, 48), Math.PI)
         //        .splineToConstantHeading(new Vector2d(-42, 14), Math.PI)
         //        .build());
 
     }
 
     public void loop() {
+
     }
 }

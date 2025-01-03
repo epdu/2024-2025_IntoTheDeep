@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.roadrunner.PinpointDrive;
 import org.firstinspires.ftc.teamcode.subsystems.ScoringArm;
 import org.firstinspires.ftc.teamcode.subsystems.SpecimenClaw;
 @Autonomous
-public class SpecimenSampleParkChassis extends OpMode {
+public class    SpecimenSampleParkChassis extends OpMode {
     Pose2d beginPose;
     PinpointDrive drive;
     ScoringArm scoringArm;
