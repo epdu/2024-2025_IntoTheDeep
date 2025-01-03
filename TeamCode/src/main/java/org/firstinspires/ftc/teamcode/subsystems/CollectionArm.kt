@@ -13,7 +13,7 @@ import com.qualcomm.robotcore.hardware.Servo
 class CollectionArm(hardwareMap: HardwareMap) {
     private val motor: DcMotorEx = hardwareMap.get(DcMotorEx::class.java, "collectionArm")
     private val motorPower = 0.8
-    private val extendRetractDelta = 1150
+    private val extendRetractDelta = 1150 //distance it needds to extend or retract
     private var pos = 0
     private val deploy: Servo = hardwareMap.get(Servo::class.java, "armRelease")
     private val deployStart = 0.5
