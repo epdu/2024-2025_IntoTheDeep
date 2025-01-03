@@ -70,7 +70,7 @@ public class MecanumDrive {
             PARAMS.maxAngVel, -PARAMS.maxAngAccel, PARAMS.maxAngAccel);
     public final VelConstraint defaultVelConstraint =
             new MinVelConstraint(Arrays.asList(
-                    kinematics.new WheelVelConstraint(PARAMS.maxWheelVel/2),
+                    kinematics.new WheelVelConstraint(PARAMS.maxWheelVel),
                     new AngularVelConstraint(PARAMS.maxAngVel/2)
             ));
     public final AccelConstraint defaultAccelConstraint =
@@ -222,15 +222,15 @@ public class MecanumDrive {
 
 
         // feedforward parameters (in tick units)
-        public double kS = 0.7946378304771642;
-        public double kV = 0.1992302585075256;
+        public double kS = 0;
+        public double kV = 0;
         public double kA = 0;
 
 
         // path profile parameters (in inches)
-        public double maxWheelVel = 50;
-        public double minProfileAccel = -30;
-        public double maxProfileAccel = 50;
+        public double maxWheelVel = 50; //50
+        public double minProfileAccel = -30; //-30
+        public double maxProfileAccel = 50; //50
 
 
         // turn profile parameters (in radians)
@@ -239,9 +239,9 @@ public class MecanumDrive {
 
 
         // path controller gains
-        public double axialGain = 6.0;
-        public double lateralGain = 6.0;
-        public double headingGain = 5.0; // shared with turn
+        public double axialGain = 0; //6.0
+        public double lateralGain = 0; //6.0
+        public double headingGain = 0; //3.0 // shared with turn
 
 
         public double axialVelGain = 0.0;
