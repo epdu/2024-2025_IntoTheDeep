@@ -8,23 +8,24 @@ import com.acmerobotics.roadrunner.Rotation2d
 import com.acmerobotics.roadrunner.SequentialAction
 import com.acmerobotics.roadrunner.Vector2d
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.DcMotor
 import org.firstinspires.ftc.teamcode.roadrunner.PinpointDrive
-import org.firstinspires.ftc.teamcode.subsystems.NewCollectionArm
-import org.firstinspires.ftc.teamcode.subsystems.NewCollectionArm.ArmStateCollect
+import org.firstinspires.ftc.teamcode.subsystems.CollectionArm
 import org.firstinspires.ftc.teamcode.subsystems.SampleClaw
 import org.firstinspires.ftc.teamcode.subsystems.ScoringArm
 import org.firstinspires.ftc.teamcode.subsystems.ScoringArm.ArmState
 import org.firstinspires.ftc.teamcode.subsystems.SpecimenClaw
 import org.firstinspires.ftc.teamcode.subsystems.SpecimenClaw.ClawState
 
-abstract class CompetitionTeleop : OpMode() {
+@TeleOp(name = "OldCompetitionTeleop")
+class OldCompetitionTeleop : OpMode() {
     private lateinit var drive: PinpointDrive
     private lateinit var g1: PandaGamepad
     private lateinit var g2: PandaGamepad
     private lateinit var scoringClaw: SpecimenClaw
     private lateinit var sampleClaw: SampleClaw
-    private lateinit var collectionArm: NewCollectionArm
+    private lateinit var collectionArm: CollectionArm
     private lateinit var scoringArm: ScoringArm
     private lateinit var climbing: DcMotor
     private var headingOffset: Double = 0.0
@@ -33,17 +34,15 @@ abstract class CompetitionTeleop : OpMode() {
     private var lastTime: Double = 0.0
 
 
-
-        override fun init() {
+    override fun init() {
         drive = PinpointDrive(hardwareMap, Pose2d(0.0, 0.0, 0.0))
         g1 = PandaGamepad(gamepad1)
         g2 = PandaGamepad(gamepad2)
         scoringClaw = SpecimenClaw(hardwareMap)
         sampleClaw = SampleClaw(hardwareMap)
-        collectionArm = NewCollectionArm(hardwareMap)
+        collectionArm = CollectionArm(hardwareMap)
         scoringArm = ScoringArm(hardwareMap)
         climbing = hardwareMap.get(DcMotor::class.java, "climbing")
-
 
     }
 
@@ -129,10 +128,6 @@ abstract class CompetitionTeleop : OpMode() {
         else if (g1.dpadDown.isActive()) climbing.power = -1.0
         else climbing.power = 0.0
 
-        if (g1.dpadUp.justPressed()) {
-            runningActions.add(collectionArm.hang())
-        }
-
         if (g1.b.justPressed()) headingOffset = rawHeading
         /*90 degree turn idea
         if (g1.leftBumper.justPressed()) {
@@ -209,58 +204,22 @@ abstract class CompetitionTeleop : OpMode() {
 
 
         //Collection System*************************************
-        telemetry.addData("collection Arm target position", collectionArm.targetPosition)
-        telemetry.addData("collection Arm offset", collectionArm.collectionArmOffset)
-        telemetry.addData("collection Arm current position", collectionArm.collectionArmOffset)
-
-        if (g2.a.justPressed()) {
-
-            val collectionArmMid: Int = -2100;
-
-            //current position >= "mid", we defined mid as 82ticks above down position
-            var isAboveMid: Boolean  = collectionArm.targetPosition - collectionArm.collectionArmOffset >= collectionArmMid
-
-            if (isAboveMid) {
-                runningActions.add(sampleClaw.open())
-                runningActions.add(collectionArm.down())
-
-            } else if (sampleClaw.sampleClawState == SampleClaw.SampleClawState.Close) {
-                runningActions.add(sampleClaw.open())
-            } else {
-                runningActions.add(sampleClaw.close())
-            }
-
-        }
-
-
+        if (g2.rightTrigger.isActive()) runningActions.add(collectionArm.deployArm())
         if (g2.y.justPressed()) {
-            var collectionArmMid: Int = -2100;
-            //current position <= "mid", we defined mid as 82ticks above down position
-            var isbelowMid: Boolean  = collectionArm.targetPosition - collectionArm.collectionArmOffset <= collectionArmMid
-            if (isbelowMid) { //slight problem, hanging counts as above mid, so on startup D2 should press "A"
-                runningActions.add(sampleClaw.close())
-                runningActions.add(collectionArm.offGround())
-
-            } else if (sampleClaw.sampleClawState == SampleClaw.SampleClawState.Close) {
-                runningActions.add(sampleClaw.open())
-            } else {
-                runningActions.add(sampleClaw.close())
-            }
-
+            runningActions.add(sampleClaw.close())
+            runningActions.add(collectionArm.retract())
         }
-
-        if (g2.rightBumper.justActive()) {   //ONLY USE IN DOWN POSE
-            //runningActions.add(collectionArm.reset())
-            collectionArm.resetArmPosition()
-            runningActions.add(collectionArm.down())
+        if (g2.x.justPressed()) runningActions.add(sampleClaw.open())
+        if (g2.a.justPressed()) {
+            runningActions.add(sampleClaw.open())
+            runningActions.add(collectionArm.extend())
         }
+        if (g2.b.justPressed()) runningActions.add(sampleClaw.close())
 
-        //Collection Arm Manual Mode
         if (g2.rightStickY.isActive()) runningActions.add(collectionArm.manual(g2.rightStickY.component * deltaTime))
+
 
     }
 
-
-
-    protected abstract val allianceColor: AllianceColor
+    //protected abstract val allianceColor: AllianceColor
 }

@@ -8,26 +8,29 @@ import com.qualcomm.robotcore.hardware.HardwareMap
 
 
 class NewCollectionArm(hardwareMap: HardwareMap) {
+    private val collectionArm = hardwareMap.get(DcMotor::class.java, "collectionArm")
+
+    init {
+        collectionArm.direction = DcMotorSimple.Direction.FORWARD
+    }
 
     /**
      * @param position the position of the scoringArm in that state, -1 means we don't currently
      * know the position of the scoringArm
      */
-    enum class ArmState(val position: Int) {
-        Up(1600),
-        OffGround(1600),
-        Drop(60),
+    enum class ArmStateCollect(val position: Int) {
+        Down(-2190), //very accurate numbers,
+        OffGround(-2025),
+        Hang(248),
         Manual(-1) //switch to manual for on init
     }
 
-    var armState = ArmState.Manual
-
-    private val collectionArm = hardwareMap.get(DcMotor::class.java, "CollectionArm")
+    var armState = ArmStateCollect.Manual
 
     private val power = 0.75
 
     var collectionArmOffset = 0 //offset used to reset the arm positions mid-match
-    var targetPosition = 0.0
+    var targetPosition = 0.0 //on boot-up, don't try to go anywhere
 
     init {
         collectionArm.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
@@ -43,7 +46,7 @@ class NewCollectionArm(hardwareMap: HardwareMap) {
      *
      * @param state the state (and associated position) to set the arm to
      */
-    inner class SetState(private val state: ArmState) : Action {
+    inner class SetState(private val state: ArmStateCollect) : Action {
         private var initialized = false
 
         @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
@@ -57,7 +60,7 @@ class NewCollectionArm(hardwareMap: HardwareMap) {
             collectionArm.currentPosition
             packet.put("Target Position", collectionArm.targetPosition)
             packet.put("Current Position", collectionArm.currentPosition)
-            //TODO: make this scoringArm.isbusy so that it will actually do smth :)
+            //TODO: make this collectionArm.isbusy so that it will actually do smth :)
             return collectionArm.isBusy
         }
     }
@@ -68,11 +71,11 @@ class NewCollectionArm(hardwareMap: HardwareMap) {
      * @param input the percent speed (-1 to 1) normalized by delta time (the time between each loop)
      */
     inner class Manual(private val input: Double) : Action {
-        val maxSpeed = 600.0 //tics/second
+        val maxSpeed = 800.0 //tics/second
 
         @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
         override fun run(packet: TelemetryPacket): Boolean {
-            armState = ArmState.Manual
+            armState = ArmStateCollect.Manual
             targetPosition += input * maxSpeed
             collectionArm.targetPosition = targetPosition.toInt() - collectionArmOffset
             packet.put("Target Position", collectionArm.targetPosition)
@@ -80,11 +83,14 @@ class NewCollectionArm(hardwareMap: HardwareMap) {
             return false
         }
     }
+    fun resetArmPosition() {
+        collectionArmOffset = ArmStateCollect.Down.position - collectionArm.currentPosition
+    }
 
 
-
-    fun offGround(): Action = SetState(ArmState.OffGround)
-    fun up(): Action = SetState(ArmState.Up)
-    fun drop(): Action = SetState(ArmState.Drop)
+    fun offGround(): Action = SetState(ArmStateCollect.OffGround)
+    fun down(): Action = SetState(ArmStateCollect.Down)
+    fun hang(): Action = SetState(ArmStateCollect.Hang)
     fun manual(input: Double): Action = Manual(input)
+    //fun reset(): Action = SetState(ArmStateCollect.Down)
 }
