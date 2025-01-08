@@ -11,9 +11,9 @@ class SampleClaw(hardwareMap: HardwareMap) {
 
     enum class SampleClawState(val position: Double) {
         Open(0.5),
-        Close(0.1),
+        Close(0.1)
     }
-    var sampleClawState = SampleClawState.Close
+    var sampleClawState: SampleClawState = SampleClawState.Close
 
     private val pulley: Servo = hardwareMap.get(Servo::class.java, "sampleCollection")
 
