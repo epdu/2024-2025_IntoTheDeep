@@ -234,7 +234,7 @@ abstract class CompetitionTeleop : OpMode() {
 
 
         if (g2.y.justPressed()) {
-            val collectionArmMid: Int = -2100;
+            var collectionArmMid: Int = -2100;
             //current position <= "mid", we defined mid as 82ticks above down position
             var isbelowMid: Boolean  = collectionArm.targetPosition - collectionArm.collectionArmOffset <= collectionArmMid
             if (isbelowMid) { //slight problem, hanging counts as above mid, so on startup D2 should press "A"
@@ -247,14 +247,6 @@ abstract class CompetitionTeleop : OpMode() {
                 runningActions.add(sampleClaw.close())
             }
 
-        }
-        if (g2.x.justPressed()) {
-            if (sampleClaw.sampleClawState == SampleClaw.SampleClawState.Close) {
-                runningActions.add(sampleClaw.open())
-            }
-            else if (sampleClaw.sampleClawState == SampleClaw.SampleClawState.Open) {
-                runningActions.add(sampleClaw.close())
-            }
         }
 
         if (g2.rightBumper.justActive()) {   //ONLY USE IN DOWN POSE

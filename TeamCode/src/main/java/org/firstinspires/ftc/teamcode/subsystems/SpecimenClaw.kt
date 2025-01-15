@@ -45,16 +45,16 @@ class SpecimenClaw(hardwareMap: HardwareMap) {
         }
     }
 
-    fun close(): Action = SetState(2.0, ClawState.Close)
-    fun open(): Action = SetState(1.0, ClawState.Open)
+    fun close(duration: Double = .2): Action = SetState(duration, ClawState.Close)
+    fun open(duration: Double = .2): Action = SetState(duration, ClawState.Open)
 
     /**
      * positions the claw to fit inside the 18" cube
      */
-    fun inBox(): Action = SetState(1.0, ClawState.InBox)
+    fun inBox(duration: Double = .2): Action = SetState(duration, ClawState.InBox)
 
     /**
      * positions the claw to approach the specimen when picking it up
      */
-    fun approach(): Action = SetState(1.0, ClawState.Approach)
+    fun approach(duration: Double = .2): Action = SetState(duration, ClawState.Approach)
 }
