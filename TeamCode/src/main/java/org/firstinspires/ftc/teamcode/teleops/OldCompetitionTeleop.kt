@@ -7,6 +7,7 @@ import com.acmerobotics.roadrunner.PoseVelocity2d
 import com.acmerobotics.roadrunner.Rotation2d
 import com.acmerobotics.roadrunner.SequentialAction
 import com.acmerobotics.roadrunner.Vector2d
+import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.DcMotor
@@ -19,6 +20,7 @@ import org.firstinspires.ftc.teamcode.subsystems.SpecimenClaw
 import org.firstinspires.ftc.teamcode.subsystems.SpecimenClaw.ClawState
 
 @TeleOp(name = "OldCompetitionTeleop")
+@Disabled
 class OldCompetitionTeleop : OpMode() {
     private lateinit var drive: PinpointDrive
     private lateinit var g1: PandaGamepad

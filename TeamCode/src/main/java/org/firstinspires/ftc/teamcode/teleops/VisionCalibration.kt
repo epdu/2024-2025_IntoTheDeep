@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.vision_pipelines.CalibrationPipeline
 import org.opencv.core.Point
 import org.openftc.easyopencv.OpenCvCameraFactory
 
-@TeleOp(group = "Calibration")
+
 class VisionCalibration : OpMode() {
     private val timer: ElapsedTime = ElapsedTime()
 
