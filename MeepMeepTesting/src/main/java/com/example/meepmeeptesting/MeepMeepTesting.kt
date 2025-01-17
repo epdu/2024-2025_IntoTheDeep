@@ -1,39 +1,67 @@
 package com.example.meepmeeptesting
 
-import com.acmerobotics.roadrunner.geometry.Pose2d
+import com.acmerobotics.roadrunner.Pose2d
+import com.acmerobotics.roadrunner.SequentialAction
+import com.acmerobotics.roadrunner.Vector2d
 import com.noahbres.meepmeep.MeepMeep
-import com.noahbres.meepmeep.MeepMeep.Background
 import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder
-import com.noahbres.meepmeep.roadrunner.DriveShim
+import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity
 
 object MeepMeepTesting {
     @JvmStatic
     fun main(args: Array<String>) {
-        val meepMeep = MeepMeep(800)
+        val meepMeep: MeepMeep = MeepMeep(800)
+        val beginPose = Pose2d(-17.5, 66.0, -Math.PI / 2)
 
-        val myBot =
+        val myBot: RoadRunnerBotEntity =
             DefaultBotBuilder(meepMeep) // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
                 .setConstraints(60.0, 60.0, Math.toRadians(180.0), Math.toRadians(180.0), 15.0)
-                .followTrajectorySequence { drive: DriveShim ->
-                    drive.trajectorySequenceBuilder(
-                        Pose2d(
-                            1.0,
-                            0.0,
-                            0.0
-                        )
-                    )
-                        .forward(45.0)
-                        .turn(Math.toRadians(45.0))
-                        .forward(20.0)
-                        .turn(Math.toRadians(45.0))
-                        .forward(30.0)
-                        .turn(Math.toRadians(90.0))
-                        .forward(30.0)
-                        .turn(Math.toRadians(90.0))
-                        .build()
-                }
+                .build()
 
-        meepMeep.setBackground(Background.FIELD_CENTERSTAGE_JUICE_DARK)
+        val drive = myBot.drive;
+
+        myBot.runAction(
+            SequentialAction(
+                drive.actionBuilder(beginPose)
+                .setTangent(0.0)
+                .splineToConstantHeading(Vector2d(2.0, 40.0), -Math.PI / 2)
+                .strafeToConstantHeading(Vector2d(2.0, 30.0))
+                .build(),
+                drive.actionBuilder(Pose2d(2.0, 30.0, -Math.PI/2))
+                    .strafeTo(Vector2d(2.0, 50.0))
+                    .build(),
+                drive.actionBuilder(Pose2d(2.0, 50.0, -Math.PI/2))
+                    .setTangent(Math.PI / 2)
+                    .splineToLinearHeading(Pose2d(Vector2d(-27.0, 59.0), Math.PI), Math.PI)
+                    .strafeTo(Vector2d(-35.0, 59.0))
+                    .build(),
+                drive.actionBuilder(Pose2d(-35.0, 59.0, Math.PI))
+                    .setTangent(0.0)
+                    .splineToLinearHeading(Pose2d(Vector2d(-4.0, 55.0), -Math.PI / 2), -Math.PI / 2)
+                    .strafeTo(Vector2d(-4.0, 28.0))
+                    .build(),
+                drive.actionBuilder(Pose2d(-4.0, 28.0, -Math.PI / 2))
+                    .waitSeconds(1.0)
+                    .strafeTo(Vector2d(-6.0, 44.0))
+                    .waitSeconds(1.0)
+                    .setTangent(Math.PI / 2)
+                    .splineToConstantHeading(Vector2d(-24.0, 48.0), Math.PI)
+                    .splineToConstantHeading(Vector2d(-49.0, 14.0), Math.PI)
+                    .build(),
+                drive.actionBuilder(Pose2d(-49.0, 14.0, -Math.PI/2))
+                    .strafeTo(Vector2d(-46.0,60.0)) //go to 1st sample
+                    .strafeTo(Vector2d(-46.0,7.0)) //go to 1st sample
+                    .strafeTo(Vector2d(-60.0,7.0)) //strafe over
+                    .strafeTo(Vector2d(-55.0,60.0))//go to 2nd sample
+                    .strafeTo(Vector2d(-55.0,7.0))//go to 2nd sample
+                    .strafeTo(Vector2d(-64.0,7.0)) //strafe over
+                    .strafeTo(Vector2d(-64.0,60.0)) //go to 3rd sample
+                    .build()
+
+            )
+        )
+
+        meepMeep.setBackground(MeepMeep.Background.FIELD_INTO_THE_DEEP_JUICE_LIGHT)
             .setDarkMode(true)
             .setBackgroundAlpha(0.95f)
             .addEntity(myBot)

@@ -10,8 +10,8 @@ import com.acmerobotics.roadrunner.Vector2d
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.hardware.DcMotor
 import org.firstinspires.ftc.teamcode.roadrunner.PinpointDrive
+import org.firstinspires.ftc.teamcode.subsystems.Hanging
 import org.firstinspires.ftc.teamcode.subsystems.NewCollectionArm
-import org.firstinspires.ftc.teamcode.subsystems.NewCollectionArm.ArmStateCollect
 import org.firstinspires.ftc.teamcode.subsystems.SampleClaw
 import org.firstinspires.ftc.teamcode.subsystems.ScoringArm
 import org.firstinspires.ftc.teamcode.subsystems.ScoringArm.ArmState
@@ -26,7 +26,7 @@ abstract class CompetitionTeleop : OpMode() {
     private lateinit var sampleClaw: SampleClaw
     private lateinit var collectionArm: NewCollectionArm
     private lateinit var scoringArm: ScoringArm
-    private lateinit var climbing: DcMotor
+    private lateinit var hanging: Hanging
     private var headingOffset: Double = 0.0
     private val dash: FtcDashboard = FtcDashboard.getInstance()
     private var runningActions: MutableList<Action> = ArrayList()
@@ -42,7 +42,7 @@ abstract class CompetitionTeleop : OpMode() {
         sampleClaw = SampleClaw(hardwareMap)
         collectionArm = NewCollectionArm(hardwareMap)
         scoringArm = ScoringArm(hardwareMap)
-        climbing = hardwareMap.get(DcMotor::class.java, "climbing")
+        hanging = Hanging(hardwareMap)
 
 
     }
@@ -124,14 +124,8 @@ abstract class CompetitionTeleop : OpMode() {
                 )
             }
         }
-        //Climbing****************************
-        if (g1.dpadUp.isActive()) climbing.power = 1.0
-        else if (g1.dpadDown.isActive()) climbing.power = -1.0
-        else climbing.power = 0.0
+        //Climbing***************************
 
-        if (g1.dpadUp.justPressed()) {
-            runningActions.add(collectionArm.hang())
-        }
 
         if (g1.b.justPressed()) headingOffset = rawHeading
         /*90 degree turn idea
