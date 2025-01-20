@@ -23,11 +23,11 @@ object MeepMeepTesting {
         myBot.runAction(
             SequentialAction(
                 drive.actionBuilder(beginPose)
-                    .setTangent(0.0)
-                    .splineToConstantHeading(Vector2d(2.0, 40.0), -Math.PI / 2)
-                    .strafeToConstantHeading(Vector2d(2.0, 30.0))
-                    .build(),
-                drive.actionBuilder(Pose2d(2.0, 30.0, -Math.PI / 2))
+                .setTangent(0.0)
+                .splineToConstantHeading(Vector2d(2.0, 40.0), -Math.PI / 2)
+                .strafeToConstantHeading(Vector2d(2.0, 30.0))
+                .build(),
+                drive.actionBuilder(Pose2d(2.0, 30.0, -Math.PI/2))
                     .setTangent(Math.PI / 2)
                     .splineToLinearHeading(Pose2d(Vector2d(-27.0, 59.0), Math.PI), Math.PI)
                     .build(),
@@ -43,9 +43,19 @@ object MeepMeepTesting {
                     .setTangent(Math.PI / 2)
                     .splineToConstantHeading(Vector2d(-24.0, 48.0), Math.PI)
                     .splineToConstantHeading(Vector2d(-45.0, 10.0), Math.PI)
-                    //.splineToConstantHeading(Vector2d(-48.0, 14.0), Math.PI / 2)
-                    //.splineToConstantHeading(Vector2d(-48.0, 60.0), Math.PI / 2)
+                    .splineToConstantHeading(Vector2d(-48.0, 14.0), Math.PI/2)
+                    .splineToConstantHeading(Vector2d(-48.0, 60.0), Math.PI/2)
                     .build(),
+                drive.actionBuilder(Pose2d(-48.0, 60.0, -Math.PI/2))
+                    .splineToConstantHeading(Vector2d(-48.0, 14.0), -Math.PI/2)
+                    .splineToConstantHeading(Vector2d(-58.0, 14.0), Math.PI/2)
+                    .splineToConstantHeading(Vector2d(-58.0, 60.0), Math.PI/2)
+                    .build(),
+                drive.actionBuilder(Pose2d(-58.0, 60.0, -Math.PI/2))
+                    .splineToConstantHeading(Vector2d(-58.0, 14.0), -Math.PI/2)
+                    .splineToConstantHeading(Vector2d(-63.0, 14.0), Math.PI/2)
+                    .splineToConstantHeading(Vector2d(-63.0, 60.0), Math.PI/2)
+                    .build()
                 //drive.actionBuilder(Pose2d(-49.0, 14.0, -Math.PI/2))
                 //    .strafeTo(Vector2d(-46.0,60.0)) //go to 1st sample
                 //    .strafeTo(Vector2d(-46.0,7.0)) //go to 1st sample
