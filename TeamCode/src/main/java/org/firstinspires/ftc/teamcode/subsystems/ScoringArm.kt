@@ -87,6 +87,7 @@ class ScoringArm(hardwareMap: HardwareMap) {
      */
     fun resetArmPosition() {
         scoringArmOffset = ArmState.Collect.position - scoringArm.currentPosition
+
     }
 
     fun throughBars(): Action = SetState(ArmState.ThroughBars)
