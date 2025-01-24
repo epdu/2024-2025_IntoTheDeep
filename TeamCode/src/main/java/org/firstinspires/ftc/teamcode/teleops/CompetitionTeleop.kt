@@ -125,7 +125,15 @@ abstract class CompetitionTeleop : OpMode() {
             }
         }
         //Climbing***************************
-
+        if (g1.rightStickY.isActive()) {
+            runningActions.add(hanging.manual(g1.rightStickY.component * deltaTime))
+        }
+        if (g1.dpadUp.justPressed()) {
+            runningActions.add(hanging.offGround())
+        }
+        if (g1.dpadDown.justPressed()) {
+            runningActions.add(hanging.down())
+        }
 
         if (g1.b.justPressed()) headingOffset = rawHeading
         /*90 degree turn idea

@@ -4,12 +4,14 @@ import com.acmerobotics.roadrunner.Pose2d
 import com.acmerobotics.roadrunner.Vector2d
 import com.acmerobotics.roadrunner.ftc.runBlocking
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
+import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import org.firstinspires.ftc.teamcode.roadrunner.PinpointDrive
 import org.firstinspires.ftc.teamcode.subsystems.ScoringArm
 import org.firstinspires.ftc.teamcode.subsystems.SpecimenClaw
 
 @Autonomous
+@Disabled
 class SpecimenBlueAutoRight : OpMode() {
     var scoringClaw: SpecimenClaw? = null
     var scoringArm: ScoringArm? = null

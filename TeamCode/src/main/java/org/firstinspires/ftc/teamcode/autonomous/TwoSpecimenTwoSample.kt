@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.subsystems.ScoringArm
 import org.firstinspires.ftc.teamcode.subsystems.SpecimenClaw
 
 @Autonomous
-class SpecimenSampleParkChassis : OpMode() {
+class TwoSpecimenTwoSample : OpMode() {
     var beginPose: Pose2d? = null
     lateinit var drive: PinpointDrive
     lateinit var scoringArm: ScoringArm

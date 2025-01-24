@@ -71,7 +71,7 @@ public class MecanumDrive {
     public final VelConstraint defaultVelConstraint =
             new MinVelConstraint(Arrays.asList(
                     kinematics.new WheelVelConstraint(PARAMS.maxWheelVel),
-                    new AngularVelConstraint(PARAMS.maxAngVel/2)
+                    new AngularVelConstraint(PARAMS.maxAngVel)
             ));
     public final AccelConstraint defaultAccelConstraint =
             new ProfileAccelConstraint(PARAMS.minProfileAccel, PARAMS.maxProfileAccel);
@@ -217,14 +217,14 @@ public class MecanumDrive {
 
         // drive model parameters
         public double inPerTick = 1; // SparkFun OTOS Note: you can probably leave this at 1
-        public double lateralInPerTick = inPerTick;
+        public double lateralInPerTick = .8;
         public double trackWidthTicks = 9.685526281805368;
 
 
         // feedforward parameters (in tick units)
         public double kS = 1.624191912189736;
         public double kV = 0.18341322461809637;
-        public double kA = 0.02;
+        public double kA = 0.0001;
 
 
         // path profile parameters (in inches)
