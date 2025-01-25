@@ -14,7 +14,7 @@ class ScoringArm(hardwareMap: HardwareMap) {
      * know the position of the scoringArm
      */
     enum class ArmState(val position: Int) {
-        Score(1875), // was 2515 with geared arm
+        Score(1925), // was 2515 with geared arm
         ThroughBars(1600), // was 1500 with geared arm
         Collect(30), // was 70 with geared arm
         Manual(-1)

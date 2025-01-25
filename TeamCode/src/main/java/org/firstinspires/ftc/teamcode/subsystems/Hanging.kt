@@ -19,7 +19,7 @@ class Hanging(hardwareMap: HardwareMap) {
      * know the position of the scoringArm
      */
     enum class ArmStateHanging(val position: Int) {
-        Down(-230), //very accurate numbers,
+        Down(-180), //very accurate numbers,
         Up(-4000),
         Manual(-1) //switch to manual for on init
     }
