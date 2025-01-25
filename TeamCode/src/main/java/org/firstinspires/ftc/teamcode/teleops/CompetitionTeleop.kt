@@ -131,7 +131,7 @@ abstract class CompetitionTeleop : OpMode() {
         }
         if (g1.dpadUp.justPressed()) {
             runningActions.add(hanging.up())
-            runningActions.add(collectionArm.hang())
+            //runningActions.add(collectionArm.hang())
         }
         if (g1.dpadDown.justPressed()) {
             runningActions.add(hanging.down())
