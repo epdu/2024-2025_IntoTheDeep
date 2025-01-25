@@ -126,7 +126,7 @@ abstract class CompetitionTeleop : OpMode() {
         }
         //Climbing***************************
         if (g1.rightStickY.isActive()) {
-            runningActions.add(hanging.manual(g1.rightStickY.component * deltaTime))
+            runningActions.add(hanging.manual(-g1.rightStickY.component * deltaTime))
         }
         if (g1.dpadUp.justPressed()) {
             runningActions.add(hanging.offGround())
@@ -201,7 +201,7 @@ abstract class CompetitionTeleop : OpMode() {
                 runningActions.add(scoringClaw.close())
             }
         }
-        if (g2.leftBumper.justActive()) {   //ONLY USE IN COLLECTION POSE
+        if (g2.leftBumper.justPressed()) {   //ONLY USE IN COLLECTION POSE
             runningActions.add(scoringClaw.inBox())
             scoringArm.resetArmPosition()
             runningActions.add(scoringArm.collect())
