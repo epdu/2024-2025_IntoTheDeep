@@ -19,8 +19,8 @@ class Hanging(hardwareMap: HardwareMap) {
      * know the position of the scoringArm
      */
     enum class ArmStateHanging(val position: Int) {
-        Down(-1), //very accurate numbers,
-        Up(-1),
+        Down(230), //very accurate numbers,
+        Up(3850),
         Manual(-1) //switch to manual for on init
     }
 
@@ -87,7 +87,7 @@ class Hanging(hardwareMap: HardwareMap) {
     }
 
 
-    fun offGround(): Action = SetState(ArmStateHanging.Up)
+    fun up(): Action = SetState(ArmStateHanging.Up)
     fun down(): Action = SetState(ArmStateHanging.Down)
     fun manual(input: Double): Action = Manual(input)
 }

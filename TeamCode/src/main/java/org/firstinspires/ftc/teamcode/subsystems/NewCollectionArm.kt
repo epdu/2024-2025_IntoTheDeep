@@ -19,18 +19,18 @@ class NewCollectionArm(hardwareMap: HardwareMap) {
      * know the position of the scoringArm
      */
     enum class ArmStateCollect(val position: Int) {
-        Down(-2190), //very accurate numbers,
+        Down(-2190),
         OffGround(-2025),
         Hang(248),
         Manual(-1) //switch to manual for on init
     }
 
-    var armState = ArmStateCollect.Manual
+    var armState = ArmStateCollect.Manual   //starts in manual
 
     private val power = 0.75
 
     var collectionArmOffset = 0 //offset used to reset the arm positions mid-match
-    var targetPosition = 0.0 //on boot-up, don't try to go anywhere
+    var targetPosition = 0.0 //on boot-up, don't try to go anywhere and assume start at 0
 
     init {
         collectionArm.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
@@ -57,7 +57,7 @@ class NewCollectionArm(hardwareMap: HardwareMap) {
                 armState = state
                 initialized = true
             }
-            collectionArm.currentPosition
+            //collectionArm.currentPosition
             packet.put("Target Position", collectionArm.targetPosition)
             packet.put("Current Position", collectionArm.currentPosition)
             //TODO: make this collectionArm.isbusy so that it will actually do smth :)

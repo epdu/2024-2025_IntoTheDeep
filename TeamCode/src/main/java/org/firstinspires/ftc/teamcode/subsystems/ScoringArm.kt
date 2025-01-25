@@ -27,7 +27,7 @@ class ScoringArm(hardwareMap: HardwareMap) {
     private val power = 0.75
 
     var scoringArmOffset = 0 //offset used to reset the arm positions mid-match
-    var targetPosition = 0.0
+    var targetPosition = 0.0    //When program/class is initialized, assume start at 0
 
     init {
         scoringArm.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
@@ -54,7 +54,7 @@ class ScoringArm(hardwareMap: HardwareMap) {
                 armState = state
                 initialized = true
             }
-            scoringArm.currentPosition
+            //scoringArm.currentPosition
             packet.put("Target Position", scoringArm.targetPosition)
             packet.put("Current Position", scoringArm.currentPosition)
             //TODO: make this scoringArm.isbusy so that it will actually do smth :)

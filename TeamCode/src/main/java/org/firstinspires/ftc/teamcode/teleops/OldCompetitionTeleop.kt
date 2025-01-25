@@ -20,7 +20,7 @@ import org.firstinspires.ftc.teamcode.subsystems.SpecimenClaw
 import org.firstinspires.ftc.teamcode.subsystems.SpecimenClaw.ClawState
 
 @TeleOp(name = "OldCompetitionTeleop")
-@Disabled
+//@Disabled
 class OldCompetitionTeleop : OpMode() {
     private lateinit var drive: PinpointDrive
     private lateinit var g1: PandaGamepad
@@ -199,7 +199,7 @@ class OldCompetitionTeleop : OpMode() {
         if (g2.leftBumper.justActive()) {   //ONLY USE IN COLLECTION POSE
             runningActions.add(scoringClaw.inBox())
             scoringArm.resetArmPosition()
-            runningActions.add(scoringArm.collect())
+            //runningActions.add(scoringArm.collect())
         }
 
         if (g2.leftStickY.isActive()) runningActions.add(scoringArm.manual(g2.leftStickY.component * deltaTime))

@@ -102,13 +102,14 @@ abstract class CompetitionTeleop : OpMode() {
         /* driver 1 */
         val rawHeading = drive.getPinpoint().heading
         val heading: Rotation2d = Rotation2d.fromDouble(rawHeading - headingOffset)
+        val slowSpeed = 0.7 //Normally go about 70% of our fastest speed
 
         val input = Vector2d(
             g1.leftStickY.component.toDouble(),
             -g1.leftStickX.component.toDouble()
         )
         if (g1.rightBumper.isInactive() and g1.leftBumper.isInactive()) { //don't set drive if bumpers
-            if (g1.y.isActive()) {
+            if (g1.y.isActive()) {  //When Boosting
                 drive.setDrivePowers(
                     PoseVelocity2d(
                         heading.inverse().times(input),
@@ -118,7 +119,7 @@ abstract class CompetitionTeleop : OpMode() {
             } else {
                 drive.setDrivePowers(
                     PoseVelocity2d(
-                        heading.inverse().times(input),
+                        heading.inverse().times(input * slowSpeed),    //Coach Ethan added slow 1/19
                         ((gamepad1.left_trigger - gamepad1.right_trigger) * 1 / 4).toDouble()
                     )
                 )
@@ -129,7 +130,7 @@ abstract class CompetitionTeleop : OpMode() {
             runningActions.add(hanging.manual(-g1.rightStickY.component * deltaTime))
         }
         if (g1.dpadUp.justPressed()) {
-            runningActions.add(hanging.offGround())
+            runningActions.add(hanging.up())
         }
         if (g1.dpadDown.justPressed()) {
             runningActions.add(hanging.down())
@@ -146,7 +147,6 @@ abstract class CompetitionTeleop : OpMode() {
                 drive.actionBuilder(curPose)
                     .turnTo(headTo)
                     .build()
-                    .ligmaBalls();
             )
         }
         if (g1.rightBumper.justPressed()){
@@ -234,6 +234,9 @@ abstract class CompetitionTeleop : OpMode() {
 
         }
 
+        if (g2.x.justPressed()) runningActions.add(sampleClaw.open())
+
+        if (g2.b.justPressed()) runningActions.add(sampleClaw.close())
 
         if (g2.y.justPressed()) {
             var collectionArmMid: Int = -2100;
@@ -250,6 +253,7 @@ abstract class CompetitionTeleop : OpMode() {
             }
 
         }
+
 
         if (g2.rightBumper.justActive()) {   //ONLY USE IN DOWN POSE
             //runningActions.add(collectionArm.reset())
