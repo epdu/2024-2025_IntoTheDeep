@@ -11,7 +11,7 @@ class Hanging(hardwareMap: HardwareMap) {
     private val hanging = hardwareMap.get(DcMotor::class.java, "hanging")
 
     init {
-        hanging.direction = DcMotorSimple.Direction.FORWARD
+        hanging.direction = DcMotorSimple.Direction.REVERSE
     }
 
     /**
@@ -19,8 +19,8 @@ class Hanging(hardwareMap: HardwareMap) {
      * know the position of the scoringArm
      */
     enum class ArmStateHanging(val position: Int) {
-        Down(230), //very accurate numbers,
-        Up(3850),
+        Down(-230), //very accurate numbers,
+        Up(-4000),
         Manual(-1) //switch to manual for on init
     }
 
