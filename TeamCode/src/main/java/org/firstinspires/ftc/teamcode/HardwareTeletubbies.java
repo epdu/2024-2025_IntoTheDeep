@@ -228,7 +228,7 @@ public class HardwareTeletubbies
         This is recommended before you run your autonomous, as a bad initial calibration can cause
         an incorrect starting value for x, y, and heading.
          */
-        //odo.recalibrateIMU();
+        odo.recalibrateIMU();
         odo.resetPosAndIMU();
 ///////////////////////////////////////GoBildaPinpointDriver/////////////////////////////
 

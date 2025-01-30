@@ -103,12 +103,13 @@ public class SpecimanBlueRight extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         robot.init(hardwareMap);
         gyro.robot.init(hardwareMap);
 //        FtcDashboard dashboard = FtcDashboard.getInstance();
-        odo.resetPosAndIMU();
+//        robot.odo.resetPosAndIMU();
+        robot.odo.recalibrateIMU();
+        robot.odo.resetPosAndIMU();
         int i = 90;
         beginPose = new Pose2d(-17.5, 60.0, Math.toRadians(-90));
         //( DistanceUnit.INCH,-17.5, 60.0,AngleUnit.RADIANS,-(90));
@@ -144,7 +145,7 @@ public class SpecimanBlueRight extends LinearOpMode {
 //        goToPos(16, 16, Math.toRadians(-90), 0.7, 1, 1, Math.toRadians(1), 2);
 //
         goToPosStop();
-        sleep(1500);
+        sleep(1000);
         //Basket #1 (Preload)
 //        makeDroppieWork(-2850);
 //        makeFlipityWork(0.45);
