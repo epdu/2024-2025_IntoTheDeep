@@ -226,7 +226,7 @@ public class SpecimanBlueRight extends LinearOpMode {
             robot.RFMotor.setPower(speed);
             robot.RBMotor.setPower(speed);
             refresh();
-            Pose2D pos = odo.getPosition();
+            Pose2D pos = robot.odo.getPosition();
             String data = String.format(Locale.US, "{X: %.3f, Y: %.3f, H: %.3f}", pos.getX(DistanceUnit.MM), pos.getY(DistanceUnit.MM), pos.getHeading(AngleUnit.DEGREES));
             telemetry.addData("Position", data);
             telemetry.addData("GlobalH", GlobalH);
@@ -254,8 +254,8 @@ public class SpecimanBlueRight extends LinearOpMode {
     }
 
     public void refresh(){
-        odo.update();
-        Pose2D pos = odo.getPosition();
+        robot.odo.update();
+        Pose2D pos = robot.odo.getPosition();
         GlobalX = pos.getX(DistanceUnit.MM);
         GlobalY = pos.getY(DistanceUnit.MM);
         GlobalH = pos.getHeading(AngleUnit.RADIANS);
