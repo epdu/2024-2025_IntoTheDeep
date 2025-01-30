@@ -27,6 +27,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
@@ -110,26 +111,29 @@ public class SpecimanBlueRight extends LinearOpMode {
 //        robot.odo.resetPosAndIMU();
         robot.odo.recalibrateIMU();
         robot.odo.resetPosAndIMU();
-        int i = 90;
-        beginPose = new Pose2d(-17.5, 60.0, Math.toRadians(-90));
-        //( DistanceUnit.INCH,-17.5, 60.0,AngleUnit.RADIANS,-(90));
+
+/////////////////////////////////////////////////////////////////////////////
+//        drive = new PinpointDrive(hardwareMap, beginPose);
+//        beginPose = new Pose2d(-17.5, 60.0, Math.toRadians(-90));
+//        ( DistanceUnit.INCH,-17.5, 60.0,AngleUnit.RADIANS,-(90));
 //        Pose2d startPose = new Pose2d(startX, startY, startHeading);
 //        Pose2d preloadPose = new Pose2d(scorePreloadX, scorePreloadY, Math.toRadians(-90));
+///////////////////////////////////////////////////////////////////////////////////////////
 
-        drive = new PinpointDrive(hardwareMap, beginPose);
-        Pose2D pos = odo.getPosition();
 
         telemetry.addData("Status", "Initialized");
-        telemetry.addData("X offset", odo.getXOffset());
-        telemetry.addData("Y offset", odo.getYOffset());
-        String data = String.format(Locale.US, "X: %.3f, Y: %.3f, H: %.3f", pos.getX(DistanceUnit.MM), pos.getY(DistanceUnit.MM), pos.getHeading(AngleUnit.DEGREES));
-        telemetry.addData("Position", data);
-        telemetry.addData("Device Version Number:", odo.getDeviceVersion());
-        telemetry.addData("Device Scalar", odo.getYawScalar());
+        telemetry.addData("X offset", robot.odo.getXOffset());
+        telemetry.addData("Y offset", robot.odo.getYOffset());
+
+        telemetry.addData("Device Version Number:", robot.odo.getDeviceVersion());
+        telemetry.addData("Device Scalar", robot.odo.getYawScalar());
         telemetry.update();
 
 //        Pose2d currentPose = drive.getPose();
-        Pose2D currentPose = odo.getPosition();
+        Pose2D pos = robot.odo.getPosition();// Pose2D is for Gobilda, Pose2d is RR
+        Pose2D currentPose = robot.odo.getPosition();
+        String data = String.format(Locale.US, "X: %.3f, Y: %.3f, H: %.3f", pos.getX(DistanceUnit.MM), pos.getY(DistanceUnit.MM), pos.getHeading(AngleUnit.DEGREES));
+        telemetry.addData("Position", data);
         telemetry.addData("X Position", currentPose.getX(DistanceUnit.INCH));
         telemetry.addData("Y Position", currentPose.getY(DistanceUnit.INCH));
         telemetry.addData("Heading (rad)", currentPose.getHeading(AngleUnit.DEGREES));

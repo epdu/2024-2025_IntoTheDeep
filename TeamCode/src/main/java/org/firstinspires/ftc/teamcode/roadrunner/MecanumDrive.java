@@ -107,6 +107,11 @@ public class MecanumDrive {
         leftBack = hardwareMap.get(DcMotorEx.class, "leftBack");
         rightBack = hardwareMap.get(DcMotorEx.class, "rightBack");
         rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
+        //changed 01302025 for auto
+//        leftFront = hardwareMap.get(DcMotorEx.class, "LFMotor");
+//        leftBack = hardwareMap.get(DcMotorEx.class, "LBMotor");
+//        rightBack = hardwareMap.get(DcMotorEx.class, "RBMotor");
+//        rightFront = hardwareMap.get(DcMotorEx.class, "RFMotor");
 
 
         leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

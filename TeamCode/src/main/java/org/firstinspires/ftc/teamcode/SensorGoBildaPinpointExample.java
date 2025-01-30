@@ -142,13 +142,13 @@ public class SensorGoBildaPinpointExample extends LinearOpMode {
             //odo.update(GoBildaPinpointDriver.readData.ONLY_UPDATE_HEADING);
 
 
-            if (gamepad1.a){
-                odo.resetPosAndIMU(); //resets the position to 0 and recalibrates the IMU
-            }
-
-            if (gamepad1.b){
-                odo.recalibrateIMU(); //recalibrates the IMU without resetting position
-            }
+//            if (gamepad1.a){
+//                odo.resetPosAndIMU(); //resets the position to 0 and recalibrates the IMU
+//            }
+//
+//            if (gamepad1.b){
+//                odo.recalibrateIMU(); //recalibrates the IMU without resetting position
+//            }
 
             /*
             This code prints the loop frequency of the REV Control Hub. This frequency is effected

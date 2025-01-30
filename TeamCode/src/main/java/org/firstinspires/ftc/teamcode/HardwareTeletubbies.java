@@ -1,5 +1,6 @@
 
 package org.firstinspires.ftc.teamcode;
+import com.acmerobotics.roadrunner.ftc.GoBildaPinpointDriverRR;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -68,6 +69,7 @@ public class HardwareTeletubbies
     public DcMotor VSMotorL; //vertical Slides motor left
     public DcMotor VSMotorR; //vertical Slides motor right
     GoBildaPinpointDriver odo; // Declare OpMode member for the Odometry Computer
+    public GoBildaPinpointDriverRR pinpoint;
     public double GlobalX = 0;
     public double GlobalY = 0;
     public double GlobalH = 0;
@@ -195,6 +197,7 @@ public class HardwareTeletubbies
 
 ///////////////////////////////////////GoBildaPinpointDriver//////////////////////////////
         odo = hwMap.get(GoBildaPinpointDriver.class,"odo"); //expansion hub i2c port 1
+//        pinpoint = hwMap.get(GoBildaPinpointDriverRR.class, "pinpoint"); // guess for RR only
          /*
         Set the odometry pod positions relative to the point that the odometry computer tracks around.
         The X pod offset refers to how far sideways from the tracking point the
