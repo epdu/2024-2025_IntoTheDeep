@@ -143,7 +143,7 @@ public class SpecimanBlueRight extends LinearOpMode {
         // Wait for the game to start (driver presses START)
         waitForStart();
 
-        myGoToPos(660, 0, Math.toRadians(0), 0.3, 10, 10, Math.toRadians(5), 2);
+        myGoToPos(660, 0, Math.toRadians(0), 0.3, 2, 2, Math.toRadians(2), 2);
 //        goToPos(0, 16, Math.toRadians(0), 0.7, 1, 1, Math.toRadians(1), 2);
 //        goToPos(16, 16, Math.toRadians(90), 0.7, 1, 1, Math.toRadians(1), 2);
 //        goToPos(16, 16, Math.toRadians(-90), 0.7, 1, 1, Math.toRadians(1), 2);
