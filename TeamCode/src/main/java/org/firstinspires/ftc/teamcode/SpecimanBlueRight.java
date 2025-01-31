@@ -143,7 +143,7 @@ public class SpecimanBlueRight extends LinearOpMode {
         // Wait for the game to start (driver presses START)
         waitForStart();
 
-        myGoToPos(0, 300, Math.toRadians(0), 0.5, 10, 10, Math.toRadians(5), 2);
+        myGoToPos(0, 300, Math.toRadians(0), 0.5, 2, 2, Math.toRadians(2), 10);
 //        goToPos(0, 16, Math.toRadians(0), 0.7, 1, 1, Math.toRadians(1), 2);
 //        goToPos(16, 16, Math.toRadians(90), 0.7, 1, 1, Math.toRadians(1), 2);
 //        goToPos(16, 16, Math.toRadians(-90), 0.7, 1, 1, Math.toRadians(1), 2);
@@ -404,9 +404,6 @@ public class SpecimanBlueRight extends LinearOpMode {
         robot.RBMotor.setPower(Range.clip(movementXpower - movementYpower + movementTurnPower, -speed, speed));
 
     }
-
-
-
 
     public void moveForward(double x, double speed) {
         while((x - GlobalH) > Math.toRadians(5)) {
