@@ -79,7 +79,7 @@ public class HardwareTeletubbies
 //           public DcMotor TMotor; // For testing
 
     IMU imu;
-    public static final double DriveTrains_POWER       =  0.5 ;
+    public static final double DriveTrains_POWER =  0.5 ;// reduced power of driving train motors
     public static final double MID_SERVO       =  0.5 ;
     public static final double ARM_UP_POWER    =  0.45 ;
     public static final double ARM_DOWN_POWER  = -0.45 ;

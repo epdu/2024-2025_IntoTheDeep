@@ -135,8 +135,8 @@ public class SpecimanBlueRight extends LinearOpMode {
         Pose2D currentPose = robot.odo.getPosition();
         String data = String.format(Locale.US, "X: %.3f, Y: %.3f, H: %.3f", pos.getX(DistanceUnit.MM), pos.getY(DistanceUnit.MM), pos.getHeading(AngleUnit.DEGREES));
         telemetry.addData("Position", data);
-        telemetry.addData("X Position", currentPose.getX(DistanceUnit.INCH));
-        telemetry.addData("Y Position", currentPose.getY(DistanceUnit.INCH));
+        telemetry.addData("X Position", currentPose.getX(DistanceUnit.MM));
+        telemetry.addData("Y Position", currentPose.getY(DistanceUnit.MM));
         telemetry.addData("Heading (rad)", currentPose.getHeading(AngleUnit.DEGREES));
         telemetry.update();
 
@@ -217,7 +217,6 @@ public class SpecimanBlueRight extends LinearOpMode {
 //        makeFlopityWork(0.1);
 //        sleep(2000);
     }
-
 
 
     public void goToPos(double x, double y, double h, double speed, double moveAccuracyX, double moveAccuracyY, double angleAccuracy, double timeoutS) {
