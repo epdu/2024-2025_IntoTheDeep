@@ -143,7 +143,7 @@ public class SpecimanBlueRight extends LinearOpMode {
         // Wait for the game to start (driver presses START)
         waitForStart();
 
-        myGoToPos(660, 0, Math.toRadians(0), 0.3, 10, 10, Math.toRadians(5), 2);
+        myGoToPos(0, 300, Math.toRadians(0), 0.5, 10, 10, Math.toRadians(5), 2);
 //        goToPos(0, 16, Math.toRadians(0), 0.7, 1, 1, Math.toRadians(1), 2);
 //        goToPos(16, 16, Math.toRadians(90), 0.7, 1, 1, Math.toRadians(1), 2);
 //        goToPos(16, 16, Math.toRadians(-90), 0.7, 1, 1, Math.toRadians(1), 2);
@@ -251,7 +251,7 @@ public class SpecimanBlueRight extends LinearOpMode {
         while (((Math.abs(-x + GlobalX) > moveAccuracyX || Math.abs(-y + GlobalY) > moveAccuracyY || Math.abs(angleWrapRad(-h + GlobalH)) > angleAccuracy)) && opModeIsActive() && (runtime.seconds() < timeoutS)) {
             // while(true){
 
-            goToPosSingle(x, y, h, speed);
+            myGoToPosSingle(x, y, h, speed);
 
 //            Pose2D pos = odo.getPosition();
 //            String data = String.format(Locale.US, "{X: %.3f, Y: %.3f, H: %.3f}", pos.getX(DistanceUnit.MM), pos.getY(DistanceUnit.MM), pos.getHeading(AngleUnit.DEGREES));
