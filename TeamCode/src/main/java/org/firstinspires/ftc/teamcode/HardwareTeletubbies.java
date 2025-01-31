@@ -207,7 +207,7 @@ public class HardwareTeletubbies
         backwards is a negative number.
          */
         //  odo.setOffsets(-84.0, -224.0); //these are tuned for 3110-0002-0001 Product Insight #1
-        odo.setOffsets(28.575, 158.75);
+        odo.setOffsets(23.0, -8.0);
 //        odo.setOffsets(-210, -150);
         /*
         Set the kind of pods used by your robot. If you're using goBILDA odometry pods, select either
