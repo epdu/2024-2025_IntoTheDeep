@@ -151,47 +151,7 @@ public class SpecimanBlueRight extends LinearOpMode {
         goToPosStop();
         sleep(1000);
         //Basket #1 (Preload)
-//        makeDroppieWork(-2850);
-//        makeFlipityWork(0.45);
-//        makeFlopityWork(0.6);
-//        goToPos(400, 400, Math.toRadians(-45), 0.7, 20, 20, Math.toRadians(20), 2);
-//        goToPos(200, 600, Math.toRadians(-45), 0.7, 20, 20, Math.toRadians(20), 1);
-//        goToPosStop();
-//        makeFlopityWork(0.1);
-//        sleep(1500);
-//        makeFlopityWork(0.6);
-//
-//        //Pickup Sample #2
-//        goToPos(300, -100, Math.toRadians(60), 0.7, 40, 40, Math.toRadians(20), 3);
-//        goToPos(900, -100, Math.toRadians(105), 0.7, 40, 40, Math.toRadians(20), 3);
-//        goToPosStop();
-//        makeDroppieWork(0);
-//        makeIntakieWork(-900);
-//        sleep(1000);
-//        makeFlipityWork(0.95);
-//        makeIndulgeyWork(1);
-//        sleep(1500);
-//        makeIntakieWork(-1800);
-//        sleep(1000);
-//        makeFlipityWork(0.1);
-//        makeIntakieWork(0);
-//        makeIndulgeyWork(0);
-//        sleep(1000);
-//        makeIndulgeyWork(-0.4);
-//        sleep(1000);
-//        makeFlipityWork(0.45);
-//        makeIndulgeyWork(0);
-//        sleep(500);
-//
-//        //Basket #2
-//        makeIntakieWork(-700);
-//        sleep(1000);
-//        makeDroppieWork(-2850);
-//        goToPos(500, 300, Math.toRadians(-30), 0.7, 20, 20, Math.toRadians(20), 3);
-//        goToPos(100, 300, Math.toRadians(-45), 0.7, 20, 20, Math.toRadians(15), 3);
-//        goToPosStop();
-//        makeFlopityWork(0.1);
-//        sleep(1000);
+
 //
 //
 //        //Push Sample Into Net Zone
