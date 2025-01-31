@@ -144,7 +144,7 @@ public class SpecimanBlueRight extends LinearOpMode {
         // Wait for the game to start (driver presses START)
         waitForStart();
 
-        goToPos(600, 0, Math.toRadians(0), 0.2, 10, 10, Math.toRadians(5), 2);
+        mygoToPos(600, 0, Math.toRadians(0), 0.3, 10, 10, Math.toRadians(5), 10);
 //        goToPos(0, 16, Math.toRadians(0), 0.7, 1, 1, Math.toRadians(1), 2);
 //        goToPos(16, 16, Math.toRadians(90), 0.7, 1, 1, Math.toRadians(1), 2);
 //        goToPos(16, 16, Math.toRadians(-90), 0.7, 1, 1, Math.toRadians(1), 2);
@@ -218,7 +218,11 @@ public class SpecimanBlueRight extends LinearOpMode {
 //        sleep(2000);
     }
 
-
+    //due to the gobile motoer with REV Control Hub issue , we have to reverse motoer value
+    public void mygoToPos(double x, double y, double h, double speed, double moveAccuracyX, double moveAccuracyY, double angleAccuracy, double timeoutS)
+        {
+        goToPos(-x,-y,-h,speed,moveAccuracyX,moveAccuracyY,angleAccuracy,timeoutS) ;
+    }
 
     public void goToPos(double x, double y, double h, double speed, double moveAccuracyX, double moveAccuracyY, double angleAccuracy, double timeoutS) {
         //while loop makes the code keep running till the desired location is reached. (within the accuracy constraints)
@@ -298,6 +302,14 @@ public class SpecimanBlueRight extends LinearOpMode {
         telemetry.addData("relativeYToTarget", relativeYToTarget);
         telemetry.addData("absoluteAngleToTarget", absoluteTurnAngle);
         telemetry.addData("relativeAngleToTarget", relativeAngleToTarget);
+        telemetry.addData("x", x);
+        telemetry.addData("y", y);
+        telemetry.addData("h", h);
+
+        telemetry.addData("feedfowardX", feedfowardX);
+        telemetry.addData("feedfowardY", feedfowardY);
+        telemetry.addData("feedfoward", feedfoward);
+
         telemetry.addData("GlobalX", GlobalX);
         telemetry.addData("GlobalY", GlobalY);
         telemetry.addData("GlobalH", Math.toDegrees(GlobalH));
