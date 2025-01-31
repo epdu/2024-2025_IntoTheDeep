@@ -21,6 +21,8 @@
  */
 package org.firstinspires.ftc.teamcode;
 //package org.firstinspires.ftc.teamcode.autos;
+import static org.firstinspires.ftc.teamcode.Constants_CS.POSITION_A_BOTTOM;
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -44,7 +46,7 @@ import com.acmerobotics.roadrunner.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.acmerobotics.dashboard.FtcDashboard;
-
+import static org.firstinspires.ftc.teamcode.Constants_CS.*;
 
 /*
 This opmode shows how to use the goBILDA® Pinpoint Odometry Computer.
@@ -95,6 +97,18 @@ public class SpecimanBlueRight extends LinearOpMode {
     public double GlobalX = 0;
     public double GlobalY = 0;
     public double GlobalH = 0;
+    private boolean pidActiveVS = false; // PID 控制是否激活
+    private int pidTargetPositionVS = 0; // PID 控制目标位置
+    private PIDController pidControllerVS = new PIDController(0.005, 0.0000005, 0.0002);// (0.005, 0.0000005, 0.0002) good for target 300 (1.9, 0.014, 4.9)
+    // Tune these values  POSITION_B_EXTRUDETransfer = 600;//horizontal slides  out //600 is too much
+
+    // pid for HSlides
+    int controlMode = 1;
+    private boolean pidActiveHS = false; // PID 控制是否激活
+    private int pidTargetPositionHS = 0; // PID 控制目标位置
+    private PIDController pidControllerHS = new PIDController(0.005, 0.0000005, 0.0002);// (0.005, 0.0000005, 0.0002) good for target 300 (1.9, 0.014, 4.9)
+    // Tune these values  POSITION_B_EXTRUDETransfer = 600;//horizontal slides  out //600 is too much
+
 
     private Pose2d beginPose = null;
 
@@ -142,12 +156,47 @@ public class SpecimanBlueRight extends LinearOpMode {
 
         // Wait for the game to start (driver presses START)
         waitForStart();
+        myGoToPos(600, 0, Math.toRadians(0), 0.5, 2, 2, Math.toRadians(2), 10);
+/*
+        myGoToPos(0, 600, Math.toRadians(0), 0.5, 2, 2, Math.toRadians(2), 10);
 
-        myGoToPos(0, 300, Math.toRadians(0), 0.5, 2, 2, Math.toRadians(2), 10);
-//        goToPos(0, 16, Math.toRadians(0), 0.7, 1, 1, Math.toRadians(1), 2);
-//        goToPos(16, 16, Math.toRadians(90), 0.7, 1, 1, Math.toRadians(1), 2);
-//        goToPos(16, 16, Math.toRadians(-90), 0.7, 1, 1, Math.toRadians(1), 2);
+        myGoToPos(635, 0, Math.toRadians(0), 0.5, 2, 2, Math.toRadians(2), 10);
+        // 25 inch
+        goToPosStop();
+        moveForward(0.2, 25); //32
+        sleep(100);
+        myGoToPos(0, 356, Math.toRadians(0), 0.5, 2, 2, Math.toRadians(2), 10);
+        // 14 inch
+//        strafeLeft(0.2, 14);//16
+        sleep(100);
+        startVSlidePIDControl(POSITION_A_BOTTOM);
+        //moveVSlideToPosition(-POSITION_Y_LOW);
+        sleep(600);
+        myGoToPos(100, 0, Math.toRadians(0), 0.5, 2, 2, Math.toRadians(2), 10);
+//        moveForward(0.1, 4); //32
+        sleep(100);
+        startVSlidePIDControl(POSITION_Y_HIGH);
+        sleep(600);
+//        moveVSlideToPosition(-POSITION_Y_HIGH);
+        sleep(600);
+        robot.OClaw.setPosition(0.32); //12122024
+        sleep(100);
+        myGoToPos(-228, 0, Math.toRadians(0), 0.5, 2, 2, Math.toRadians(2), 10);
+//        moveBackward(0.3,9);
+        sleep(100);
+        startVSlidePIDControl(POSITION_A_BOTTOM);
+//        moveVSlideToPosition(-POSITION_A_BOTTOM);
+        myGoToPos(-254, 0, Math.toRadians(0), 0.5, 2, 2, Math.toRadians(2), 10);
+//        moveBackward(0.3,10);
+        myGoToPos(0, -1270, Math.toRadians(0), 0.5, 2, 2, Math.toRadians(2), 10);
+//        strafeRight(0.2, 50);//16
+        myGoToPos(-127, 0, Math.toRadians(0), 0.5, 2, 2, Math.toRadians(2), 10);
+//        moveBackward(0.3,5);
+        sleep(600);
+
 //
+*/
+
         goToPosStop();
         sleep(1000);
         //Basket #1 (Preload)
@@ -273,7 +322,99 @@ public class SpecimanBlueRight extends LinearOpMode {
 
 
     ////////////////////////////////////////////////////////////
+    ///////////startVSlidePIDControl///////////////
 
+    /// 初始化 PID 控制器
+    private void startVSlidePIDControl(int targetPosition) {
+        robot.VSMotorL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.VSMotorR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        pidControllerVS.reset();
+        pidControllerVS.enable();
+        pidControllerVS.setSetpoint(targetPosition);
+        pidControllerVS.setTolerance(10); // 允许误差范围
+        pidTargetPositionVS = targetPosition;
+        pidActiveVS = true; // 激活 PID 控制
+    }
+    // 在主循环中调用的非阻塞 PID 控制逻辑
+    private void updateVSlidePIDControl() {
+        if (!pidActiveVS) return; // 如果 PID 未激活，直接返回
+
+        int currentPositionL = robot.VSMotorL.getCurrentPosition();
+
+        // 计算 PID 输出
+        double powerL = pidControllerVS.performPID(currentPositionL);
+        robot.VSMotorL.setPower(powerL*0.8); // change it to make it move faster both at the same time
+        robot.VSMotorR.setPower(powerL*0.8); // change it to make it move faster
+
+        // 输出 Telemetry 信息
+        telemetry.addData("PID Target", pidTargetPositionVS);
+        telemetry.addData("Current Position L", currentPositionL);
+        telemetry.addData("Power L", powerL);
+        telemetry.update();
+
+//        // 如果达到目标位置，停止滑轨运动，但保持抗重力功率
+//        if (pidControllerVS.onTarget()) {
+//            robot.VSMotorL.setPower(0.1); // 保持位置的最小功率
+//            robot.VSMotorR.setPower(0.1);
+//            pidActiveVS = false; // 停止 PID 控制
+//        }
+        // 在 updateVSlidePIDControl 中加入抗重力逻辑
+        if (!pidActiveVS && Math.abs(robot.VSMotorL.getCurrentPosition() - pidTargetPositionVS) > 10) {
+            double holdPowerVS = pidControllerVS.performPID(robot.VSMotorL.getCurrentPosition());
+            robot.VSMotorL.setPower(holdPowerVS);
+            robot.VSMotorR.setPower(holdPowerVS);
+            pidActiveVS = false; // 停止 PID 控制
+        }
+
+    }
+
+//////////////startVSlidePIDControl/////////////
+
+
+///////////startHSlidePIDControl///////////////
+
+    /// 初始化 PID 控制器
+    private void startHSlidePIDControl(int targetPosition) {
+        robot.HSMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        pidControllerHS.reset();
+        pidControllerHS.enable();
+        pidControllerHS.setSetpoint(targetPosition);
+        pidControllerHS.setTolerance(10); // 允许误差范围
+        pidTargetPositionHS = targetPosition;
+        pidActiveHS = true; // 激活 PID 控制
+    }
+    // 在主循环中调用的非阻塞 PID 控制逻辑
+    private void updateHSlidePIDControl() {
+        if (!pidActiveHS) return; // 如果 PID 未激活，直接返回
+
+        int currentPositionH = robot.HSMotor.getCurrentPosition();
+
+        // 计算 PID 输出
+        double powerH = pidControllerHS.performPID(currentPositionH);
+        robot.HSMotor.setPower(powerH*0.6);
+
+
+        // 输出 Telemetry 信息
+        telemetry.addData("PID Target", pidTargetPositionHS);
+        telemetry.addData("Current Position H", currentPositionH);
+        telemetry.addData("Power H", powerH);
+        telemetry.update();
+
+//        // 如果达到目标位置，停止滑轨运动，但保持抗重力功率
+//        if (pidControllerHS.onTarget()) {
+//            robot.VSMotorL.setPower(0.1); // 保持位置的最小功率
+//            robot.VSMotorR.setPower(0.1);
+//            pidActiveHS = false; // 停止 PID 控制
+//        }
+        // 在 updateVSlidePIDControl 中加入抗重力逻辑
+        if (!pidActiveHS && Math.abs(robot.HSMotor.getCurrentPosition() - pidTargetPositionHS) > 10) {
+            double holdPowerHS = pidControllerHS.performPID(robot.HSMotor.getCurrentPosition());
+            robot.HSMotor.setPower(holdPowerHS);
+            pidActiveHS = false; // 停止 PID 控制
+        }
+
+    }
+//////////////startHSlidePIDControl/////////////
 
     public void goToPos(double x, double y, double h, double speed, double moveAccuracyX, double moveAccuracyY, double angleAccuracy, double timeoutS) {
         //while loop makes the code keep running till the desired location is reached. (within the accuracy constraints)
