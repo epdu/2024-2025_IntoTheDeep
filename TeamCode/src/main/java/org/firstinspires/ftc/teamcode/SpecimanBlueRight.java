@@ -140,8 +140,6 @@ public class SpecimanBlueRight extends LinearOpMode {
         telemetry.addData("Heading (rad)", currentPose.getHeading(AngleUnit.DEGREES));
         telemetry.update();
 
-
-
         // Wait for the game to start (driver presses START)
         waitForStart();
 
