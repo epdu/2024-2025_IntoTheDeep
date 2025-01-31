@@ -120,16 +120,17 @@ public class SpecimanBlueRight extends LinearOpMode {
 //        Pose2d preloadPose = new Pose2d(scorePreloadX, scorePreloadY, Math.toRadians(-90));
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-
-        telemetry.addData("Status", "Initialized");
-        telemetry.addData("X offset", robot.odo.getXOffset());
-        telemetry.addData("Y offset", robot.odo.getYOffset());
-
-        telemetry.addData("Device Version Number:", robot.odo.getDeviceVersion());
-        telemetry.addData("Device Scalar", robot.odo.getYawScalar());
-        telemetry.update();
+//        telemetry.addData("Status", "Initialized");
+//        telemetry.addData("X offset", robot.odo.getXOffset());
+//        telemetry.addData("Y offset", robot.odo.getYOffset());
+//
+//        telemetry.addData("Device Version Number:", robot.odo.getDeviceVersion());
+//        telemetry.addData("Device Scalar", robot.odo.getYawScalar());
+//        telemetry.update();
 
 //        Pose2d currentPose = drive.getPose();
+
+
         Pose2D pos = robot.odo.getPosition();// Pose2D is for Gobilda, Pose2d is RR
         Pose2D currentPose = robot.odo.getPosition();
         String data = String.format(Locale.US, "X: %.3f, Y: %.3f, H: %.3f", pos.getX(DistanceUnit.MM), pos.getY(DistanceUnit.MM), pos.getHeading(AngleUnit.DEGREES));
@@ -143,7 +144,7 @@ public class SpecimanBlueRight extends LinearOpMode {
         // Wait for the game to start (driver presses START)
         waitForStart();
 
-        goToPos(16, 0, Math.toRadians(0), 0.7, 1, 1, Math.toRadians(1), 2);
+        goToPos(250, 0, Math.toRadians(0), 0.2, 10, 10, Math.toRadians(5), 2);
 //        goToPos(0, 16, Math.toRadians(0), 0.7, 1, 1, Math.toRadians(1), 2);
 //        goToPos(16, 16, Math.toRadians(90), 0.7, 1, 1, Math.toRadians(1), 2);
 //        goToPos(16, 16, Math.toRadians(-90), 0.7, 1, 1, Math.toRadians(1), 2);
@@ -216,6 +217,99 @@ public class SpecimanBlueRight extends LinearOpMode {
 //        makeFlopityWork(0.1);
 //        sleep(2000);
     }
+
+
+
+    public void goToPos(double x, double y, double h, double speed, double moveAccuracyX, double moveAccuracyY, double angleAccuracy, double timeoutS) {
+        //while loop makes the code keep running till the desired location is reached. (within the accuracy constraints)
+        integralSum = 0;
+        integralSumX = 0;
+        integralSumY = 0;
+        refresh();
+        feedfowardX = x - GlobalX;
+        feedfowardY = y - GlobalY;
+        feedfoward = h - GlobalH;
+
+        double distanceToTarget = Math.hypot(x - GlobalX, y - GlobalY);
+        double absoluteTurnAngle = Math.atan2(y - GlobalY, x - GlobalX);
+        double relativeAngleToTarget = angleWrapRad(absoluteTurnAngle - GlobalH);
+        double relativeXToTarget = distanceToTarget * Math.cos(relativeAngleToTarget);
+        double relativeYToTarget = distanceToTarget * Math.sin(relativeAngleToTarget);
+        double relativeTurnAngle = angleWrapRad(h - GlobalH);
+        double correctFactor = correctFactorCoeff;
+        double maxPower = Math.abs(relativeXToTarget) + Math.abs(relativeYToTarget) + correctFactor * Math.abs(relativeTurnAngle);
+        double initialSpeed = 0.2;
+        double movementXpower = initialSpeed * relativeXToTarget / maxPower;
+        double movementYpower = initialSpeed * relativeYToTarget / maxPower;
+        double movementTurnPower = initialSpeed * correctFactor * relativeTurnAngle / maxPower;
+
+        runtime.reset();
+        robot.LFMotor.setPower(Range.clip(movementXpower - movementYpower - movementTurnPower, -initialSpeed, initialSpeed));
+        robot.LBMotor.setPower(Range.clip(movementXpower + movementYpower + movementTurnPower, -initialSpeed, initialSpeed));
+        robot.RFMotor.setPower(Range.clip(movementXpower + movementYpower - movementTurnPower, -initialSpeed, initialSpeed));
+        robot.RBMotor.setPower(Range.clip(movementXpower - movementYpower + movementTurnPower, -initialSpeed, initialSpeed));
+//        sleep(5);
+        initialDistanceToTarget = distanceToTarget;
+        while (((Math.abs(x - GlobalX) > moveAccuracyX || Math.abs(y - GlobalY) > moveAccuracyY || Math.abs(angleWrapRad(h - GlobalH)) > angleAccuracy)) && opModeIsActive() && (runtime.seconds() < timeoutS)) {
+            // while(true){
+
+            goToPosSingle(x, y, h, speed);
+
+//            Pose2D pos = odo.getPosition();
+//            String data = String.format(Locale.US, "{X: %.3f, Y: %.3f, H: %.3f}", pos.getX(DistanceUnit.MM), pos.getY(DistanceUnit.MM), pos.getHeading(AngleUnit.DEGREES));
+//            telemetry.addData("Position", data);
+//            telemetry.update();
+
+
+        }
+    }
+
+
+    public void goToPosSingle(double x, double y, double h, double speed){
+
+        refresh();
+        //math to calculate distances to the target
+        double distanceToTarget = Math.hypot(x - GlobalX, y - GlobalY);
+        double absoluteTurnAngle = Math.atan2(y - GlobalY, x- GlobalX);
+        double relativeAngleToTarget = angleWrapRad(absoluteTurnAngle - GlobalH);
+        double relativeXToTarget = distanceToTarget * Math.cos(relativeAngleToTarget);
+        double relativeYToTarget = distanceToTarget * Math.sin(relativeAngleToTarget);
+        double relativeTurnAngle = angleWrapRad(h-GlobalH);
+
+        double correctFactor = correctFactorCoeff;
+        if (initialDistanceToTarget>1200) { correctFactor = 3.5*correctFactorCoeff;}
+        double maxPower = Math.abs(relativeXToTarget) + Math.abs(relativeYToTarget) + correctFactor*Math.abs(relativeTurnAngle) ;
+
+//        double movementXpower = relativeXToTarget / maxPower * speed;
+//        double movementYpower = relativeYToTarget / maxPower * speed;
+
+        double PIDX = PIDControlX(x, GlobalX)*Math.signum(Math.cos(GlobalH));
+        double PIDY = PIDControlY(y, GlobalY)*Math.signum(Math.cos(GlobalH));
+        double PIDH = PIDControlH(h, GlobalH);
+        double movementXpower = PIDX * speed * (Math.abs(relativeXToTarget)/maxPower) ;
+        double movementYpower = PIDY * speed * (Math.abs(relativeYToTarget)/maxPower);
+        double movementTurnPower = PIDH * speed * (correctFactor*Math.abs(relativeTurnAngle)/maxPower);
+
+
+        telemetry.addData("distanceToTarget", distanceToTarget);
+        telemetry.addData("movementXpower", movementXpower);
+        telemetry.addData("movementYpower", movementYpower);
+        telemetry.addData("movementTurnPower", movementTurnPower);
+        telemetry.addData("relativeYToTarget", relativeYToTarget);
+        telemetry.addData("absoluteAngleToTarget", absoluteTurnAngle);
+        telemetry.addData("relativeAngleToTarget", relativeAngleToTarget);
+        telemetry.addData("GlobalX", GlobalX);
+        telemetry.addData("GlobalY", GlobalY);
+        telemetry.addData("GlobalH", Math.toDegrees(GlobalH));
+        telemetry.update();
+
+        robot.LFMotor.setPower(Range.clip(movementXpower - movementYpower - movementTurnPower, -speed, speed));
+        robot.LBMotor.setPower(Range.clip(movementXpower + movementYpower + movementTurnPower, -speed, speed));
+        robot.RFMotor.setPower(Range.clip(movementXpower + movementYpower - movementTurnPower, -speed, speed));
+        robot.RBMotor.setPower(Range.clip(movementXpower - movementYpower + movementTurnPower, -speed, speed));
+
+    }
+
 
 
 
@@ -320,95 +414,6 @@ public class SpecimanBlueRight extends LinearOpMode {
         return output;
     }
 
-
-    public void goToPosSingle(double x, double y, double h, double speed){
-
-        refresh();
-        //math to calculate distances to the target
-        double distanceToTarget = Math.hypot(x - GlobalX, y - GlobalY);
-        double absoluteTurnAngle = Math.atan2(y - GlobalY, x- GlobalX);
-        double relativeAngleToTarget = angleWrapRad(absoluteTurnAngle - GlobalH);
-        double relativeXToTarget = distanceToTarget * Math.cos(relativeAngleToTarget);
-        double relativeYToTarget = distanceToTarget * Math.sin(relativeAngleToTarget);
-        double relativeTurnAngle = angleWrapRad(h-GlobalH);
-
-        double correctFactor = correctFactorCoeff;
-        if (initialDistanceToTarget>1200) { correctFactor = 3.5*correctFactorCoeff;}
-        double maxPower = Math.abs(relativeXToTarget) + Math.abs(relativeYToTarget) + correctFactor*Math.abs(relativeTurnAngle) ;
-
-//        double movementXpower = relativeXToTarget / maxPower * speed;
-//        double movementYpower = relativeYToTarget / maxPower * speed;
-
-        double PIDX = PIDControlX(x, GlobalX)*Math.signum(Math.cos(GlobalH));
-        double PIDY = PIDControlY(y, GlobalY)*Math.signum(Math.cos(GlobalH));
-        double PIDH = PIDControlH(h, GlobalH);
-        double movementXpower = PIDX * speed * (Math.abs(relativeXToTarget)/maxPower) ;
-        double movementYpower = PIDY * speed * (Math.abs(relativeYToTarget)/maxPower);
-        double movementTurnPower = PIDH * speed * (correctFactor*Math.abs(relativeTurnAngle)/maxPower);
-
-
-        telemetry.addData("distanceToTarget", distanceToTarget);
-        telemetry.addData("movementXpower", movementXpower);
-        telemetry.addData("movementYpower", movementYpower);
-        telemetry.addData("movementTurnPower", movementTurnPower);
-        telemetry.addData("relativeYToTarget", relativeYToTarget);
-        telemetry.addData("absoluteAngleToTarget", absoluteTurnAngle);
-        telemetry.addData("relativeAngleToTarget", relativeAngleToTarget);
-        telemetry.addData("GlobalX", GlobalX);
-        telemetry.addData("GlobalY", GlobalY);
-        telemetry.addData("GlobalH", Math.toDegrees(GlobalH));
-        telemetry.update();
-
-        robot.LFMotor.setPower(Range.clip(movementXpower - movementYpower - movementTurnPower, -speed, speed));
-        robot.LBMotor.setPower(Range.clip(movementXpower + movementYpower + movementTurnPower, -speed, speed));
-        robot.RFMotor.setPower(Range.clip(movementXpower + movementYpower - movementTurnPower, -speed, speed));
-        robot.RBMotor.setPower(Range.clip(movementXpower - movementYpower + movementTurnPower, -speed, speed));
-
-    }
-
-    public void goToPos(double x, double y, double h, double speed, double moveAccuracyX, double moveAccuracyY, double angleAccuracy, double timeoutS) {
-        //while loop makes the code keep running till the desired location is reached. (within the accuracy constraints)
-        integralSum = 0;
-        integralSumX = 0;
-        integralSumY = 0;
-        refresh();
-        feedfowardX = x - GlobalX;
-        feedfowardY = y - GlobalY;
-        feedfoward = h - GlobalH;
-
-        double distanceToTarget = Math.hypot(x - GlobalX, y - GlobalY);
-        double absoluteTurnAngle = Math.atan2(y - GlobalY, x - GlobalX);
-        double relativeAngleToTarget = angleWrapRad(absoluteTurnAngle - GlobalH);
-        double relativeXToTarget = distanceToTarget * Math.cos(relativeAngleToTarget);
-        double relativeYToTarget = distanceToTarget * Math.sin(relativeAngleToTarget);
-        double relativeTurnAngle = angleWrapRad(h - GlobalH);
-        double correctFactor = correctFactorCoeff;
-        double maxPower = Math.abs(relativeXToTarget) + Math.abs(relativeYToTarget) + correctFactor * Math.abs(relativeTurnAngle);
-        double initialSpeed = 0.2;
-        double movementXpower = initialSpeed * relativeXToTarget / maxPower;
-        double movementYpower = initialSpeed * relativeYToTarget / maxPower;
-        double movementTurnPower = initialSpeed * correctFactor * relativeTurnAngle / maxPower;
-
-        runtime.reset();
-        robot.LFMotor.setPower(Range.clip(movementXpower - movementYpower - movementTurnPower, -initialSpeed, initialSpeed));
-        robot.LBMotor.setPower(Range.clip(movementXpower + movementYpower + movementTurnPower, -initialSpeed, initialSpeed));
-        robot.RFMotor.setPower(Range.clip(movementXpower + movementYpower - movementTurnPower, -initialSpeed, initialSpeed));
-        robot.RBMotor.setPower(Range.clip(movementXpower - movementYpower + movementTurnPower, -initialSpeed, initialSpeed));
-//        sleep(5);
-        initialDistanceToTarget = distanceToTarget;
-        while (((Math.abs(x - GlobalX) > moveAccuracyX || Math.abs(y - GlobalY) > moveAccuracyY || Math.abs(angleWrapRad(h - GlobalH)) > angleAccuracy)) && opModeIsActive() && (runtime.seconds() < timeoutS)) {
-            // while(true){
-
-            goToPosSingle(x, y, h, speed);
-
-//            Pose2D pos = odo.getPosition();
-//            String data = String.format(Locale.US, "{X: %.3f, Y: %.3f, H: %.3f}", pos.getX(DistanceUnit.MM), pos.getY(DistanceUnit.MM), pos.getHeading(AngleUnit.DEGREES));
-//            telemetry.addData("Position", data);
-//            telemetry.update();
-
-
-        }
-    }
 
     public void goToTest(double x, double y, double h, double speed, double moveAccuracyX, double moveAccuracyY, double angleAccuracy, double timeoutS) {
         //while loop makes the code keep running till the desired location is reached. (within the accuracy constraints)
