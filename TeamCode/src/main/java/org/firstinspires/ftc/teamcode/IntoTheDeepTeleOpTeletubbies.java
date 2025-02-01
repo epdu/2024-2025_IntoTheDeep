@@ -56,7 +56,7 @@ import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.tel
 import static org.firstinspires.ftc.teamcode.FieldCentricMecanumTeleOpTeletubbies.DriveTrains_ReducePOWER;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 @TeleOp(name = "AAAAA TeleOp 01302025 V1")
-//V1 with pid for both slides but not odo
+//V1 with pid for both slides and odo
 public class IntoTheDeepTeleOpTeletubbies extends LinearOpMode {
     public float DriveTrains_ReducePOWER=0.75f;
     //   DriveTrains_ReducePOWER = 0.75f;
