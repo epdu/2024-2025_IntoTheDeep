@@ -74,7 +74,7 @@ For support, contact tech@gobilda.com
 -Ethan Doak
  */
 
-@Autonomous(name="AAAAA SpecimanBlueRight", group="Linear OpMode")
+@Autonomous(name="AAAAA SpecimanBlueRight one speciman", group="Linear OpMode")
 //@Disabled
 //face to the bar right space for 4 of them only
 public class SpecimanBlueRight extends LinearOpMode {
@@ -156,13 +156,38 @@ public class SpecimanBlueRight extends LinearOpMode {
 
         // Wait for the game to start (driver presses START)
         waitForStart();
-//        myGoToPos(850, 0, Math.toRadians(0), 0.3, 2, 2, Math.toRadians(2), 10);
-//        myGoToPos(-100, 0, Math.toRadians(0), 0.3, 2, 2, Math.toRadians(2), 10);
+        myGoToPos(860, 0, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 2);
+        //insert v_slide  and claw actions to finish the hanging
+        myGoToPos(150, 0, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 2);
+        myGoToPos(150, -750, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 2);
+        goToPosStop();
+        sleep(2000);// wait for human player to line up specimen
+        myGoToPos(30, -750, Math.toRadians(0), 0.3, 2, 2, Math.toRadians(2), 2);
+        goToPosStop();
+        //insert claw action of pick up specimen
+
+
+
+//        myGoToPos(100, -730, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 1);
+//        myGoToPos(0, 0, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 10);
+//        myGoToPos(0, 0, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 10);
+        //       myGoToPos(600, 600, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 4);
+ //       myGoToPos(600, 0, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 2);
+   //     myGoToPos(600, 600, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 2);
+//        myGoToPos(600, 600, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 4);
+//        myGoToPos(0, 0, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 10);
+        //        myGoToPos(0, 0, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 10);
+//        myGoToPos(-750, -730, Math.toRadians(0), 0.3, 2, 2, Math.toRadians(2), 10);
+  //      myGoToPos(850, 0, Math.toRadians(0), 0.3, 2, 2, Math.toRadians(2), 2);
+ //       myGoToPos(740, 0, Math.toRadians(0), 0.3, 2, 2, Math.toRadians(2), 2);
+//        myGoToPos(100, -730, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 2);
+//        myGoToPos(740, 0, Math.toRadians(0), 0.3, 2, 2, Math.toRadians(2), 10);
+//        myGoToPos(-750, -730, Math.toRadians(0), 0.3, 2, 2, Math.toRadians(2), 10);
 //        myGoToPos(-750, -730, Math.toRadians(0), 0.3, 2, 2, Math.toRadians(2), 10);
 //        myGoToPos(0, 600, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(1), 10);
  //       myGoToPos(0, 0, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(1), 10);
-       myGoToPos(600, 0, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(1), 2);
-       myGoToPos(0, 0, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(1), 2);
+ //      myGoToPos(600, 0, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(1), 2);
+   //    myGoToPos(0, 0, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(1), 2);
 //
 //
 //        myGoToPos(0, 600, Math.toRadians(0), 0.35, 2, 2, Math.toRadians(1), 2);
