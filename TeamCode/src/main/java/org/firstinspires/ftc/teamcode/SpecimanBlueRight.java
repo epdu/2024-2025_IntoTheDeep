@@ -105,8 +105,6 @@ public class SpecimanBlueRight extends LinearOpMode {
     public double GlobalX = 0;
     public double GlobalY = 0;
     public double GlobalH = 0;
-    boolean move = false;
-
     private boolean pidActiveVS = false; // PID 控制是否激活
     private int pidTargetPositionVS = 0; // PID 控制目标位置
     private PIDController pidControllerVS = new PIDController(0.005, 0.0000005, 0.0002);// (0.005, 0.0000005, 0.0002) good for target 300 (1.9, 0.014, 4.9)
@@ -125,7 +123,7 @@ public class SpecimanBlueRight extends LinearOpMode {
     private PinpointDrive drive;     // 定义驱动系统
     Gyro gyro = new Gyro(); // 创建 Gyro 类的对象
     private ElapsedTime runtime = new ElapsedTime();
-
+    public String armPositionCuzBorS ="NOLL"; //new variable for it and arm will go back of robo
     @Override
     public void runOpMode() {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
@@ -135,6 +133,15 @@ public class SpecimanBlueRight extends LinearOpMode {
 //        robot.odo.resetPosAndIMU();
         robot.odo.recalibrateIMU();
         robot.odo.resetPosAndIMU();
+        Pose2D pos = robot.odo.getPosition();// Pose2D is for Gobilda, Pose2d is RR
+        Pose2D currentPose = robot.odo.getPosition();
+        String data = String.format(Locale.US, "X: %.3f, Y: %.3f, H: %.3f", pos.getX(DistanceUnit.MM), pos.getY(DistanceUnit.MM), pos.getHeading(AngleUnit.DEGREES));
+        telemetry.addData("Position", data);
+        telemetry.addData("X Position", currentPose.getX(DistanceUnit.MM));
+        telemetry.addData("Y Position", currentPose.getY(DistanceUnit.MM));
+        telemetry.addData("Heading (rad)", currentPose.getHeading(AngleUnit.DEGREES));
+        telemetry.update();
+
 
 /////////////////////////////////////////////////////////////////////////////
 //        drive = new PinpointDrive(hardwareMap, beginPose);
@@ -155,156 +162,160 @@ public class SpecimanBlueRight extends LinearOpMode {
 //        Pose2d currentPose = drive.getPose();
 
 
-        Pose2D pos = robot.odo.getPosition();// Pose2D is for Gobilda, Pose2d is RR
-        Pose2D currentPose = robot.odo.getPosition();
-        String data = String.format(Locale.US, "X: %.3f, Y: %.3f, H: %.3f", pos.getX(DistanceUnit.MM), pos.getY(DistanceUnit.MM), pos.getHeading(AngleUnit.DEGREES));
-        telemetry.addData("Position", data);
-        telemetry.addData("X Position", currentPose.getX(DistanceUnit.MM));
-        telemetry.addData("Y Position", currentPose.getY(DistanceUnit.MM));
-        telemetry.addData("Heading (rad)", currentPose.getHeading(AngleUnit.DEGREES));
-        telemetry.update();
 
-        Thread driveTrainThread = new Thread(this::runDriveTrain);
+        Thread moveDriveTrain_myGoToPosThread = new Thread(this::runmoveDriveTrain_myGoToPos);
         Thread updateVSlidePIDControl = new Thread(this::runupdateVSlidePIDControl);
         Thread updateHSlidePIDControl = new Thread(this::runupdateHSlidePIDControl);
-        Thread intakeThread = new Thread(this::runIntake);
-        Thread outtakeThread = new Thread(this::runOuttake);
+        Thread OuttakeArmThreadThread  = new Thread(this::runOuttakeArm);
+        Thread OuttakeClawThreadThread  = new Thread(this::runOuttakeClaw);
 
-        driveTrainThread.start();
+        moveDriveTrain_myGoToPosThread.start();
         updateVSlidePIDControl();
         updateHSlidePIDControl();
-        intakeThread.start();
-        outtakeThread.start();
+        OuttakeArmThread.start();
+        OuttakeClawThread.start();
+
+
+
+
+
 
         // Wait for the game to start (driver presses START)
         waitForStart();
-        //preload one specimen
-        myGoToPos(660, 0, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 2);
-        makeVSlidesUpWork(POSITION_Y_HIGH);
-        goToPosStop();
+
+
+
+        while (opModeIsActive()) {
+
+
+            moveDriveTrain_myGoToPos();
+            updateVSlidePIDControl();
+            updateHSlidePIDControl();
+            OuttakeArm();
+            OuttakeClaw();
+
+////////////////////////////////////
+
+
+        }
+
+        isRunning = false;
+        try {
+            moveDriveTrain_myGoToPos.join();
+            OuttakeArm.join();
+            OuttakeClaw.join();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+
+
+        //Chamber #1 preload specimen
+        moveDriveTrain_myGoToPos(660, 0, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 2);
+        startVSlidePIDControl(POSITION_Y_HIGH);
+
         sleep(1000);
-        myGoToPos(460, 0, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 2);
+        moveDriveTrain_myGoToPos(460, 0, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 2);
         //insert v_slide  and claw actions to finish the hanging
-        makeOClawOpenWork(POSITION_Y_HIGHHH);
+        startVSlidePIDControl(POSITION_Y_HIGHHH);
+        sleep(1000);
+        OuttakeClaw(OClawOpen);
+
+
+//        OuttakeArm(OArmTransferPosition);
+//        OuttakeArm(OArmRearSpecimenPick);
+//
+//        OuttakeClaw(OClawCloseTight);
 
 //
 
-//        myGoToPos(860, 0, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 2);
-//        //insert v_slide  and claw actions to finish the hanging
-//        myGoToPos(150, 0, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 2);
-//        myGoToPos(150, -750, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 2);
-//        goToPosStop();
-//        sleep(2000);// wait for human player to line up specimen
-//        myGoToPos(10, -750, Math.toRadians(0), 0.3, 2, 2, Math.toRadians(2), 2);
-//        //insert claw action of pick up one specimen
-//        myGoToPos(150, -750, Math.toRadians(0), 0.3, 2, 2, Math.toRadians(2), 2);
-//        myGoToPos(150, 0, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 2);
-//        myGoToPos(900, 0, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 2);
-//insert v_slide  and claw actions to finish the hanging
-//        myGoToPos(660, 0, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 2);
-//        myGoToPos(660, -750, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 2);
-//        myGoToPos(1320, -750, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 2);
-//        myGoToPos(1320, -850, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 2);
-//        myGoToPos(150, -850, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 2);
-//        myGoToPos(1320, -850, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 2);
-//        myGoToPos(1320, -1130, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 2);
 
-//        myGoToPos(100, -730, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 1);
-//        myGoToPos(0, 0, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 10);
-//        myGoToPos(0, 0, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 10);
-        //       myGoToPos(600, 600, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 4);
- //       myGoToPos(600, 0, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 2);
-   //     myGoToPos(600, 600, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 2);
-//        myGoToPos(600, 600, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 4);
-//        myGoToPos(0, 0, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 10);
-        //        myGoToPos(0, 0, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 10);
-//        myGoToPos(-750, -730, Math.toRadians(0), 0.3, 2, 2, Math.toRadians(2), 10);
-  //      myGoToPos(850, 0, Math.toRadians(0), 0.3, 2, 2, Math.toRadians(2), 2);
- //       myGoToPos(740, 0, Math.toRadians(0), 0.3, 2, 2, Math.toRadians(2), 2);
-//        myGoToPos(100, -730, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 2);
-//        myGoToPos(740, 0, Math.toRadians(0), 0.3, 2, 2, Math.toRadians(2), 10);
-//        myGoToPos(-750, -730, Math.toRadians(0), 0.3, 2, 2, Math.toRadians(2), 10);
-//        myGoToPos(-750, -730, Math.toRadians(0), 0.3, 2, 2, Math.toRadians(2), 10);
-//        myGoToPos(0, 600, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(1), 10);
- //       myGoToPos(0, 0, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(1), 10);
- //      myGoToPos(600, 0, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(1), 2);
-   //    myGoToPos(0, 0, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(1), 2);
-//
-//
-//        myGoToPos(0, 600, Math.toRadians(0), 0.35, 2, 2, Math.toRadians(1), 2);
-//        myGoToPos(0, 0, Math.toRadians(0), 0.35, 2, 2, Math.toRadians(1), 2);
-//
-
-
-
-
-
-/*
-//        myGoToPos(0, 600, Math.toRadians(0), 0.5, 2, 2, Math.toRadians(2), 10);
-//        myGoToPos(635, 0, Math.toRadians(0), 0.5, 2, 2, Math.toRadians(2), 10); //25
-//        moveForward(0.2, 25); //32
-//        sleep(100);
-//        myGoToPos(0, 356, Math.toRadians(0), 0.5, 2, 2, Math.toRadians(2), 10); //14
-////        strafeLeft(0.2, 14);//16
-//        sleep(100);
-//        startVSlidePIDControl(POSITION_A_BOTTOM);
-//        //moveVSlideToPosition(-POSITION_Y_LOW);
-//        sleep(600);
-//        myGoToPos(100, 0, Math.toRadians(0), 0.5, 2, 2, Math.toRadians(2), 10);
-////        moveForward(0.1, 4); //32
-//        sleep(100);
-//        startVSlidePIDControl(POSITION_Y_HIGH);
-//        sleep(600);
-////        moveVSlideToPosition(-POSITION_Y_HIGH);
-//        sleep(600);
-//        robot.OClaw.setPosition(0.32); //12122024
-//        sleep(100);
-//        myGoToPos(-228, 0, Math.toRadians(0), 0.5, 2, 2, Math.toRadians(2), 10);
-////        moveBackward(0.3,9);
-//        sleep(100);
-//        startVSlidePIDControl(POSITION_A_BOTTOM);
-////        moveVSlideToPosition(-POSITION_A_BOTTOM);
-//        myGoToPos(-254, 0, Math.toRadians(0), 0.5, 2, 2, Math.toRadians(2), 10);
-////        moveBackward(0.3,10);
-//        myGoToPos(0, -1270, Math.toRadians(0), 0.5, 2, 2, Math.toRadians(2), 10);
-////        strafeRight(0.2, 50);//16
-//        myGoToPos(-127, 0, Math.toRadians(0), 0.5, 2, 2, Math.toRadians(2), 10);
-////        moveBackward(0.3,5);
-//        sleep(600);
-
-//
-*/
 
         goToPosStop();
         sleep(1000);
         //Basket #1 (Preload)
 
-//
-//
-//        //Push Sample Into Net Zone
-//        goToPos(300, -150, Math.toRadians(0), 0.7, 40, 40, Math.toRadians(20), 3);
-//        goToPos(800, -150, Math.toRadians(0), 0.7, 40, 40, Math.toRadians(20), 3);
-//        goToPos(1200, -150, Math.toRadians(0), 0.7, 40, 40, Math.toRadians(20), 3);
-//        goToPos(1300, -150, Math.toRadians(0), 0.7, 40, 40, Math.toRadians(20), 3);
-//        goToPos(900, -150, Math.toRadians(0), 0.7, 40, 40, Math.toRadians(20), 3);
-//        goToPos(50, -150, Math.toRadians(-60), 0.7, 40, 40, Math.toRadians(20), 3);
-//        goToPosStop();
-////        goToPos(300, 200, Math.toRadians(0), 0.7, 30, 30, Math.toRadians(20), 3);
-////        goToPos(800, 250, Math.toRadians(0), 0.7, 30, 30, Math.toRadians(20), 3);
-////        goToPos(1200, 300, Math.toRadians(0), 0.7, 30, 30, Math.toRadians(20), 3);
-////        goToPos(1400, 400, Math.toRadians(0), 0.7, 30, 30, Math.toRadians(20), 3);
-////        goToPos(50, 450, Math.toRadians(0), 0.7, 30, 30, Math.toRadians(20), 3);
-////        goToPosStop();
-//        goToPos(1000, 0, Math.toRadians(60), 0.7, 30, 30, Math.toRadians(20), 3);
-//        goToPos(1200, -200, Math.toRadians(90), 0.7, 30, 30, Math.toRadians(20), 3);
-//        goToPos(1500, -500, Math.toRadians(90), 0.7, 30, 100, Math.toRadians(20), 2);
-//        makeDroppieWork(-700);
-//        goToPos(1500, -800, Math.toRadians(90), 0.5, 30, 250, Math.toRadians(20), 1);
-//        makeFlopityWork(0.1);
-//        sleep(2000);
     }
 
-////////////////////////////////////////////////////////////////
+    ///////////////////////////////////
+
+    // Thread for drive train
+    private void runDmoveDriveTrain_myGoToPos() {
+        while (isRunning) {
+            moveDriveTrain_myGoToPos();
+//            sleep(50); // Add a short delay to prevent CPU overutilization
+            while (delayTimer.milliseconds() < 50 && opModeIsActive()) {
+                // Other tasks can be processed here
+            }
+        }
+    }
+
+    // Thread for drive train
+    private void runupdateVSlidePIDControl() {
+        while (isRunning) {
+            updateVSlidePIDControl();
+//            sleep(50); // Add a short delay to prevent CPU overutilization
+            while (delayTimer.milliseconds() < 50 && opModeIsActive()) {
+                // Other tasks can be processed here
+            }
+        }
+    }
+
+    private void runupdateHSlidePIDControl() {
+        while (isRunning) {
+            updateHSlidePIDControl();
+//            sleep(50); // Add a short delay to prevent CPU overutilization
+            while (delayTimer.milliseconds() < 50 && opModeIsActive()) {
+                // Other tasks can be processed here
+            }
+        }
+    }
+
+
+    // Thread for runOutakeArm
+    private void runOuttakeArm() {
+        while (isRunning) {
+            OuttakeArm();
+//            sleep(50); // Add a short delay to prevent CPU overutilization
+            while (delayTimer.milliseconds() < 50 && opModeIsActive()) {
+                // Other tasks can be processed here
+            }
+        }
+    }
+
+    // Thread for OuttakeClaw
+    private void runOuttakeClaw() {
+        while (isRunning) {
+            OuttakeClaw();
+//            sleep(50); // Add a short delay to prevent CPU overutilization
+            while (delayTimer.milliseconds() < 50 && opModeIsActive()) {
+                // Other tasks can be processed here
+            }
+        }
+    }
+
+    public void OuttakeArm(double position) {
+        delayTimer.reset();
+        while (delayTimer.milliseconds() < 200 && opModeIsActive()) {
+            // Other tasks can be processed here
+        }
+        robot.OArmL.setPosition(position);
+        robot.OArmR.setPosition(position);
+
+       }
+    public void OuttakeClaw(double position) {
+        delayTimer.reset();
+        while (delayTimer.milliseconds() < 200 && opModeIsActive()) {
+            // Other tasks can be processed here
+        }
+        robot.OClaw.setPosition(position);
+    }
+
+    public void moveDriveTrain_myGoToPos(double x, double y, double h, double speed, double moveAccuracyX, double moveAccuracyY, double angleAccuracy, double timeoutS) {
+        myGoToPos(x, y, h,speed,moveAccuracyX,moveAccuracyY,angleAccuracy,timeoutS);
+        }
+
+
+    //////////////////////////////////////////////////////////////
     public void myGoToPos(double x, double y, double h, double speed, double moveAccuracyX, double moveAccuracyY, double angleAccuracy, double timeoutS) {
         //while loop makes the code keep running till the desired location is reached. (within the accuracy constraints)
         integralSum = 0;
@@ -504,18 +515,7 @@ public class SpecimanBlueRight extends LinearOpMode {
     }
 //////////////startHSlidePIDControl/////////////
 
-    public void makeVSlidesUpWork(int position){
-        startVSlidePIDControl(position);
-    }
-    public void makeOClawOpenWork(int position){
-        startVSlidePIDControl(position);//POSITION_Y_HIGHHH
-        delayTimer.reset();
-        while (delayTimer.milliseconds() < 200 && opModeIsActive()) {
-            // Other tasks can be processed here
-        }
-        robot.OClaw.setPosition(OClawOpen);
 
-    }
     public void goToPos(double x, double y, double h, double speed, double moveAccuracyX, double moveAccuracyY, double angleAccuracy, double timeoutS) {
         //while loop makes the code keep running till the desired location is reached. (within the accuracy constraints)
         integralSum = 0;
