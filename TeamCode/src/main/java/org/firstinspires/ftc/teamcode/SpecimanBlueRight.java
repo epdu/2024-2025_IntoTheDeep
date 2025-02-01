@@ -254,10 +254,10 @@ public class SpecimanBlueRight extends LinearOpMode {
         double movementTurnPower = initialSpeed * correctFactor * relativeTurnAngle / maxPower;
 
         runtime.reset();
-        robot.LFMotor.setPower(Range.clip(movementXpower - movementYpower - movementTurnPower, -initialSpeed, initialSpeed));
-        robot.LBMotor.setPower(Range.clip(movementXpower + movementYpower - movementTurnPower, -initialSpeed, initialSpeed));
-        robot.RFMotor.setPower(Range.clip(movementXpower + movementYpower + movementTurnPower, -initialSpeed, initialSpeed));
-        robot.RBMotor.setPower(Range.clip(movementXpower - movementYpower + movementTurnPower, -initialSpeed, initialSpeed));
+        robot.LFMotor.setPower(Range.clip(movementXpower + movementYpower - movementTurnPower, -initialSpeed, initialSpeed));
+        robot.LBMotor.setPower(Range.clip(movementXpower - movementYpower - movementTurnPower, -initialSpeed, initialSpeed));
+        robot.RFMotor.setPower(Range.clip(movementXpower - movementYpower + movementTurnPower, -initialSpeed, initialSpeed));
+        robot.RBMotor.setPower(Range.clip(movementXpower + movementYpower + movementTurnPower, -initialSpeed, initialSpeed));
 //        sleep(5);
         initialDistanceToTarget = distanceToTarget;
         while (((Math.abs(-x + GlobalX) > moveAccuracyX || Math.abs(-y + GlobalY) > moveAccuracyY || Math.abs(angleWrapRad(-h + GlobalH)) > angleAccuracy)) && opModeIsActive() && (runtime.seconds() < timeoutS)) {
@@ -319,10 +319,10 @@ public class SpecimanBlueRight extends LinearOpMode {
 //        telemetry.addData("GlobalH", Math.toDegrees(GlobalH));
         telemetry.update();
 
-        robot.LFMotor.setPower(Range.clip(movementXpower - movementYpower - movementTurnPower, -speed, speed));
-        robot.LBMotor.setPower(Range.clip(movementXpower + movementYpower - movementTurnPower, -speed, speed));
-        robot.RFMotor.setPower(Range.clip(movementXpower + movementYpower + movementTurnPower, -speed, speed));
-        robot.RBMotor.setPower(Range.clip(movementXpower - movementYpower + movementTurnPower, -speed, speed));
+        robot.LFMotor.setPower(Range.clip(movementXpower + movementYpower - movementTurnPower, -speed, speed));
+        robot.LBMotor.setPower(Range.clip(movementXpower - movementYpower - movementTurnPower, -speed, speed));
+        robot.RFMotor.setPower(Range.clip(movementXpower - movementYpower + movementTurnPower, -speed, speed));
+        robot.RBMotor.setPower(Range.clip(movementXpower + movementYpower + movementTurnPower, -speed, speed));
 
     }
 
@@ -422,7 +422,6 @@ public class SpecimanBlueRight extends LinearOpMode {
 
     }
 //////////////startHSlidePIDControl/////////////
-
     public void goToPos(double x, double y, double h, double speed, double moveAccuracyX, double moveAccuracyY, double angleAccuracy, double timeoutS) {
         //while loop makes the code keep running till the desired location is reached. (within the accuracy constraints)
         integralSum = 0;
