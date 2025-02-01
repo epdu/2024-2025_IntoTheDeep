@@ -260,8 +260,8 @@ public class SpecimanBlueRight extends LinearOpMode {
 
         runtime.reset();
         robot.LFMotor.setPower(Range.clip(movementXpower - movementYpower - movementTurnPower, -initialSpeed, initialSpeed));
-        robot.LBMotor.setPower(Range.clip(movementXpower + movementYpower + movementTurnPower, -initialSpeed, initialSpeed));
-        robot.RFMotor.setPower(Range.clip(movementXpower + movementYpower - movementTurnPower, -initialSpeed, initialSpeed));
+        robot.LBMotor.setPower(Range.clip(movementXpower + movementYpower - movementTurnPower, -initialSpeed, initialSpeed));
+        robot.RFMotor.setPower(Range.clip(movementXpower + movementYpower + movementTurnPower, -initialSpeed, initialSpeed));
         robot.RBMotor.setPower(Range.clip(movementXpower - movementYpower + movementTurnPower, -initialSpeed, initialSpeed));
 //        sleep(5);
         initialDistanceToTarget = distanceToTarget;
@@ -325,8 +325,8 @@ public class SpecimanBlueRight extends LinearOpMode {
         telemetry.update();
 
         robot.LFMotor.setPower(Range.clip(movementXpower - movementYpower - movementTurnPower, -speed, speed));
-        robot.LBMotor.setPower(Range.clip(movementXpower + movementYpower + movementTurnPower, -speed, speed));
-        robot.RFMotor.setPower(Range.clip(movementXpower + movementYpower - movementTurnPower, -speed, speed));
+        robot.LBMotor.setPower(Range.clip(movementXpower + movementYpower - movementTurnPower, -speed, speed));
+        robot.RFMotor.setPower(Range.clip(movementXpower + movementYpower + movementTurnPower, -speed, speed));
         robot.RBMotor.setPower(Range.clip(movementXpower - movementYpower + movementTurnPower, -speed, speed));
 
     }
@@ -563,9 +563,9 @@ public class SpecimanBlueRight extends LinearOpMode {
     ///////////////////////////
     double integralSum = 0;
     double feedfoward = 0;
-    double Kp = 0.8; //0.6
-    double Ki = 0.02;//0.32
-    double Kd = 0.07;//0.17
+    double Kp = 0.6; //0.6
+    double Ki = 0.32;//0.32
+    double Kd = 0.17;//0.17
     double Kf = 0.25;//0.25
     private double lastError = 0;
     double integralSumX = 0;
