@@ -580,7 +580,7 @@ public class SpecimanBlueRight extends LinearOpMode {
     private double lastErrorX = 0;
 
     double integralSumY = 0;
-    double KpY=0.047; //start tyr with 0.005 300  only 180
+    double KpY=0.005; //start tyr with 0.005 300  only 180 0.047
     double KiY=0.0000005;   //Kxp/KYp ratio is affected by the robot weight balance
     double KdY=0.0002;// KXf/KYf ratio is affected by the robot weight balance
     double feedfowardY = 0;
