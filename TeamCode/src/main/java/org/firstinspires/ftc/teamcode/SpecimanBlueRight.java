@@ -21,37 +21,24 @@
  */
 package org.firstinspires.ftc.teamcode;
 //package org.firstinspires.ftc.teamcode.autos;
-import static org.firstinspires.ftc.teamcode.Constants_CS.POSITION_A_BOTTOM;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import com.qualcomm.robotcore.util.ElapsedTime;
+
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 //import org.firstinspires.ftc.teamcode.notUsing.GoBildaPinpointDriver;
-import org.firstinspires.ftc.teamcode.GoBildaPinpointDriver;
 import org.firstinspires.ftc.teamcode.roadrunner.PinpointDrive;
 
 import java.util.Locale;
 import com.acmerobotics.roadrunner.Pose2d;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.util.ElapsedTime;
-import com.acmerobotics.dashboard.FtcDashboard;
+
 import static org.firstinspires.ftc.teamcode.Constants_CS.*;
 
 /*
@@ -163,13 +150,13 @@ public class SpecimanBlueRight extends LinearOpMode {
 
 
 
-        Thread moveDriveTrain_myGoToPosThread = new Thread(this::runmoveDriveTrain_myGoToPos);
+        Thread moveDriveTrainThread = new Thread(this::runmoveDriveTrain);
         Thread updateVSlidePIDControl = new Thread(this::runupdateVSlidePIDControl);
         Thread updateHSlidePIDControl = new Thread(this::runupdateHSlidePIDControl);
-        Thread OuttakeArmThreadThread  = new Thread(this::runOuttakeArm);
-        Thread OuttakeClawThreadThread  = new Thread(this::runOuttakeClaw);
+        Thread OuttakeArmThread  = new Thread(this::runOuttakeArm);
+        Thread OuttakeClawThread  = new Thread(this::runOuttakeClaw);
 
-        moveDriveTrain_myGoToPosThread.start();
+        moveDriveTrainThread.start();
         updateVSlidePIDControl();
         updateHSlidePIDControl();
         OuttakeArmThread.start();
@@ -188,7 +175,7 @@ public class SpecimanBlueRight extends LinearOpMode {
         while (opModeIsActive()) {
 
 
-            moveDriveTrain_myGoToPos();
+            moveDriveTrain();
             updateVSlidePIDControl();
             updateHSlidePIDControl();
             OuttakeArm();
@@ -201,47 +188,22 @@ public class SpecimanBlueRight extends LinearOpMode {
 
         isRunning = false;
         try {
-            moveDriveTrain_myGoToPos.join();
-            OuttakeArm.join();
-            OuttakeClaw.join();
+            moveDriveTrainThread.join();
+            OuttakeArmThread.join();
+            OuttakeClawThread.join();
+
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
 
 
-        //Chamber #1 preload specimen
-        moveDriveTrain_myGoToPos(660, 0, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 2);
-        startVSlidePIDControl(POSITION_Y_HIGH);
-
-        sleep(1000);
-        moveDriveTrain_myGoToPos(460, 0, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 2);
-        //insert v_slide  and claw actions to finish the hanging
-        startVSlidePIDControl(POSITION_Y_HIGHHH);
-        sleep(1000);
-        OuttakeClaw(OClawOpen);
-
-
-//        OuttakeArm(OArmTransferPosition);
-//        OuttakeArm(OArmRearSpecimenPick);
-//
-//        OuttakeClaw(OClawCloseTight);
-
-//
-
-
-
-        goToPosStop();
-        sleep(1000);
-        //Basket #1 (Preload)
 
     }
 
-    ///////////////////////////////////
-
-    // Thread for drive train
-    private void runDmoveDriveTrain_myGoToPos() {
+   // Thread for drive train
+    private void runmoveDriveTrain() {
         while (isRunning) {
-            moveDriveTrain_myGoToPos();
+            moveDriveTrain();
 //            sleep(50); // Add a short delay to prevent CPU overutilization
             while (delayTimer.milliseconds() < 50 && opModeIsActive()) {
                 // Other tasks can be processed here
@@ -310,7 +272,7 @@ public class SpecimanBlueRight extends LinearOpMode {
         robot.OClaw.setPosition(position);
     }
 
-    public void moveDriveTrain_myGoToPos(double x, double y, double h, double speed, double moveAccuracyX, double moveAccuracyY, double angleAccuracy, double timeoutS) {
+    public void moveDriveTrain(double x, double y, double h, double speed, double moveAccuracyX, double moveAccuracyY, double angleAccuracy, double timeoutS){
         myGoToPos(x, y, h,speed,moveAccuracyX,moveAccuracyY,angleAccuracy,timeoutS);
         }
 
