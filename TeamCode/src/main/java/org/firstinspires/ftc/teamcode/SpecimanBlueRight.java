@@ -159,48 +159,43 @@ public class SpecimanBlueRight extends LinearOpMode {
 //        myGoToPos(850, 0, Math.toRadians(0), 0.3, 2, 2, Math.toRadians(2), 10);
 //        myGoToPos(-100, 0, Math.toRadians(0), 0.3, 2, 2, Math.toRadians(2), 10);
 //        myGoToPos(-750, -730, Math.toRadians(0), 0.3, 2, 2, Math.toRadians(2), 10);
-        myGoToPos(0, 0, Math.toRadians(90), 0.3, 2, 2, Math.toRadians(1), 10);
+        myGoToPos(600, 0, Math.toRadians(0), 0.3, 2, 2, Math.toRadians(1), 10);
 
 
 
 
-
-        /*
-        myGoToPos(0, 600, Math.toRadians(0), 0.5, 2, 2, Math.toRadians(2), 10);
-
-        myGoToPos(635, 0, Math.toRadians(0), 0.5, 2, 2, Math.toRadians(2), 10);
-        // 25 inch
-        goToPosStop();
-        moveForward(0.2, 25); //32
-        sleep(100);
-        myGoToPos(0, 356, Math.toRadians(0), 0.5, 2, 2, Math.toRadians(2), 10);
-        // 14 inch
-//        strafeLeft(0.2, 14);//16
-        sleep(100);
-        startVSlidePIDControl(POSITION_A_BOTTOM);
-        //moveVSlideToPosition(-POSITION_Y_LOW);
-        sleep(600);
-        myGoToPos(100, 0, Math.toRadians(0), 0.5, 2, 2, Math.toRadians(2), 10);
-//        moveForward(0.1, 4); //32
-        sleep(100);
-        startVSlidePIDControl(POSITION_Y_HIGH);
-        sleep(600);
-//        moveVSlideToPosition(-POSITION_Y_HIGH);
-        sleep(600);
-        robot.OClaw.setPosition(0.32); //12122024
-        sleep(100);
-        myGoToPos(-228, 0, Math.toRadians(0), 0.5, 2, 2, Math.toRadians(2), 10);
-//        moveBackward(0.3,9);
-        sleep(100);
-        startVSlidePIDControl(POSITION_A_BOTTOM);
-//        moveVSlideToPosition(-POSITION_A_BOTTOM);
-        myGoToPos(-254, 0, Math.toRadians(0), 0.5, 2, 2, Math.toRadians(2), 10);
-//        moveBackward(0.3,10);
-        myGoToPos(0, -1270, Math.toRadians(0), 0.5, 2, 2, Math.toRadians(2), 10);
-//        strafeRight(0.2, 50);//16
-        myGoToPos(-127, 0, Math.toRadians(0), 0.5, 2, 2, Math.toRadians(2), 10);
-//        moveBackward(0.3,5);
-        sleep(600);
+/*
+//        myGoToPos(0, 600, Math.toRadians(0), 0.5, 2, 2, Math.toRadians(2), 10);
+//        myGoToPos(635, 0, Math.toRadians(0), 0.5, 2, 2, Math.toRadians(2), 10); //25
+//        moveForward(0.2, 25); //32
+//        sleep(100);
+//        myGoToPos(0, 356, Math.toRadians(0), 0.5, 2, 2, Math.toRadians(2), 10); //14
+////        strafeLeft(0.2, 14);//16
+//        sleep(100);
+//        startVSlidePIDControl(POSITION_A_BOTTOM);
+//        //moveVSlideToPosition(-POSITION_Y_LOW);
+//        sleep(600);
+//        myGoToPos(100, 0, Math.toRadians(0), 0.5, 2, 2, Math.toRadians(2), 10);
+////        moveForward(0.1, 4); //32
+//        sleep(100);
+//        startVSlidePIDControl(POSITION_Y_HIGH);
+//        sleep(600);
+////        moveVSlideToPosition(-POSITION_Y_HIGH);
+//        sleep(600);
+//        robot.OClaw.setPosition(0.32); //12122024
+//        sleep(100);
+//        myGoToPos(-228, 0, Math.toRadians(0), 0.5, 2, 2, Math.toRadians(2), 10);
+////        moveBackward(0.3,9);
+//        sleep(100);
+//        startVSlidePIDControl(POSITION_A_BOTTOM);
+////        moveVSlideToPosition(-POSITION_A_BOTTOM);
+//        myGoToPos(-254, 0, Math.toRadians(0), 0.5, 2, 2, Math.toRadians(2), 10);
+////        moveBackward(0.3,10);
+//        myGoToPos(0, -1270, Math.toRadians(0), 0.5, 2, 2, Math.toRadians(2), 10);
+////        strafeRight(0.2, 50);//16
+//        myGoToPos(-127, 0, Math.toRadians(0), 0.5, 2, 2, Math.toRadians(2), 10);
+////        moveBackward(0.3,5);
+//        sleep(600);
 
 //
 */
@@ -563,10 +558,10 @@ public class SpecimanBlueRight extends LinearOpMode {
     ///////////////////////////
     double integralSum = 0;
     double feedfoward = 0;
-    double Kp = 0.6; //0.6
-    double Ki = 0.32;//0.32
-    double Kd = 0.17;//0.17
-    double Kf = 0.25;//0.25
+    double Kp = 0.59; //0.6
+    double Ki = 0.2;//0.32
+    double Kd = 0.017;//0.17
+    double Kf = 0.025;//0.25
     private double lastError = 0;
     double integralSumX = 0;
     double KpX=0.005;
