@@ -156,17 +156,31 @@ public class SpecimanBlueRight extends LinearOpMode {
 
         // Wait for the game to start (driver presses START)
         waitForStart();
-        myGoToPos(860, 0, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 2);
+        //preload one specimen
+        myGoToPos(660, 0, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 2);
         //insert v_slide  and claw actions to finish the hanging
-        myGoToPos(150, 0, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 2);
-        myGoToPos(150, -750, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 2);
-        goToPosStop();
-        sleep(2000);// wait for human player to line up specimen
-        myGoToPos(30, -750, Math.toRadians(0), 0.3, 2, 2, Math.toRadians(2), 2);
-        goToPosStop();
-        //insert claw action of pick up specimen
-
-
+        startVSlidePIDControl(POSITION_Y_HIGH);
+        robot.OArmL.setPosition(OArmTransferPosition);
+        robot.OArmR.setPosition(OArmTransferPosition);
+//        myGoToPos(860, 0, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 2);
+//        //insert v_slide  and claw actions to finish the hanging
+//        myGoToPos(150, 0, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 2);
+//        myGoToPos(150, -750, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 2);
+//        goToPosStop();
+//        sleep(2000);// wait for human player to line up specimen
+//        myGoToPos(10, -750, Math.toRadians(0), 0.3, 2, 2, Math.toRadians(2), 2);
+//        //insert claw action of pick up one specimen
+//        myGoToPos(150, -750, Math.toRadians(0), 0.3, 2, 2, Math.toRadians(2), 2);
+//        myGoToPos(150, 0, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 2);
+//        myGoToPos(900, 0, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 2);
+//insert v_slide  and claw actions to finish the hanging
+//        myGoToPos(660, 0, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 2);
+//        myGoToPos(660, -750, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 2);
+//        myGoToPos(1320, -750, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 2);
+//        myGoToPos(1320, -850, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 2);
+//        myGoToPos(150, -850, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 2);
+//        myGoToPos(1320, -850, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 2);
+//        myGoToPos(1320, -1130, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 2);
 
 //        myGoToPos(100, -730, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 1);
 //        myGoToPos(0, 0, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 10);
