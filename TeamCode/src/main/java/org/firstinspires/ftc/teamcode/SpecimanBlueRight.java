@@ -247,7 +247,7 @@ public class SpecimanBlueRight extends LinearOpMode {
 
         double distanceToTarget = Math.hypot(-x + GlobalX, -y + GlobalY);
         double absoluteTurnAngle = Math.atan2(-y + GlobalY, -x + GlobalX);
-        double relativeAngleToTarget = angleWrapRad(-absoluteTurnAngle - GlobalH);//////////////////??????????????
+        double relativeAngleToTarget = angleWrapRad(-absoluteTurnAngle + GlobalH);//////////////////??????????????
         double relativeXToTarget = distanceToTarget * Math.cos(relativeAngleToTarget);
         double relativeYToTarget = distanceToTarget * Math.sin(relativeAngleToTarget);
         double relativeTurnAngle = angleWrapRad(-h + GlobalH);
@@ -288,7 +288,7 @@ public class SpecimanBlueRight extends LinearOpMode {
         //math to calculate distances to the target
         double distanceToTarget = Math.hypot(-x + GlobalX, -y + GlobalY);
         double absoluteTurnAngle = Math.atan2(-y + GlobalY, -x+ GlobalX);
-        double relativeAngleToTarget = angleWrapRad(-absoluteTurnAngle - GlobalH);// changed both to be --
+        double relativeAngleToTarget = angleWrapRad(-absoluteTurnAngle + GlobalH);// changed both to be --
         double relativeXToTarget = distanceToTarget * Math.cos(relativeAngleToTarget);
         double relativeYToTarget = distanceToTarget * Math.sin(relativeAngleToTarget);
         double relativeTurnAngle = angleWrapRad(-h+GlobalH);
@@ -308,16 +308,20 @@ public class SpecimanBlueRight extends LinearOpMode {
         double movementTurnPower = PIDH * speed * (correctFactor*Math.abs(relativeTurnAngle)/maxPower);
 
 
+        telemetry.addData("relativeTurnAngle", relativeTurnAngle);
+        telemetry.addData("GlobalH", Math.toDegrees(GlobalH));
+        telemetry.addData("relativeAngleToTarget", relativeAngleToTarget);
+        telemetry.addData("movementTurnPower", movementTurnPower);
         telemetry.addData("distanceToTarget", distanceToTarget);
         telemetry.addData("movementXpower", movementXpower);
         telemetry.addData("movementYpower", movementYpower);
-        telemetry.addData("movementTurnPower", movementTurnPower);
+//        telemetry.addData("movementTurnPower", movementTurnPower);
         telemetry.addData("relativeYToTarget", relativeYToTarget);
         telemetry.addData("absoluteAngleToTarget", absoluteTurnAngle);
-        telemetry.addData("relativeAngleToTarget", relativeAngleToTarget);
+//        telemetry.addData("relativeAngleToTarget", relativeAngleToTarget);
     //    telemetry.addData("GlobalX", GlobalX);
       //  telemetry.addData("GlobalY", GlobalY);
-        telemetry.addData("GlobalH", Math.toDegrees(GlobalH));
+//        telemetry.addData("GlobalH", Math.toDegrees(GlobalH));
         telemetry.update();
 
         robot.LFMotor.setPower(Range.clip(movementXpower - movementYpower - movementTurnPower, -speed, speed));
