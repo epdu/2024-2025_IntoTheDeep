@@ -303,28 +303,35 @@ public class SpecimanBlueRight extends LinearOpMode {
         double movementTurnPower = PIDH * speed * (correctFactor*Math.abs(relativeTurnAngle)/maxPower);
 
 
-        telemetry.addData("distanceToTarget", distanceToTarget);
-        telemetry.addData("movementYpower", movementYpower);
-        telemetry.addData("GlobalY", GlobalY);
 
-        telemetry.addData("relativeTurnAngle", relativeTurnAngle);
-        telemetry.addData("GlobalH", Math.toDegrees(GlobalH));
-        telemetry.addData("relativeAngleToTarget", relativeAngleToTarget);
-        telemetry.addData("movementTurnPower", movementTurnPower);
-        telemetry.addData("movementXpower", movementXpower);
-//        telemetry.addData("movementTurnPower", movementTurnPower);
-        telemetry.addData("relativeYToTarget", relativeYToTarget);
-        telemetry.addData("absoluteAngleToTarget", absoluteTurnAngle);
-//        telemetry.addData("relativeAngleToTarget", relativeAngleToTarget);
-    //    telemetry.addData("GlobalX", GlobalX);
-        telemetry.addData("GlobalY", GlobalY);
-//        telemetry.addData("GlobalH", Math.toDegrees(GlobalH));
-        telemetry.update();
 
         robot.LFMotor.setPower(Range.clip(movementXpower - movementYpower - movementTurnPower, -speed, speed));
         robot.LBMotor.setPower(Range.clip(movementXpower + movementYpower - movementTurnPower, -speed, speed));
         robot.RFMotor.setPower(Range.clip(movementXpower + movementYpower + movementTurnPower, -speed, speed));
         robot.RBMotor.setPower(Range.clip(movementXpower - movementYpower + movementTurnPower, -speed, speed));
+
+
+        telemetry.addData("distanceToTarget", distanceToTarget);
+        telemetry.addData("relativeYToTarget", relativeYToTarget);
+        telemetry.addData("movementYpower", movementYpower);
+        telemetry.addData("GlobalY", GlobalY);
+        telemetry.addData("robot.LFMotor.setPower", robot.LFMotor);
+        telemetry.addData("robot.LBMotor.setPower", robot.LBMotor);
+        telemetry.addData("robot.RFMotor.setPower", robot.RFMotor);
+        telemetry.addData("robot.RBMotor.setPower", robot.RBMotor);
+        telemetry.addData("relativeTurnAngle", relativeTurnAngle);
+        telemetry.addData("GlobalH", Math.toDegrees(GlobalH));
+        telemetry.addData("relativeAngleToTarget", relativeAngleToTarget);
+        telemetry.addData("movementTurnPower", movementTurnPower);
+//        telemetry.addData("movementXpower", movementXpower);
+//        telemetry.addData("movementTurnPower", movementTurnPower);
+//        telemetry.addData("relativeYToTarget", relativeYToTarget);
+        telemetry.addData("absoluteAngleToTarget", absoluteTurnAngle);
+//        telemetry.addData("relativeAngleToTarget", relativeAngleToTarget);
+        //    telemetry.addData("GlobalX", GlobalX);
+//        telemetry.addData("GlobalY", GlobalY);
+//        telemetry.addData("GlobalH", Math.toDegrees(GlobalH));
+        telemetry.update();
 
     }
 
