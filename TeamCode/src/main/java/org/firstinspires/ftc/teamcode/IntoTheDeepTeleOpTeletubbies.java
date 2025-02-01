@@ -56,7 +56,7 @@ import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.tel
 import static org.firstinspires.ftc.teamcode.FieldCentricMecanumTeleOpTeletubbies.DriveTrains_ReducePOWER;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 @TeleOp(name = "AAAAA TeleOp 01302025 V1")
-//V1 with pid for both slides and odo
+//V1 with pid for both slides but not odo
 public class IntoTheDeepTeleOpTeletubbies extends LinearOpMode {
     public float DriveTrains_ReducePOWER=0.75f;
     //   DriveTrains_ReducePOWER = 0.75f;
@@ -520,8 +520,8 @@ public class IntoTheDeepTeleOpTeletubbies extends LinearOpMode {
     }
 //End Definition and Initialization of outtake()
 
-//Begin Definition and Initialization of steptestservo()    //Begin debugging with a step increment of 0.05  SGC - servoGamepadControl
-public void servoGamepadControl() {
+    //Begin Definition and Initialization of steptestservo()    //Begin debugging with a step increment of 0.05  SGC - servoGamepadControl
+    public void servoGamepadControl() {
 
 /**
  * This code snippet controls the position of a servo motor using the gamepad triggers.
@@ -568,7 +568,7 @@ public void servoGamepadControl() {
 
 //End debugging with a step increment of 0.05
 
-}
+    }
 ///////////////////End Definition and Initialization of steptestservo()
 
 //End Definition and Initialization of gamepad
@@ -669,7 +669,7 @@ public void servoGamepadControl() {
         if (!pidActiveHS && Math.abs(robot.HSMotor.getCurrentPosition() - pidTargetPositionHS) > 10) {
             double holdPowerHS = pidControllerHS.performPID(robot.HSMotor.getCurrentPosition());
             robot.HSMotor.setPower(holdPowerHS);
-             pidActiveHS = false; // 停止 PID 控制
+            pidActiveHS = false; // 停止 PID 控制
         }
 
     }
@@ -677,7 +677,7 @@ public void servoGamepadControl() {
 
 
 
-     public void moveDriveTrain_FieldCentric() {
+    public void moveDriveTrain_FieldCentric() {
         double y = gamepad1.left_stick_y * (1); // Remember, Y stick value is reversed
         double x = -gamepad1.left_stick_x * (1);
         double rx = -gamepad1.right_stick_x * (1); //*(0.5) is fine
