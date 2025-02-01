@@ -159,7 +159,16 @@ public class SpecimanBlueRight extends LinearOpMode {
 //        myGoToPos(850, 0, Math.toRadians(0), 0.3, 2, 2, Math.toRadians(2), 10);
 //        myGoToPos(-100, 0, Math.toRadians(0), 0.3, 2, 2, Math.toRadians(2), 10);
 //        myGoToPos(-750, -730, Math.toRadians(0), 0.3, 2, 2, Math.toRadians(2), 10);
-        myGoToPos(0, 600, Math.toRadians(0), 0.3, 2, 2, Math.toRadians(1), 10);
+//        myGoToPos(0, 600, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(1), 10);
+ //       myGoToPos(0, 0, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(1), 10);
+       myGoToPos(600, 0, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(1), 2);
+       myGoToPos(0, 0, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(1), 2);
+//
+//
+//        myGoToPos(0, 600, Math.toRadians(0), 0.35, 2, 2, Math.toRadians(1), 2);
+//        myGoToPos(0, 0, Math.toRadians(0), 0.35, 2, 2, Math.toRadians(1), 2);
+//
+
 
 
 
@@ -315,10 +324,6 @@ public class SpecimanBlueRight extends LinearOpMode {
         telemetry.addData("relativeYToTarget", relativeYToTarget);
         telemetry.addData("movementYpower", movementYpower);
         telemetry.addData("GlobalY", GlobalY);
-        telemetry.addData("robot.LFMotor.setPower", robot.LFMotor);
-        telemetry.addData("robot.LBMotor.setPower", robot.LBMotor);
-        telemetry.addData("robot.RFMotor.setPower", robot.RFMotor);
-        telemetry.addData("robot.RBMotor.setPower", robot.RBMotor);
         telemetry.addData("relativeTurnAngle", relativeTurnAngle);
         telemetry.addData("GlobalH", Math.toDegrees(GlobalH));
         telemetry.addData("relativeAngleToTarget", relativeAngleToTarget);
