@@ -33,7 +33,13 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
-
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
@@ -86,6 +92,8 @@ public class SpecimanBlueRight extends LinearOpMode {
     HardwareTeletubbies robot = new HardwareTeletubbies();
     public String fieldOrRobotCentric = "robot";
     boolean move = false;
+    private volatile boolean isRunning = true;
+    ElapsedTime delayTimer = new ElapsedTime();
     // 在类顶部声明PID控制器
     // 状态变量
     private boolean pidActive = false; // PID 控制是否激活
@@ -97,6 +105,8 @@ public class SpecimanBlueRight extends LinearOpMode {
     public double GlobalX = 0;
     public double GlobalY = 0;
     public double GlobalH = 0;
+    boolean move = false;
+
     private boolean pidActiveVS = false; // PID 控制是否激活
     private int pidTargetPositionVS = 0; // PID 控制目标位置
     private PIDController pidControllerVS = new PIDController(0.005, 0.0000005, 0.0002);// (0.005, 0.0000005, 0.0002) good for target 300 (1.9, 0.014, 4.9)
@@ -154,14 +164,31 @@ public class SpecimanBlueRight extends LinearOpMode {
         telemetry.addData("Heading (rad)", currentPose.getHeading(AngleUnit.DEGREES));
         telemetry.update();
 
+        Thread driveTrainThread = new Thread(this::runDriveTrain);
+        Thread updateVSlidePIDControl = new Thread(this::runupdateVSlidePIDControl);
+        Thread updateHSlidePIDControl = new Thread(this::runupdateHSlidePIDControl);
+        Thread intakeThread = new Thread(this::runIntake);
+        Thread outtakeThread = new Thread(this::runOuttake);
+
+        driveTrainThread.start();
+        updateVSlidePIDControl();
+        updateHSlidePIDControl();
+        intakeThread.start();
+        outtakeThread.start();
+
         // Wait for the game to start (driver presses START)
         waitForStart();
         //preload one specimen
         myGoToPos(660, 0, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 2);
+        makeVSlidesUpWork(POSITION_Y_HIGH);
+        goToPosStop();
+        sleep(1000);
+        myGoToPos(460, 0, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 2);
         //insert v_slide  and claw actions to finish the hanging
-        startVSlidePIDControl(POSITION_Y_HIGH);
-        robot.OArmL.setPosition(OArmTransferPosition);
-        robot.OArmR.setPosition(OArmTransferPosition);
+        makeOClawOpenWork(POSITION_Y_HIGHHH);
+
+//
+
 //        myGoToPos(860, 0, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 2);
 //        //insert v_slide  and claw actions to finish the hanging
 //        myGoToPos(150, 0, Math.toRadians(0), 0.4, 2, 2, Math.toRadians(2), 2);
@@ -476,6 +503,19 @@ public class SpecimanBlueRight extends LinearOpMode {
 
     }
 //////////////startHSlidePIDControl/////////////
+
+    public void makeVSlidesUpWork(int position){
+        startVSlidePIDControl(position);
+    }
+    public void makeOClawOpenWork(int position){
+        startVSlidePIDControl(position);//POSITION_Y_HIGHHH
+        delayTimer.reset();
+        while (delayTimer.milliseconds() < 200 && opModeIsActive()) {
+            // Other tasks can be processed here
+        }
+        robot.OClaw.setPosition(OClawOpen);
+
+    }
     public void goToPos(double x, double y, double h, double speed, double moveAccuracyX, double moveAccuracyY, double angleAccuracy, double timeoutS) {
         //while loop makes the code keep running till the desired location is reached. (within the accuracy constraints)
         integralSum = 0;
