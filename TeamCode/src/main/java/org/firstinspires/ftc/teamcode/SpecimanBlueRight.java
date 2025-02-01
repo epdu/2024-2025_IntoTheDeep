@@ -824,5 +824,5 @@ public class SpecimanBlueRight extends LinearOpMode {
 
 // vertical distance 43 inches 109.22 cm - 1092.2 mm
 // horizontal distance  odometer at 26.5 inches 67.31 cm - 673.1 mm
-//                      start of wheel 31 inches 78.74 - 787.4 mm
+//          start of wheel 31 inches 78.74 - 787.4 mm
 //Angle 180 degrees - pi
