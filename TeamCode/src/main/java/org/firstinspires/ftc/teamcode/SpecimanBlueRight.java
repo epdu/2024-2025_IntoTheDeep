@@ -156,8 +156,16 @@ public class SpecimanBlueRight extends LinearOpMode {
 
         // Wait for the game to start (driver presses START)
         waitForStart();
-        myGoToPos(600, 0, Math.toRadians(0), 0.5, 2, 2, Math.toRadians(2), 10);
-/*
+//        myGoToPos(850, 0, Math.toRadians(0), 0.3, 2, 2, Math.toRadians(2), 10);
+//        myGoToPos(-100, 0, Math.toRadians(0), 0.3, 2, 2, Math.toRadians(2), 10);
+//        myGoToPos(-750, -730, Math.toRadians(0), 0.3, 2, 2, Math.toRadians(2), 10);
+        myGoToPos(0, 0, Math.toRadians(90), 0.3, 2, 2, Math.toRadians(1), 10);
+
+
+
+
+
+        /*
         myGoToPos(0, 600, Math.toRadians(0), 0.5, 2, 2, Math.toRadians(2), 10);
 
         myGoToPos(635, 0, Math.toRadians(0), 0.5, 2, 2, Math.toRadians(2), 10);
@@ -239,7 +247,7 @@ public class SpecimanBlueRight extends LinearOpMode {
 
         double distanceToTarget = Math.hypot(-x + GlobalX, -y + GlobalY);
         double absoluteTurnAngle = Math.atan2(-y + GlobalY, -x + GlobalX);
-        double relativeAngleToTarget = angleWrapRad(-absoluteTurnAngle + GlobalH);//////////////////??????????????
+        double relativeAngleToTarget = angleWrapRad(-absoluteTurnAngle - GlobalH);//////////////////??????????????
         double relativeXToTarget = distanceToTarget * Math.cos(relativeAngleToTarget);
         double relativeYToTarget = distanceToTarget * Math.sin(relativeAngleToTarget);
         double relativeTurnAngle = angleWrapRad(-h + GlobalH);
@@ -280,7 +288,7 @@ public class SpecimanBlueRight extends LinearOpMode {
         //math to calculate distances to the target
         double distanceToTarget = Math.hypot(-x + GlobalX, -y + GlobalY);
         double absoluteTurnAngle = Math.atan2(-y + GlobalY, -x+ GlobalX);
-        double relativeAngleToTarget = angleWrapRad(-absoluteTurnAngle + GlobalH);
+        double relativeAngleToTarget = angleWrapRad(-absoluteTurnAngle - GlobalH);// changed both to be --
         double relativeXToTarget = distanceToTarget * Math.cos(relativeAngleToTarget);
         double relativeYToTarget = distanceToTarget * Math.sin(relativeAngleToTarget);
         double relativeTurnAngle = angleWrapRad(-h+GlobalH);
@@ -307,8 +315,8 @@ public class SpecimanBlueRight extends LinearOpMode {
         telemetry.addData("relativeYToTarget", relativeYToTarget);
         telemetry.addData("absoluteAngleToTarget", absoluteTurnAngle);
         telemetry.addData("relativeAngleToTarget", relativeAngleToTarget);
-        telemetry.addData("GlobalX", GlobalX);
-        telemetry.addData("GlobalY", GlobalY);
+    //    telemetry.addData("GlobalX", GlobalX);
+      //  telemetry.addData("GlobalY", GlobalY);
         telemetry.addData("GlobalH", Math.toDegrees(GlobalH));
         telemetry.update();
 
@@ -548,6 +556,33 @@ public class SpecimanBlueRight extends LinearOpMode {
         GlobalH = pos.getHeading(AngleUnit.RADIANS);
     }
 
+    ///////////////////////////
+    double integralSum = 0;
+    double feedfoward = 0;
+    double Kp = 0.8; //0.6
+    double Ki = 0.02;//0.32
+    double Kd = 0.07;//0.17
+    double Kf = 0.25;//0.25
+    private double lastError = 0;
+    double integralSumX = 0;
+    double KpX=0.005;
+    double KiX=0.0000005;   //Kxp/KYp ratio is affected by the robot weight balance
+    double KdX=0.0002;// KXf/KYf ratio is affected by the robot weight balance
+    double feedfowardX = 0;
+    private double lastErrorX = 0;
+
+    double integralSumY = 0;
+    double KpY=0.047; //start tyr with 0.005 300  only 180
+    double KiY=0.0000005;   //Kxp/KYp ratio is affected by the robot weight balance
+    double KdY=0.0002;// KXf/KYf ratio is affected by the robot weight balance
+    double feedfowardY = 0;
+    private double lastErrorY = 0;
+
+
+    //////////////////////////
+    /*
+
+
     double integralSum = 0;
     double feedfoward = 0;
     double Kp = 0.6;
@@ -555,6 +590,8 @@ public class SpecimanBlueRight extends LinearOpMode {
     double Kd = 0.17;
     double Kf = 0.25;
     private double lastError = 0;
+
+
 
     double integralSumX = 0;
     double KpX=0.04;
@@ -569,6 +606,7 @@ public class SpecimanBlueRight extends LinearOpMode {
     double KdY=0.008;// KXf/KYf ratio is affected by the robot weight balance
     double feedfowardY = 0;
     private double lastErrorY = 0;
+    */
 
     double correctFactorCoeff = 300;
     double initialDistanceToTarget = 0;
