@@ -254,10 +254,10 @@ public class SpecimanBlueRight extends LinearOpMode {
         double movementTurnPower = initialSpeed * correctFactor * relativeTurnAngle / maxPower;
 
         runtime.reset();
-        robot.LFMotor.setPower(Range.clip(movementXpower + movementYpower - movementTurnPower, -initialSpeed, initialSpeed));
-        robot.LBMotor.setPower(Range.clip(movementXpower - movementYpower - movementTurnPower, -initialSpeed, initialSpeed));
-        robot.RFMotor.setPower(Range.clip(movementXpower - movementYpower + movementTurnPower, -initialSpeed, initialSpeed));
-        robot.RBMotor.setPower(Range.clip(movementXpower + movementYpower + movementTurnPower, -initialSpeed, initialSpeed));
+        robot.LFMotor.setPower(Range.clip(movementXpower - movementYpower - movementTurnPower, -initialSpeed, initialSpeed));
+        robot.LBMotor.setPower(Range.clip(movementXpower + movementYpower - movementTurnPower, -initialSpeed, initialSpeed));
+        robot.RFMotor.setPower(Range.clip(movementXpower + movementYpower + movementTurnPower, -initialSpeed, initialSpeed));
+        robot.RBMotor.setPower(Range.clip(movementXpower - movementYpower + movementTurnPower, -initialSpeed, initialSpeed));
 //        sleep(5);
         initialDistanceToTarget = distanceToTarget;
         while (((Math.abs(-x + GlobalX) > moveAccuracyX || Math.abs(-y + GlobalY) > moveAccuracyY || Math.abs(angleWrapRad(-h + GlobalH)) > angleAccuracy)) && opModeIsActive() && (runtime.seconds() < timeoutS)) {
@@ -303,26 +303,28 @@ public class SpecimanBlueRight extends LinearOpMode {
         double movementTurnPower = PIDH * speed * (correctFactor*Math.abs(relativeTurnAngle)/maxPower);
 
 
+        telemetry.addData("distanceToTarget", distanceToTarget);
+        telemetry.addData("movementYpower", movementYpower);
+        telemetry.addData("GlobalY", GlobalY);
+
         telemetry.addData("relativeTurnAngle", relativeTurnAngle);
         telemetry.addData("GlobalH", Math.toDegrees(GlobalH));
         telemetry.addData("relativeAngleToTarget", relativeAngleToTarget);
         telemetry.addData("movementTurnPower", movementTurnPower);
-        telemetry.addData("distanceToTarget", distanceToTarget);
         telemetry.addData("movementXpower", movementXpower);
-        telemetry.addData("movementYpower", movementYpower);
 //        telemetry.addData("movementTurnPower", movementTurnPower);
         telemetry.addData("relativeYToTarget", relativeYToTarget);
         telemetry.addData("absoluteAngleToTarget", absoluteTurnAngle);
 //        telemetry.addData("relativeAngleToTarget", relativeAngleToTarget);
     //    telemetry.addData("GlobalX", GlobalX);
-      //  telemetry.addData("GlobalY", GlobalY);
+        telemetry.addData("GlobalY", GlobalY);
 //        telemetry.addData("GlobalH", Math.toDegrees(GlobalH));
         telemetry.update();
 
-        robot.LFMotor.setPower(Range.clip(movementXpower + movementYpower - movementTurnPower, -speed, speed));
-        robot.LBMotor.setPower(Range.clip(movementXpower - movementYpower - movementTurnPower, -speed, speed));
-        robot.RFMotor.setPower(Range.clip(movementXpower - movementYpower + movementTurnPower, -speed, speed));
-        robot.RBMotor.setPower(Range.clip(movementXpower + movementYpower + movementTurnPower, -speed, speed));
+        robot.LFMotor.setPower(Range.clip(movementXpower - movementYpower - movementTurnPower, -speed, speed));
+        robot.LBMotor.setPower(Range.clip(movementXpower + movementYpower - movementTurnPower, -speed, speed));
+        robot.RFMotor.setPower(Range.clip(movementXpower + movementYpower + movementTurnPower, -speed, speed));
+        robot.RBMotor.setPower(Range.clip(movementXpower - movementYpower + movementTurnPower, -speed, speed));
 
     }
 
@@ -570,7 +572,7 @@ public class SpecimanBlueRight extends LinearOpMode {
     private double lastErrorX = 0;
 
     double integralSumY = 0;
-    double KpY=0.047; //start tyr with 0.005 300  only 180
+    double KpY=0.0047; //start tyr with 0.005 300  only 180
     double KiY=0.0000005;   //Kxp/KYp ratio is affected by the robot weight balance
     double KdY=0.0002;// KXf/KYf ratio is affected by the robot weight balance
     double feedfowardY = 0;
