@@ -425,6 +425,7 @@ public class SpecimanBlueRight extends LinearOpMode {
             pidActiveHS = false; // 停止 PID 控制
         }
 
+
     }
 //////////////startHSlidePIDControl/////////////
     public void goToPos(double x, double y, double h, double speed, double moveAccuracyX, double moveAccuracyY, double angleAccuracy, double timeoutS) {
