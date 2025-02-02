@@ -70,7 +70,7 @@ For support, contact tech@gobilda.com
 @Autonomous(name="AAAAA SpecimanBlueRight one speciman MultiTask", group="Linear OpMode")
 //@Disabled
 //face to the bar right space for 4 of them only
-public class SpecimanBlueRight extends LinearOpMode {
+public class SpecimenBlueRight extends LinearOpMode {
 
 
     public float DriveTrains_ReducePOWER=0.75f;
@@ -79,6 +79,7 @@ public class SpecimanBlueRight extends LinearOpMode {
     HardwareTeletubbies robot = new HardwareTeletubbies();
     public String fieldOrRobotCentric = "robot";
     boolean move = false;
+
     private volatile boolean isRunning = true;
     ElapsedTime delayTimer = new ElapsedTime();
     // 在类顶部声明PID控制器
@@ -154,13 +155,99 @@ public class SpecimanBlueRight extends LinearOpMode {
         // Wait for the game to start (driver presses START)
         waitForStart();
 
+        while (opModeIsActive()) {
+            // TODO: Need to do red or blue according to alliance color.
+//            goToVSlidePos(POSITION_Y_LOW,2);
+            goToVSlidePos(POSITION_Y_HIGH,0.5);
+            myGoToPos(670, 0, Math.toRadians(0), 0.4, 5, 5, Math.toRadians(3), 2);
+            myGoToPos(900, 0, Math.toRadians(0), 0.3, 5, 5, Math.toRadians(3), 2);
+            goToVSlidePos(POSITION_Y_HIGHHH,2);
+            sleep(300);
+            robot.OClaw.setPosition(OClawOpen); //
+            delayTimer.reset();
+            while (delayTimer.milliseconds() < 200 && opModeIsActive()) {
+                // Other tasks can be processed here
+            }
+            robot.OArmL.setPosition(OArmRearSpecimenPick);
+            robot.OArmR.setPosition(OArmRearSpecimenPick);
+            delayTimer.reset();
+            while (delayTimer.milliseconds() < 200 && opModeIsActive()) {
+                // Other tasks can be processed here
+            }
+            goToVSlidePos(POSITION_A_BOTTOM,2);
+            myGoToPos(670, 0, Math.toRadians(0), 0.4, 5, 5, Math.toRadians(3), 2);
+            myGoToPos(670, -750, Math.toRadians(0), 0.35, 5, 5, Math.toRadians(3), 2);
+            myGoToPos(1600, -750, Math.toRadians(0), 0.4, 5, 5, Math.toRadians(3), 2);
+            myGoToPos(1600, -1300, Math.toRadians(0), 0.35, 5, 5, Math.toRadians(3), 2);
+            myGoToPos(200, -1300, Math.toRadians(0), 0.4, 5, 5, Math.toRadians(3), 2);
+            myGoToPos(10, -1300, Math.toRadians(0), 0.3, 5, 5, Math.toRadians(3), 2);
+            sleep(600);
+            myGoToPos(-20, -1300, Math.toRadians(0), 0.3, 5, 5, Math.toRadians(3), 2);
+            robot.OClaw.setPosition(OClawSpecimenChambers); //
+            delayTimer.reset();
+            while (delayTimer.milliseconds() < 200 && opModeIsActive()) {
+                // Other tasks can be processed here
+            }
+            myGoToPos(100, -1300, Math.toRadians(0), 0.4, 5, 5, Math.toRadians(3), 2);
+            myGoToPos(100, 0, Math.toRadians(0), 0.4, 5, 5, Math.toRadians(3), 2);
+            goToVSlidePos(POSITION_Y_HIGH,1);
+            robot.OArmL.setPosition(OArmTransferPosition);
+            robot.OArmR.setPosition(OArmTransferPosition);
 
-        myGoToPos(600, 0, Math.toRadians(-45), 0.4, 20, 20, Math.toRadians(20), 2);
 
-        goToHSlidePos(POSITION_B_EXTRUDE,  2);
-        myGoToPos(600, 0, Math.toRadians(-45), 0.4, 20, 20, Math.toRadians(20), 2);
 
-        sleep(1500);
+           sleep(2000);
+
+
+
+            //
+
+//                moveForward(0.1, 4);
+//            sleep(100);
+//            moveBackward(0.3,2);
+//                sleep(100);
+//                moveVSlideToPosition(-POSITION_Y_LOW);
+//                sleep(100);
+//            moveForward(0.1, 4);
+//                moveVSlideToPosition(-POSITION_Y_HIGH);
+//                sleep(100);
+//                robot.OClaw.setPosition(0.32); //12122024
+//                sleep(100);
+//                moveVSlideToPosition(POSITION_A_BOTTOM);
+//                moveBackward(0.3,31);
+//                strafeRight(0.3, 32);
+//            sleep(100);
+
+
+            //            while (found==false) {
+//                if (allianceColor.equals("red")) {
+//                    Point teamPropCentroid = redTeamPropOpenCv.getTeamPropCentroid();
+//                    cX = teamPropCentroid.x;
+//                    cY = teamPropCentroid.y;
+//                    found = cX != 0.0 || cY != 0.0;
+//                    telemetry.addData("line 149 first check point found or not ",found);
+//                    telemetry.addData("allianceColor", allianceColor);
+//                    telemetry.addData("Find team prop or not", found);
+//                    telemetry.addData("Coordinate", "(" + (int) cX + ", " + (int) cY + ")");
+//                    telemetry.addData("Distance in Inch", (getDistance(width)));
+//                    telemetry.update();
+//
+//                } else if (allianceColor.equals("blue")) {
+//                    Point teamPropCentroid = blueTeamPropOpenCv.getTeamPropCentroid();
+//                    cX = teamPropCentroid.x;
+//                    cY = teamPropCentroid.y;
+//                    found = cX != 0.0 || cY != 0.0;
+//                    telemetry.addData("allianceColor", allianceColor);
+//                    telemetry.addData("Find team prop or not", found);
+//                    telemetry.addData("Coordinate", "(" + (int) cX + ", " + (int) cY + ")");
+//                    telemetry.addData("Distance in Inch", (getDistance(width)));
+//                    telemetry.update();
+//
+
+            break;
+
+        }
+
 
 //        while (opModeIsActive()) {
 //
@@ -177,44 +264,6 @@ public class SpecimanBlueRight extends LinearOpMode {
     }
 
 
-    public void moveDriveTrain(double x, double y, double h, double speed, double moveAccuracyX, double moveAccuracyY, double angleAccuracy, double timeoutS){
-        myGoToPos(x, y, h,speed,moveAccuracyX,moveAccuracyY,angleAccuracy,timeoutS);
-        }
-    public void goToHSlidePos(int targetPosition, double timeoutS) {
-        // 初始化 PID 控制器
-        pidControllerHS.reset();
-        pidControllerHS.enable();
-        pidControllerHS.setSetpoint(targetPosition);
-        pidControllerHS.setTolerance(10); // 允许误差范围
-        pidActiveHS = true; // 激活 PID 控制
-        runtime.reset(); // 重置计时器
-
-        while (opModeIsActive() && runtime.seconds() < timeoutS) {
-            if (!pidActiveHS) return;
-            int currentPositionH = robot.HSMotor.getCurrentPosition();
-
-            // 计算 PID 输出
-            double powerH = pidControllerHS.performPID(currentPositionH);
-
-            // 控制电机功率
-            robot.HSMotor.setPower(Range.clip(powerH * 0.6, -1.0, 1.0));
-
-            // 输出 Telemetry 信息
-            telemetry.addData("PID Target", targetPosition);
-            telemetry.addData("Current Position H", currentPositionH);
-            telemetry.addData("Power H", powerH);
-            telemetry.update();
-
-            // 检查是否达到目标位置
-            if (!pidActiveHS && Math.abs(robot.HSMotor.getCurrentPosition() - pidTargetPositionHS) > 10) {
-                robot.HSMotor.setPower(0.1); // 保持抗重力的微小功率
-                pidActiveHS = false; // 停止 PID 控制
-                break;
-            }
-        }
-
-        robot.HSMotor.setPower(0.1); // 防止震荡时继续保持微功率
-    }
 ///////////////////////////////////////
 public void goToVSlidePos(int targetPosition, double timeoutS) {
     robot.VSMotorL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -235,8 +284,8 @@ public void goToVSlidePos(int targetPosition, double timeoutS) {
         double powerL = pidControllerVS.performPID(currentPositionL);
 
         // 控制电机功率
-        robot.VSMotorL.setPower(Range.clip(powerL * 0.8, -1.0, 1.0));
-        robot.VSMotorR.setPower(Range.clip(powerL * 0.8, -1.0, 1.0));
+        robot.VSMotorL.setPower(Range.clip(powerL * 0.9, -1.0, 1.0));
+        robot.VSMotorR.setPower(Range.clip(powerL * 0.9, -1.0, 1.0));
 
         // 输出 Telemetry 信息
         telemetry.addData("PID Target", targetPosition);
@@ -255,8 +304,8 @@ public void goToVSlidePos(int targetPosition, double timeoutS) {
 
     }
 
-        robot.VSMotorL.setPower(0.1);
-        robot.VSMotorL.setPower(0.1); // 防止震荡时继续保持微功率
+        robot.VSMotorL.setPower(0.0);
+        robot.VSMotorR.setPower(0.0); // 防止震荡时继续保持微功率
 }
 
     //////////////////////////////////////////////////////////////
@@ -344,21 +393,15 @@ public void goToVSlidePos(int targetPosition, double timeoutS) {
 
 
         telemetry.addData("distanceToTarget", distanceToTarget);
-        telemetry.addData("relativeYToTarget", relativeYToTarget);
+        telemetry.addData("movementXpower", movementXpower);
         telemetry.addData("movementYpower", movementYpower);
-        telemetry.addData("GlobalY", GlobalY);
-        telemetry.addData("relativeTurnAngle", relativeTurnAngle);
-        telemetry.addData("GlobalH", Math.toDegrees(GlobalH));
-        telemetry.addData("relativeAngleToTarget", relativeAngleToTarget);
         telemetry.addData("movementTurnPower", movementTurnPower);
-//        telemetry.addData("movementXpower", movementXpower);
-//        telemetry.addData("movementTurnPower", movementTurnPower);
-//        telemetry.addData("relativeYToTarget", relativeYToTarget);
+        telemetry.addData("relativeYToTarget", relativeYToTarget);
         telemetry.addData("absoluteAngleToTarget", absoluteTurnAngle);
-//        telemetry.addData("relativeAngleToTarget", relativeAngleToTarget);
-        //    telemetry.addData("GlobalX", GlobalX);
-//        telemetry.addData("GlobalY", GlobalY);
-//        telemetry.addData("GlobalH", Math.toDegrees(GlobalH));
+        telemetry.addData("relativeAngleToTarget", relativeAngleToTarget);
+        telemetry.addData("GlobalX", GlobalX);
+        telemetry.addData("GlobalY", GlobalY);
+        telemetry.addData("GlobalH", Math.toDegrees(GlobalH));
         telemetry.update();
 
     }
@@ -366,7 +409,78 @@ public void goToVSlidePos(int targetPosition, double timeoutS) {
 
 
     ////////////////////////////////////////////////////////////
-    ///////////startVSlidePIDControl///////////////
+
+    private void moveVSlideToPosition ( int targetPosition){
+        robot.VSMotorL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.VSMotorR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        telemetry.addData("targetPosition", targetPosition);
+        telemetry.addData("liftMotorL.getCurrentPosition()",robot.VSMotorL.getCurrentPosition());
+//        telemetry.addData("liftMotorR.getCurrentPosition()",robot.VSMotorR.getCurrentPosition());
+        telemetry.update();
+        robot.VSMotorL.setTargetPosition(-targetPosition);
+//        robot.VSMotorR.setTargetPosition(-targetPosition);
+        robot.VSMotorL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        robot.VSMotorR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.VSMotorL.setPower(+SLIDE_POWER_V);
+        robot.VSMotorR.setPower(+SLIDE_POWER_V);
+        move = true;
+        while (robot.VSMotorL.isBusy() && move) {
+            // Wait until the motor reaches the target position
+        }
+//        while (robot.VSMotorR.isBusy() && move) {
+        //           // Wait until the motor reaches the target position
+        //       }
+        telemetry.addData("targetPosition", targetPosition);
+        telemetry.addData("after while liftMotorL.getCurrentPosition()",robot.VSMotorL.getCurrentPosition());
+        telemetry.addData("after while liftMotorR.getCurrentPosition()",robot.VSMotorR.getCurrentPosition());
+        telemetry.update();
+
+        robot.VSMotorL.setPower(0);
+        robot.VSMotorR.setPower(0);
+        robot.VSMotorL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.VSMotorR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.VSMotorL.setZeroPowerBehavior((DcMotor.ZeroPowerBehavior.BRAKE));
+        robot.VSMotorR.setZeroPowerBehavior((DcMotor.ZeroPowerBehavior.BRAKE));
+        move = false;
+    }
+    public void moveDriveTrain(double x, double y, double h, double speed, double moveAccuracyX, double moveAccuracyY, double angleAccuracy, double timeoutS){
+        myGoToPos(x, y, h,speed,moveAccuracyX,moveAccuracyY,angleAccuracy,timeoutS);
+    }
+    public void goToHSlidePos(int targetPosition, double timeoutS) {
+        // 初始化 PID 控制器
+        pidControllerHS.reset();
+        pidControllerHS.enable();
+        pidControllerHS.setSetpoint(targetPosition);
+        pidControllerHS.setTolerance(10); // 允许误差范围
+        pidActiveHS = true; // 激活 PID 控制
+        runtime.reset(); // 重置计时器
+
+        while (opModeIsActive() && runtime.seconds() < timeoutS) {
+            if (!pidActiveHS) return;
+            int currentPositionH = robot.HSMotor.getCurrentPosition();
+
+            // 计算 PID 输出
+            double powerH = pidControllerHS.performPID(currentPositionH);
+
+            // 控制电机功率
+            robot.HSMotor.setPower(Range.clip(powerH * 0.6, -1.0, 1.0));
+
+            // 输出 Telemetry 信息
+            telemetry.addData("PID Target", targetPosition);
+            telemetry.addData("Current Position H", currentPositionH);
+            telemetry.addData("Power H", powerH);
+            telemetry.update();
+
+            // 检查是否达到目标位置
+            if (!pidActiveHS && Math.abs(robot.HSMotor.getCurrentPosition() - pidTargetPositionHS) > 10) {
+                robot.HSMotor.setPower(0.1); // 保持抗重力的微小功率
+                pidActiveHS = false; // 停止 PID 控制
+                break;
+            }
+        }
+
+        robot.HSMotor.setPower(0.1); // 防止震荡时继续保持微功率
+    } ///////////startVSlidePIDControl///////////////
 
     /// 初始化 PID 控制器
     private void startVSlidePIDControl(int targetPosition) {
