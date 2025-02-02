@@ -67,7 +67,7 @@ For support, contact tech@gobilda.com
 -Ethan Doak
  */
 
-@Autonomous(name="AAAAA SpecimanBlueRight one speciman", group="Linear OpMode")
+@Autonomous(name="AAAAA SpecimanBlueRight one speciman MultiTask", group="Linear OpMode")
 //@Disabled
 //face to the bar right space for 4 of them only
 public class SpecimanBlueRight extends LinearOpMode {
@@ -111,6 +111,10 @@ public class SpecimanBlueRight extends LinearOpMode {
     Gyro gyro = new Gyro(); // 创建 Gyro 类的对象
     private ElapsedTime runtime = new ElapsedTime();
     public String armPositionCuzBorS ="NOLL"; //new variable for it and arm will go back of robo
+//    Slide slide;
+//    Intake intake;
+//    Outtake outtake;
+//    GoToHSlidePos goToHSlidePos;
     @Override
     public void runOpMode() {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
@@ -147,136 +151,116 @@ public class SpecimanBlueRight extends LinearOpMode {
 //        telemetry.update();
 
 //        Pose2d currentPose = drive.getPose();
-
-
-
-        Thread moveDriveTrainThread = new Thread(this::runmoveDriveTrain);
-        Thread updateVSlidePIDControl = new Thread(this::runupdateVSlidePIDControl);
-        Thread updateHSlidePIDControl = new Thread(this::runupdateHSlidePIDControl);
-        Thread OuttakeArmThread  = new Thread(this::runOuttakeArm);
-        Thread OuttakeClawThread  = new Thread(this::runOuttakeClaw);
-
-        moveDriveTrainThread.start();
-        updateVSlidePIDControl();
-        updateHSlidePIDControl();
-        OuttakeArmThread.start();
-        OuttakeClawThread.start();
-
-
-
-
-
-
         // Wait for the game to start (driver presses START)
         waitForStart();
 
 
+        myGoToPos(600, 0, Math.toRadians(-45), 0.4, 20, 20, Math.toRadians(20), 2);
 
-        while (opModeIsActive()) {
+        goToHSlidePos(POSITION_B_EXTRUDE,  2);
+        myGoToPos(600, 0, Math.toRadians(-45), 0.4, 20, 20, Math.toRadians(20), 2);
 
+        sleep(1500);
 
-            moveDriveTrain();
-            updateVSlidePIDControl();
-            updateHSlidePIDControl();
-            OuttakeArm();
-            OuttakeClaw();
+//        while (opModeIsActive()) {
+//
+//
+//////////////////////////////////////
+//
+//
+//        }
 
-////////////////////////////////////
-
-
-        }
-
-        isRunning = false;
-        try {
-            moveDriveTrainThread.join();
-            OuttakeArmThread.join();
-            OuttakeClawThread.join();
-
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
+//        isRunning = false;
 
 
 
     }
 
-   // Thread for drive train
-    private void runmoveDriveTrain() {
-        while (isRunning) {
-            moveDriveTrain();
-//            sleep(50); // Add a short delay to prevent CPU overutilization
-            while (delayTimer.milliseconds() < 50 && opModeIsActive()) {
-                // Other tasks can be processed here
-            }
-        }
-    }
-
-    // Thread for drive train
-    private void runupdateVSlidePIDControl() {
-        while (isRunning) {
-            updateVSlidePIDControl();
-//            sleep(50); // Add a short delay to prevent CPU overutilization
-            while (delayTimer.milliseconds() < 50 && opModeIsActive()) {
-                // Other tasks can be processed here
-            }
-        }
-    }
-
-    private void runupdateHSlidePIDControl() {
-        while (isRunning) {
-            updateHSlidePIDControl();
-//            sleep(50); // Add a short delay to prevent CPU overutilization
-            while (delayTimer.milliseconds() < 50 && opModeIsActive()) {
-                // Other tasks can be processed here
-            }
-        }
-    }
-
-
-    // Thread for runOutakeArm
-    private void runOuttakeArm() {
-        while (isRunning) {
-            OuttakeArm();
-//            sleep(50); // Add a short delay to prevent CPU overutilization
-            while (delayTimer.milliseconds() < 50 && opModeIsActive()) {
-                // Other tasks can be processed here
-            }
-        }
-    }
-
-    // Thread for OuttakeClaw
-    private void runOuttakeClaw() {
-        while (isRunning) {
-            OuttakeClaw();
-//            sleep(50); // Add a short delay to prevent CPU overutilization
-            while (delayTimer.milliseconds() < 50 && opModeIsActive()) {
-                // Other tasks can be processed here
-            }
-        }
-    }
-
-    public void OuttakeArm(double position) {
-        delayTimer.reset();
-        while (delayTimer.milliseconds() < 200 && opModeIsActive()) {
-            // Other tasks can be processed here
-        }
-        robot.OArmL.setPosition(position);
-        robot.OArmR.setPosition(position);
-
-       }
-    public void OuttakeClaw(double position) {
-        delayTimer.reset();
-        while (delayTimer.milliseconds() < 200 && opModeIsActive()) {
-            // Other tasks can be processed here
-        }
-        robot.OClaw.setPosition(position);
-    }
 
     public void moveDriveTrain(double x, double y, double h, double speed, double moveAccuracyX, double moveAccuracyY, double angleAccuracy, double timeoutS){
         myGoToPos(x, y, h,speed,moveAccuracyX,moveAccuracyY,angleAccuracy,timeoutS);
         }
+    public void goToHSlidePos(int targetPosition, double timeoutS) {
+        // 初始化 PID 控制器
+        pidControllerHS.reset();
+        pidControllerHS.enable();
+        pidControllerHS.setSetpoint(targetPosition);
+        pidControllerHS.setTolerance(10); // 允许误差范围
+        pidActiveHS = true; // 激活 PID 控制
+        runtime.reset(); // 重置计时器
 
+        while (opModeIsActive() && runtime.seconds() < timeoutS) {
+            if (!pidActiveHS) return;
+            int currentPositionH = robot.HSMotor.getCurrentPosition();
 
+            // 计算 PID 输出
+            double powerH = pidControllerHS.performPID(currentPositionH);
+
+            // 控制电机功率
+            robot.HSMotor.setPower(Range.clip(powerH * 0.6, -1.0, 1.0));
+
+            // 输出 Telemetry 信息
+            telemetry.addData("PID Target", targetPosition);
+            telemetry.addData("Current Position H", currentPositionH);
+            telemetry.addData("Power H", powerH);
+            telemetry.update();
+
+            // 检查是否达到目标位置
+            if (!pidActiveHS && Math.abs(robot.HSMotor.getCurrentPosition() - pidTargetPositionHS) > 10) {
+                robot.HSMotor.setPower(0.1); // 保持抗重力的微小功率
+                pidActiveHS = false; // 停止 PID 控制
+                break;
+            }
+        }
+
+        robot.HSMotor.setPower(0.1); // 防止震荡时继续保持微功率
+    }
+///////////////////////////////////////
+public void goToVSlidePos(int targetPosition, double timeoutS) {
+    robot.VSMotorL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//    robot.VSMotorR.setMode(DcMotor.RunMode.RUN_USING_ENCODER); // 初始化 PID 控制器
+    pidControllerVS.reset();
+    pidControllerVS.enable();
+    pidControllerVS.setSetpoint(targetPosition);
+    pidControllerVS.setTolerance(10); // 允许误差范围
+    pidActiveVS = true; // 激活 PID 控制
+
+    runtime.reset(); // 重置计时器
+
+    while (opModeIsActive() && runtime.seconds() < timeoutS) {
+        if (!pidActiveVS) return;
+        int currentPositionL = robot.VSMotorL.getCurrentPosition();
+
+        // 计算 PID 输出
+        double powerL = pidControllerVS.performPID(currentPositionL);
+
+        // 控制电机功率
+        robot.VSMotorL.setPower(Range.clip(powerL * 0.8, -1.0, 1.0));
+        robot.VSMotorR.setPower(Range.clip(powerL * 0.8, -1.0, 1.0));
+
+        // 输出 Telemetry 信息
+        telemetry.addData("PID Target", targetPosition);
+        telemetry.addData("Current Position VL", currentPositionL);
+        telemetry.addData("Power V", powerL);
+        telemetry.update();
+
+        // 检查是否达到目标位置
+        if (!pidActiveVS && Math.abs(robot.VSMotorL.getCurrentPosition() - pidTargetPositionVS) > 10) {
+            double holdPowerVS = pidControllerVS.performPID(robot.VSMotorL.getCurrentPosition());
+            robot.VSMotorL.setPower(holdPowerVS);
+            robot.VSMotorR.setPower(holdPowerVS);
+            pidActiveVS = false; // 停止 PID 控制
+            break;
+        }
+
+    }
+
+        robot.VSMotorL.setPower(0.1);
+        robot.VSMotorL.setPower(0.1); // 防止震荡时继续保持微功率
+}
+
+    //////////////////////////////////////////////////////////////
+    /////////////////////////////////////
     //////////////////////////////////////////////////////////////
     public void myGoToPos(double x, double y, double h, double speed, double moveAccuracyX, double moveAccuracyY, double angleAccuracy, double timeoutS) {
         //while loop makes the code keep running till the desired location is reached. (within the accuracy constraints)
