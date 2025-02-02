@@ -29,8 +29,6 @@ public class Constants_CS {
     public static final double IClawCloseLose = 0.53;//was 0.54
     public static final double IClawCloseTight = 0.543;
     public static final double IClawCloseSuperTight = 0.546;
-
-
      */
     public static final double OClawOpen = 0.32;
     public static final double OClawCloseInitialization = 0.54;
