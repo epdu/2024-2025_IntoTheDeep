@@ -177,10 +177,7 @@ public class SpecimenBlueRight extends LinearOpMode {
         startVSlideMovement(POSITION_Y_HIGHHH);
         sleep(300);
         robot.OClaw.setPosition(OClawOpen); //
-        delayTimer.reset();
-        while (delayTimer.milliseconds() < 200 && opModeIsActive()) {
-            // Other tasks can be processed here
-        }
+
 
         startVSlideMovement(POSITION_A_BOTTOM);
         robot.OArmL.setPosition(OArmRearSpecimenPick);
