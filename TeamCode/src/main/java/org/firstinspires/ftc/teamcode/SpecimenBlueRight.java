@@ -153,15 +153,7 @@ public class SpecimenBlueRight extends LinearOpMode {
 //        Pose2d preloadPose = new Pose2d(scorePreloadX, scorePreloadY, Math.toRadians(-90));
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-//        telemetry.addData("Status", "Initialized");
-//        telemetry.addData("X offset", robot.odo.getXOffset());
-//        telemetry.addData("Y offset", robot.odo.getYOffset());
-//
-//        telemetry.addData("Device Version Number:", robot.odo.getDeviceVersion());
-//        telemetry.addData("Device Scalar", robot.odo.getYawScalar());
-//        telemetry.update();
 
-//        Pose2d currentPose = drive.getPose();
         // Wait for the game to start (driver presses START)
         waitForStart();
 
@@ -301,23 +293,12 @@ public class SpecimenBlueRight extends LinearOpMode {
 
 //            updateVSlidePIDControl(); // 更新滑轨位置
             if (movementActive) {
-                myGoToPosSingle(targetX, targetY, targetH, moveSpeed); // 更新驱动位置
+                myGoToPos(targetX, targetY,targetH,moveSpeed,targetmoveAccuracyX,targetmoveAccuracyY,targetangleAccuracy,targettimeoutS);
+//                myGoToPosSingle(targetX, targetY, targetH, moveSpeed); // 更新驱动位置
             }
 
             updateVSlidePIDControl(); // 更新滑轨位置
         }
-
-
-//        while (opModeIsActive()) {
-//
-//
-//////////////////////////////////////
-//
-//
-//        }
-
-//        isRunning = false;
-
 
 
     }
@@ -338,52 +319,13 @@ public void startDriveMovement(double x, double y, double h, double speed, doubl
     this.targetangleAccuracy=angleAccuracy;
     this.targettimeoutS=timeoutS;
     this.movementActive = true;
-    myGoToPos(targetX, targetY,targetH,moveSpeed,targetmoveAccuracyX,targetmoveAccuracyY,targetangleAccuracy,targettimeoutS);
+    //myGoToPos(targetX, targetY,targetH,moveSpeed,targetmoveAccuracyX,targetmoveAccuracyY,targetangleAccuracy,targettimeoutS);
 
 }
 
-public void goToVSlidePos(int targetPosition, double timeoutS) {
-    robot.VSMotorL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//    robot.VSMotorR.setMode(DcMotor.RunMode.RUN_USING_ENCODER); // 初始化 PID 控制器
-    pidControllerVS.reset();
-    pidControllerVS.enable();
-    pidControllerVS.setSetpoint(targetPosition);
-    pidControllerVS.setTolerance(10); // 允许误差范围
-    pidActiveVS = true; // 激活 PID 控制
-
-    runtime.reset(); // 重置计时器
-
-    while (opModeIsActive() && runtime.seconds() < timeoutS) {
-        if (!pidActiveVS) return;
-        int currentPositionL = robot.VSMotorL.getCurrentPosition();
-
-        // 计算 PID 输出
-        double powerL = pidControllerVS.performPID(currentPositionL);
-
-        // 控制电机功率
-        robot.VSMotorL.setPower(Range.clip(powerL * 0.9, -1.0, 1.0));
-        robot.VSMotorR.setPower(Range.clip(powerL * 0.9, -1.0, 1.0));
-
-        // 输出 Telemetry 信息
-        telemetry.addData("PID Target", targetPosition);
-        telemetry.addData("Current Position VL", currentPositionL);
-        telemetry.addData("Power V", powerL);
-        telemetry.update();
-
-        // 检查是否达到目标位置
-        if (!pidActiveVS && Math.abs(robot.VSMotorL.getCurrentPosition() - pidTargetPositionVS) > 10) {
-            double holdPowerVS = pidControllerVS.performPID(robot.VSMotorL.getCurrentPosition());
-            robot.VSMotorL.setPower(holdPowerVS);
-            robot.VSMotorR.setPower(holdPowerVS);
-            pidActiveVS = false; // 停止 PID 控制
-            break;
-        }
-
-    }
-
-        robot.VSMotorL.setPower(0.0);
-        robot.VSMotorR.setPower(0.0); // 防止震荡时继续保持微功率
-}
+//    public void moveDriveTrain(double x, double y, double h, double speed, double moveAccuracyX, double moveAccuracyY, double angleAccuracy, double timeoutS){
+//        myGoToPos(x, y, h,speed,moveAccuracyX,moveAccuracyY,angleAccuracy,timeoutS);
+//    }
 
     //////////////////////////////////////////////////////////////
     /////////////////////////////////////
@@ -483,81 +425,18 @@ public void goToVSlidePos(int targetPosition, double timeoutS) {
 
     }
 
-
+    public void goToPosStop (){
+        robot.LFMotor.setPower(0);
+        robot.LBMotor.setPower(0);
+        robot.RFMotor.setPower(0);
+        robot.RBMotor.setPower(0);
+    }
 
     ////////////////////////////////////////////////////////////
 
-    private void moveVSlideToPosition ( int targetPosition){
-        robot.VSMotorL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.VSMotorR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        telemetry.addData("targetPosition", targetPosition);
-        telemetry.addData("liftMotorL.getCurrentPosition()",robot.VSMotorL.getCurrentPosition());
-//        telemetry.addData("liftMotorR.getCurrentPosition()",robot.VSMotorR.getCurrentPosition());
-        telemetry.update();
-        robot.VSMotorL.setTargetPosition(-targetPosition);
-//        robot.VSMotorR.setTargetPosition(-targetPosition);
-        robot.VSMotorL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        robot.VSMotorR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.VSMotorL.setPower(+SLIDE_POWER_V);
-        robot.VSMotorR.setPower(+SLIDE_POWER_V);
-        move = true;
-        while (robot.VSMotorL.isBusy() && move) {
-            // Wait until the motor reaches the target position
-        }
-//        while (robot.VSMotorR.isBusy() && move) {
-        //           // Wait until the motor reaches the target position
-        //       }
-        telemetry.addData("targetPosition", targetPosition);
-        telemetry.addData("after while liftMotorL.getCurrentPosition()",robot.VSMotorL.getCurrentPosition());
-        telemetry.addData("after while liftMotorR.getCurrentPosition()",robot.VSMotorR.getCurrentPosition());
-        telemetry.update();
 
-        robot.VSMotorL.setPower(0);
-        robot.VSMotorR.setPower(0);
-        robot.VSMotorL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.VSMotorR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.VSMotorL.setZeroPowerBehavior((DcMotor.ZeroPowerBehavior.BRAKE));
-        robot.VSMotorR.setZeroPowerBehavior((DcMotor.ZeroPowerBehavior.BRAKE));
-        move = false;
-    }
-    public void moveDriveTrain(double x, double y, double h, double speed, double moveAccuracyX, double moveAccuracyY, double angleAccuracy, double timeoutS){
-        myGoToPos(x, y, h,speed,moveAccuracyX,moveAccuracyY,angleAccuracy,timeoutS);
-    }
-    public void goToHSlidePos(int targetPosition, double timeoutS) {
-        // 初始化 PID 控制器
-        pidControllerHS.reset();
-        pidControllerHS.enable();
-        pidControllerHS.setSetpoint(targetPosition);
-        pidControllerHS.setTolerance(10); // 允许误差范围
-        pidActiveHS = true; // 激活 PID 控制
-        runtime.reset(); // 重置计时器
 
-        while (opModeIsActive() && runtime.seconds() < timeoutS) {
-            if (!pidActiveHS) return;
-            int currentPositionH = robot.HSMotor.getCurrentPosition();
-
-            // 计算 PID 输出
-            double powerH = pidControllerHS.performPID(currentPositionH);
-
-            // 控制电机功率
-            robot.HSMotor.setPower(Range.clip(powerH * 0.6, -1.0, 1.0));
-
-            // 输出 Telemetry 信息
-            telemetry.addData("PID Target", targetPosition);
-            telemetry.addData("Current Position H", currentPositionH);
-            telemetry.addData("Power H", powerH);
-            telemetry.update();
-
-            // 检查是否达到目标位置
-            if (!pidActiveHS && Math.abs(robot.HSMotor.getCurrentPosition() - pidTargetPositionHS) > 10) {
-                robot.HSMotor.setPower(0.1); // 保持抗重力的微小功率
-                pidActiveHS = false; // 停止 PID 控制
-                break;
-            }
-        }
-
-        robot.HSMotor.setPower(0.1); // 防止震荡时继续保持微功率
-    } ///////////startVSlidePIDControl///////////////
+    ///////////startVSlidePIDControl///////////////
 
     /// 初始化 PID 控制器
     private void startVSlidePIDControl(int targetPosition) {
@@ -605,52 +484,6 @@ public void goToVSlidePos(int targetPosition, double timeoutS) {
 
 //////////////startVSlidePIDControl/////////////
 
-
-///////////startHSlidePIDControl///////////////
-
-    /// 初始化 PID 控制器
-    private void startHSlidePIDControl(int targetPosition) {
-        robot.HSMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        pidControllerHS.reset();
-        pidControllerHS.enable();
-        pidControllerHS.setSetpoint(targetPosition);
-        pidControllerHS.setTolerance(10); // 允许误差范围
-        pidTargetPositionHS = targetPosition;
-        pidActiveHS = true; // 激活 PID 控制
-    }
-    // 在主循环中调用的非阻塞 PID 控制逻辑
-    private void updateHSlidePIDControl() {
-        if (!pidActiveHS) return; // 如果 PID 未激活，直接返回
-
-        int currentPositionH = robot.HSMotor.getCurrentPosition();
-
-        // 计算 PID 输出
-        double powerH = pidControllerHS.performPID(currentPositionH);
-        robot.HSMotor.setPower(powerH*0.6);
-
-
-        // 输出 Telemetry 信息
-        telemetry.addData("PID Target", pidTargetPositionHS);
-        telemetry.addData("Current Position H", currentPositionH);
-        telemetry.addData("Power H", powerH);
-        telemetry.update();
-
-//        // 如果达到目标位置，停止滑轨运动，但保持抗重力功率
-//        if (pidControllerHS.onTarget()) {
-//            robot.VSMotorL.setPower(0.1); // 保持位置的最小功率
-//            robot.VSMotorR.setPower(0.1);
-//            pidActiveHS = false; // 停止 PID 控制
-//        }
-        // 在 updateVSlidePIDControl 中加入抗重力逻辑
-        if (!pidActiveHS && Math.abs(robot.HSMotor.getCurrentPosition() - pidTargetPositionHS) > 10) {
-            double holdPowerHS = pidControllerHS.performPID(robot.HSMotor.getCurrentPosition());
-            robot.HSMotor.setPower(holdPowerHS);
-            pidActiveHS = false; // 停止 PID 控制
-        }
-
-
-    }
-//////////////startHSlidePIDControl/////////////
 
 
     public void goToPos(double x, double y, double h, double speed, double moveAccuracyX, double moveAccuracyY, double angleAccuracy, double timeoutS) {
@@ -987,12 +820,169 @@ public void goToVSlidePos(int targetPosition, double timeoutS) {
         }
     }
 
-    public void goToPosStop (){
-        robot.LFMotor.setPower(0);
-        robot.LBMotor.setPower(0);
-        robot.RFMotor.setPower(0);
-        robot.RBMotor.setPower(0);
+
+
+    public void goToVSlidePos(int targetPosition, double timeoutS) {
+        robot.VSMotorL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//    robot.VSMotorR.setMode(DcMotor.RunMode.RUN_USING_ENCODER); // 初始化 PID 控制器
+        pidControllerVS.reset();
+        pidControllerVS.enable();
+        pidControllerVS.setSetpoint(targetPosition);
+        pidControllerVS.setTolerance(10); // 允许误差范围
+        pidActiveVS = true; // 激活 PID 控制
+
+        runtime.reset(); // 重置计时器
+
+        while (opModeIsActive() && runtime.seconds() < timeoutS) {
+            if (!pidActiveVS) return;
+            int currentPositionL = robot.VSMotorL.getCurrentPosition();
+
+            // 计算 PID 输出
+            double powerL = pidControllerVS.performPID(currentPositionL);
+
+            // 控制电机功率
+            robot.VSMotorL.setPower(Range.clip(powerL * 0.9, -1.0, 1.0));
+            robot.VSMotorR.setPower(Range.clip(powerL * 0.9, -1.0, 1.0));
+
+            // 输出 Telemetry 信息
+            telemetry.addData("PID Target", targetPosition);
+            telemetry.addData("Current Position VL", currentPositionL);
+            telemetry.addData("Power V", powerL);
+            telemetry.update();
+
+            // 检查是否达到目标位置
+            if (!pidActiveVS && Math.abs(robot.VSMotorL.getCurrentPosition() - pidTargetPositionVS) > 10) {
+                double holdPowerVS = pidControllerVS.performPID(robot.VSMotorL.getCurrentPosition());
+                robot.VSMotorL.setPower(holdPowerVS);
+                robot.VSMotorR.setPower(holdPowerVS);
+                pidActiveVS = false; // 停止 PID 控制
+                break;
+            }
+
+        }
+
+        robot.VSMotorL.setPower(0.0);
+        robot.VSMotorR.setPower(0.0); // 防止震荡时继续保持微功率
     }
+
+
+    private void moveVSlideToPosition ( int targetPosition){
+        robot.VSMotorL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.VSMotorR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        telemetry.addData("targetPosition", targetPosition);
+        telemetry.addData("liftMotorL.getCurrentPosition()",robot.VSMotorL.getCurrentPosition());
+//        telemetry.addData("liftMotorR.getCurrentPosition()",robot.VSMotorR.getCurrentPosition());
+        telemetry.update();
+        robot.VSMotorL.setTargetPosition(-targetPosition);
+//        robot.VSMotorR.setTargetPosition(-targetPosition);
+        robot.VSMotorL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        robot.VSMotorR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.VSMotorL.setPower(+SLIDE_POWER_V);
+        robot.VSMotorR.setPower(+SLIDE_POWER_V);
+        move = true;
+        while (robot.VSMotorL.isBusy() && move) {
+            // Wait until the motor reaches the target position
+        }
+//        while (robot.VSMotorR.isBusy() && move) {
+        //           // Wait until the motor reaches the target position
+        //       }
+        telemetry.addData("targetPosition", targetPosition);
+        telemetry.addData("after while liftMotorL.getCurrentPosition()",robot.VSMotorL.getCurrentPosition());
+        telemetry.addData("after while liftMotorR.getCurrentPosition()",robot.VSMotorR.getCurrentPosition());
+        telemetry.update();
+
+        robot.VSMotorL.setPower(0);
+        robot.VSMotorR.setPower(0);
+        robot.VSMotorL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.VSMotorR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.VSMotorL.setZeroPowerBehavior((DcMotor.ZeroPowerBehavior.BRAKE));
+        robot.VSMotorR.setZeroPowerBehavior((DcMotor.ZeroPowerBehavior.BRAKE));
+        move = false;
+    }
+
+
+    public void goToHSlidePos(int targetPosition, double timeoutS) {
+        // 初始化 PID 控制器
+        pidControllerHS.reset();
+        pidControllerHS.enable();
+        pidControllerHS.setSetpoint(targetPosition);
+        pidControllerHS.setTolerance(10); // 允许误差范围
+        pidActiveHS = true; // 激活 PID 控制
+        runtime.reset(); // 重置计时器
+
+        while (opModeIsActive() && runtime.seconds() < timeoutS) {
+            if (!pidActiveHS) return;
+            int currentPositionH = robot.HSMotor.getCurrentPosition();
+
+            // 计算 PID 输出
+            double powerH = pidControllerHS.performPID(currentPositionH);
+
+            // 控制电机功率
+            robot.HSMotor.setPower(Range.clip(powerH * 0.6, -1.0, 1.0));
+
+            // 输出 Telemetry 信息
+            telemetry.addData("PID Target", targetPosition);
+            telemetry.addData("Current Position H", currentPositionH);
+            telemetry.addData("Power H", powerH);
+            telemetry.update();
+
+            // 检查是否达到目标位置
+            if (!pidActiveHS && Math.abs(robot.HSMotor.getCurrentPosition() - pidTargetPositionHS) > 10) {
+                robot.HSMotor.setPower(0.1); // 保持抗重力的微小功率
+                pidActiveHS = false; // 停止 PID 控制
+                break;
+            }
+        }
+
+        robot.HSMotor.setPower(0.1); // 防止震荡时继续保持微功率
+    }
+
+///////////startHSlidePIDControl///////////////
+
+    /// 初始化 PID 控制器
+    private void startHSlidePIDControl(int targetPosition) {
+        robot.HSMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        pidControllerHS.reset();
+        pidControllerHS.enable();
+        pidControllerHS.setSetpoint(targetPosition);
+        pidControllerHS.setTolerance(10); // 允许误差范围
+        pidTargetPositionHS = targetPosition;
+        pidActiveHS = true; // 激活 PID 控制
+    }
+    // 在主循环中调用的非阻塞 PID 控制逻辑
+    private void updateHSlidePIDControl() {
+        if (!pidActiveHS) return; // 如果 PID 未激活，直接返回
+
+        int currentPositionH = robot.HSMotor.getCurrentPosition();
+
+        // 计算 PID 输出
+        double powerH = pidControllerHS.performPID(currentPositionH);
+        robot.HSMotor.setPower(powerH*0.6);
+
+
+        // 输出 Telemetry 信息
+        telemetry.addData("PID Target", pidTargetPositionHS);
+        telemetry.addData("Current Position H", currentPositionH);
+        telemetry.addData("Power H", powerH);
+        telemetry.update();
+
+//        // 如果达到目标位置，停止滑轨运动，但保持抗重力功率
+//        if (pidControllerHS.onTarget()) {
+//            robot.VSMotorL.setPower(0.1); // 保持位置的最小功率
+//            robot.VSMotorR.setPower(0.1);
+//            pidActiveHS = false; // 停止 PID 控制
+//        }
+        // 在 updateVSlidePIDControl 中加入抗重力逻辑
+        if (!pidActiveHS && Math.abs(robot.HSMotor.getCurrentPosition() - pidTargetPositionHS) > 10) {
+            double holdPowerHS = pidControllerHS.performPID(robot.HSMotor.getCurrentPosition());
+            robot.HSMotor.setPower(holdPowerHS);
+            pidActiveHS = false; // 停止 PID 控制
+        }
+
+
+    }
+//////////////startHSlidePIDControl/////////////
+
     /*
     public void goToStart(double x, double y, double h, double speed, int sleep_time){
 
