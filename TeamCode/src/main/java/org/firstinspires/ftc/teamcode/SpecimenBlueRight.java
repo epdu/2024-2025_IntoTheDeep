@@ -169,8 +169,8 @@ public class SpecimenBlueRight extends LinearOpMode {
         startDriveMovement(670, 0, Math.toRadians(0), 0.6, 5, 5, Math.toRadians(3), 2);
         robot.OArmL.setPosition(0.97);//  good
         robot.OArmR.setPosition(0.97);//
-    //    robot.OArmL.setPosition(OArmRearSpecimenPick);
-  //      robot.OArmR.setPosition(OArmRearSpecimenPick);
+//    robot.OArmL.setPosition(OArmRearSpecimenPick);
+//      robot.OArmR.setPosition(OArmRearSpecimenPick);
 
 //            goToVSlidePos(POSITION_Y_HIGH,0.5);
         startDriveMovement(950, 0, Math.toRadians(0), 0.3, 5, 5, Math.toRadians(3), 1);
@@ -286,8 +286,8 @@ public class SpecimenBlueRight extends LinearOpMode {
 
             updateVSlidePIDControl(); // 更新滑轨位置
             if (movementActive) {
-                myGoToPos(targetX, targetY,targetH,moveSpeed,targetmoveAccuracyX,targetmoveAccuracyY,targetangleAccuracy,targettimeoutS);
-//                myGoToPosSingle(targetX, targetY, targetH, moveSpeed); // 更新驱动位置
+//                myGoToPos(targetX, targetY,targetH,moveSpeed,targetmoveAccuracyX,targetmoveAccuracyY,targetangleAccuracy,targettimeoutS);
+                myGoToPosSingle(targetX, targetY, targetH, moveSpeed); // 更新驱动位置
             }
 
 
@@ -313,7 +313,7 @@ public void startDriveMovement(double x, double y, double h, double speed, doubl
     this.targetangleAccuracy=angleAccuracy;
     this.targettimeoutS=timeoutS;
     this.movementActive = true;
-//   myGoToPos(targetX, targetY,targetH,moveSpeed,targetmoveAccuracyX,targetmoveAccuracyY,targetangleAccuracy,targettimeoutS);
+ //   myGoToPos(targetX, targetY,targetH,moveSpeed,targetmoveAccuracyX,targetmoveAccuracyY,targetangleAccuracy,targettimeoutS);
 
 }
 
