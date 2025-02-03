@@ -178,7 +178,7 @@ public class SpecimenBlueRighttemp extends LinearOpMode {
         startVSlideMovement(POSITION_Y_HIGH);
         robot.OArmL.setPosition(0.97);//  good
         robot.OArmR.setPosition(0.97);//
-
+//
 //
 //        startDriveMovement(950, 0, Math.toRadians(0), 0.3, 5, 5, Math.toRadians(3), 1);
 //        startVSlideMovement(POSITION_Y_HIGHHH);
@@ -186,7 +186,7 @@ public class SpecimenBlueRighttemp extends LinearOpMode {
 //        startVSlideMovement(POSITION_A_BOTTOM);
 //        robot.OArmL.setPosition(OArmRearSpecimenPick);
 //        robot.OArmR.setPosition(OArmRearSpecimenPick);
-//
+
 
 
 
@@ -344,7 +344,7 @@ public void startDriveMovement(double x, double y, double h, double speed, doubl
     this.targetangleAccuracy=angleAccuracy;
     this.targettimeoutS=timeoutS;
     this.movementActive = true;
-    myGoToPos(targetX, targetY,targetH,moveSpeed,targetmoveAccuracyX,targetmoveAccuracyY,targetangleAccuracy,targettimeoutS);
+//    myGoToPos(targetX, targetY,targetH,moveSpeed,targetmoveAccuracyX,targetmoveAccuracyY,targetangleAccuracy,targettimeoutS);
 
 }
 
