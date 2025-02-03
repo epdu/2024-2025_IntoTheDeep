@@ -267,11 +267,7 @@ public class SpecimenBlueRight extends LinearOpMode {
 //        }
 //        goToVSlidePos(POSITION_A_BOTTOM,2);
 //
-//
-//
-//
-//
-//
+
 //        myGoToPos(670, 0, Math.toRadians(0), 0.6, 5, 5, Math.toRadians(3), 2);
 ////            myGoToPos(600, 1000, Math.toRadians(0), 0.3, 5, 5, Math.toRadians(3), 2);
 //        myGoToPos(60, -1150, Math.toRadians(0), 0.6, 5, 5, Math.toRadians(3), 2);
