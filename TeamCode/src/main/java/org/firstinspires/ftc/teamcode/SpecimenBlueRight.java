@@ -170,7 +170,8 @@ public class SpecimenBlueRight extends LinearOpMode {
         startVSlideMovement(POSITION_Y_HIGH);
         robot.OArmL.setPosition(0.97);//  good
         robot.OArmR.setPosition(0.97);//
-
+        robot.OArmL.setPosition(OArmRearSpecimenPick);
+        robot.OArmR.setPosition(OArmRearSpecimenPick);
 
 //            goToVSlidePos(POSITION_Y_HIGH,0.5);
         startDriveMovement(950, 0, Math.toRadians(0), 0.3, 5, 5, Math.toRadians(3), 1);
@@ -295,6 +296,7 @@ public class SpecimenBlueRight extends LinearOpMode {
 
             updateVSlidePIDControl(); // 更新滑轨位置
         }
+
 
 
     }
