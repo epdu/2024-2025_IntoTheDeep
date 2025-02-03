@@ -189,8 +189,10 @@ public class HardwareTeletubbies
         OArmL.setPwmRange(new PwmControl.PwmRange(500, 2500));
         OArmR.setPwmRange(new PwmControl.PwmRange(500, 2500));
         OArmR.setDirection(Servo.Direction.REVERSE);
-        OArmL.setPosition(0.97);//  good
-        OArmR.setPosition(0.97);//
+        OArmL.setPosition(0.8);// a lil higher than below
+        OArmR.setPosition(0.8);//
+//        OArmL.setPosition(0.97);//  good
+//        OArmR.setPosition(0.97);//
 
 ////End Definition and Initialization of outtake ArmL and ArmR Servos
 //////////////////////////////////////////////////////////////////////////////////////////////////

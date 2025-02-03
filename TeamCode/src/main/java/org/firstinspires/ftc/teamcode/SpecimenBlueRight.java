@@ -89,7 +89,7 @@ public class SpecimenBlueRight extends LinearOpMode {
     private PIDController pidController = new PIDController(0.005, 0.0000005, 0.0002);// (0.005, 0.0000005, 0.0002) good for target 300 (1.9, 0.014, 4.9)
     // Tune these values  POSITION_B_EXTRUDETransfer = 600;//horizontal slides  out //600 is too much
     GoBildaPinpointDriver odo; // Declare OpMode member for the Odometry Computer
-    //Starting location
+    //Starting location0
     public double GlobalX = 0;
     public double GlobalY = 0;
     public double GlobalH = 0;
@@ -159,8 +159,12 @@ public class SpecimenBlueRight extends LinearOpMode {
             // TODO: Need to do red or blue according to alliance color.
 //            goToVSlidePos(POSITION_Y_LOW,2);
             goToVSlidePos(POSITION_Y_HIGH,0.5);
-            myGoToPos(670, 0, Math.toRadians(0), 0.4, 5, 5, Math.toRadians(3), 2);
-            myGoToPos(900, 0, Math.toRadians(0), 0.3, 5, 5, Math.toRadians(3), 2);
+            robot.OArmL.setPosition(0.97);//  good
+            robot.OArmR.setPosition(0.97);//
+
+            myGoToPos(670, 0, Math.toRadians(0), 0.6, 5, 5, Math.toRadians(3), 2);
+//            goToVSlidePos(POSITION_Y_HIGH,0.5);
+            myGoToPos(950, 0, Math.toRadians(0), 0.3, 5, 5, Math.toRadians(3), 2);
             goToVSlidePos(POSITION_Y_HIGHHH,2);
             sleep(300);
             robot.OClaw.setPosition(OClawOpen); //
@@ -175,24 +179,105 @@ public class SpecimenBlueRight extends LinearOpMode {
                 // Other tasks can be processed here
             }
             goToVSlidePos(POSITION_A_BOTTOM,2);
-            myGoToPos(670, 0, Math.toRadians(0), 0.4, 5, 5, Math.toRadians(3), 2);
-            myGoToPos(670, -750, Math.toRadians(0), 0.35, 5, 5, Math.toRadians(3), 2);
-            myGoToPos(1600, -750, Math.toRadians(0), 0.4, 5, 5, Math.toRadians(3), 2);
-            myGoToPos(1600, -1300, Math.toRadians(0), 0.35, 5, 5, Math.toRadians(3), 2);
-            myGoToPos(200, -1300, Math.toRadians(0), 0.4, 5, 5, Math.toRadians(3), 2);
-            myGoToPos(10, -1300, Math.toRadians(0), 0.3, 5, 5, Math.toRadians(3), 2);
+            sleep(300);
+
+
+
+
+            myGoToPos(670, 0, Math.toRadians(0), 0.6, 5, 5, Math.toRadians(3), 2);
+//            myGoToPos(670, -750, Math.toRadians(0), 0.6, 5, 5, Math.toRadians(3), 2);
+//            myGoToPos(1600, -750, Math.toRadians(0), 0.6, 5, 5, Math.toRadians(3), 2);
+//            myGoToPos(1600, -1150, Math.toRadians(0), 0.6, 5, 5, Math.toRadians(3), 2);
+            sleep(1000);
+            myGoToPos(200, -1150, Math.toRadians(0), 0.6, 5, 5, Math.toRadians(3), 2);
+            myGoToPos(50, -1150, Math.toRadians(0), 0.55, 5, 5, Math.toRadians(3), 2);
+////            goToPosStop ();
             sleep(600);
-            myGoToPos(-20, -1300, Math.toRadians(0), 0.3, 5, 5, Math.toRadians(3), 2);
+            myGoToPos(0, -1150, Math.toRadians(0), 0.3, 5, 5, Math.toRadians(3), 2);
             robot.OClaw.setPosition(OClawSpecimenChambers); //
+//            delayTimer.reset();
+//            while (delayTimer.milliseconds() < 200 && opModeIsActive()) {
+//                // Other tasks can be processed here
+//            }
+            sleep(500);
+            robot.OArmL.setPosition(0.97);
+            robot.OArmR.setPosition(0.97);
+            myGoToPos(200, 0, Math.toRadians(0), 0.6, 5, 5, Math.toRadians(3), 2);
+////            myGoToPos(100, 0, Math.toRadians(0), 0.6, 5, 5, Math.toRadians(3), 2);
+            goToVSlidePos(POSITION_Y_HIGH,1);
+//            robot.OArmL.setPosition(OArmTransferPosition);
+//            robot.OArmR.setPosition(OArmTransferPosition);
+            //just added
+            myGoToPos(670, 150, Math.toRadians(0), 0.6, 5, 5, Math.toRadians(3), 2);
+//            goToVSlidePos(POSITION_Y_HIGH,0.5);
+            myGoToPos(950, 150, Math.toRadians(0), 0.3, 5, 5, Math.toRadians(3), 2);
+            goToVSlidePos(POSITION_Y_HIGHHH,2);
+            sleep(300);
+            robot.OClaw.setPosition(OClawOpen);
+
+            delayTimer.reset();
+            while (delayTimer.milliseconds() < 200 && opModeIsActive()) {
+//                // Other tasks can be processed here
+            }
+//            robot.OArmL.setPosition(OArmRearSpecimenPick);
+//            robot.OArmR.setPosition(OArmRearSpecimenPick);
+//            delayTimer.reset();
+//            while (delayTimer.milliseconds() < 200 && opModeIsActive()) {
+//                // Other tasks can be processed here
+//            }
+            goToVSlidePos(POSITION_A_BOTTOM,2);
+            myGoToPos(25, -1150, Math.toRadians(0), 0.6, 5, 5, Math.toRadians(3), 2);
+            sleep(300);
+            myGoToPos(-5, -1150, Math.toRadians(0), 0.3, 5, 5, Math.toRadians(3), 2);
+            robot.OClaw.setPosition(OClawSpecimenChambers); //
+            sleep(500);
             delayTimer.reset();
             while (delayTimer.milliseconds() < 200 && opModeIsActive()) {
                 // Other tasks can be processed here
             }
-            myGoToPos(100, -1300, Math.toRadians(0), 0.4, 5, 5, Math.toRadians(3), 2);
-            myGoToPos(100, 0, Math.toRadians(0), 0.4, 5, 5, Math.toRadians(3), 2);
-            goToVSlidePos(POSITION_Y_HIGH,1);
-            robot.OArmL.setPosition(OArmTransferPosition);
-            robot.OArmR.setPosition(OArmTransferPosition);
+            myGoToPos(100, -1150, Math.toRadians(0), 0.6, 5, 5, Math.toRadians(3), 2);
+            myGoToPos(100, 0, Math.toRadians(0), 0.6, 5, 5, Math.toRadians(3), 2);
+            robot.OArmL.setPosition(0.97);
+            robot.OArmR.setPosition(0.97);
+            goToVSlidePos(POSITION_Y_HIGH,1);myGoToPos(670, 0, Math.toRadians(0), 0.6, 5, 5, Math.toRadians(3), 2);
+//            goToVSlidePos(POSITION_Y_HIGH,0.5);
+            myGoToPos(950, 1000, Math.toRadians(0), 0.3, 5, 5, Math.toRadians(3), 2);
+            goToVSlidePos(POSITION_Y_HIGHHH,2);
+            sleep(300);
+            robot.OClaw.setPosition(OClawOpen); //
+            delayTimer.reset();
+            while (delayTimer.milliseconds() < 200 && opModeIsActive()) {
+                // Other tasks can be processed here
+            }
+            robot.OArmL.setPosition(OArmRearSpecimenPick);
+            robot.OArmR.setPosition(OArmRearSpecimenPick);
+            delayTimer.reset();
+            while (delayTimer.milliseconds() < 200 && opModeIsActive()) {
+                // Other tasks can be processed here
+            }
+            goToVSlidePos(POSITION_A_BOTTOM,2);
+
+
+
+
+
+
+            myGoToPos(670, 0, Math.toRadians(0), 0.6, 5, 5, Math.toRadians(3), 2);
+//            myGoToPos(600, 1000, Math.toRadians(0), 0.3, 5, 5, Math.toRadians(3), 2);
+            myGoToPos(60, -1150, Math.toRadians(0), 0.6, 5, 5, Math.toRadians(3), 2);
+            sleep(300);
+//            myGoToPos(, -1150, Math.toRadians(0), 0.3, 5, 5, Math.toRadians(3), 2);
+            robot.OClaw.setPosition(OClawSpecimenChambers); //
+            robot.OArmL.setPosition(0.97);//  good
+            robot.OArmR.setPosition(0.97);//
+            goToVSlidePos(POSITION_A_BOTTOM,2);
+            startHSlidePIDControl(0);
+
+            delayTimer.reset();
+            while (delayTimer.milliseconds() < 200 && opModeIsActive()) {
+                // Other tasks can be processed here
+            }
+
 
 
 
