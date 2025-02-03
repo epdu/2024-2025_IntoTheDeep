@@ -283,13 +283,13 @@ public class SpecimenBlueRight extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-//            updateVSlidePIDControl(); // 更新滑轨位置
+            updateVSlidePIDControl(); // 更新滑轨位置
             if (movementActive) {
 //                myGoToPos(targetX, targetY,targetH,moveSpeed,targetmoveAccuracyX,targetmoveAccuracyY,targetangleAccuracy,targettimeoutS);
                 myGoToPosSingle(targetX, targetY, targetH, moveSpeed); // 更新驱动位置
             }
 
-            updateVSlidePIDControl(); // 更新滑轨位置
+
         }
 
 
