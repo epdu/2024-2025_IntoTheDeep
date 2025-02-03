@@ -201,7 +201,6 @@ public class SpecimenBlueRight extends LinearOpMode {
         sleep(300);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
-
 //
 //        myGoToPos(670, 0, Math.toRadians(0), 0.6, 5, 5, Math.toRadians(3), 2);
 ////            myGoToPos(670, -750, Math.toRadians(0), 0.6, 5, 5, Math.toRadians(3), 2);
