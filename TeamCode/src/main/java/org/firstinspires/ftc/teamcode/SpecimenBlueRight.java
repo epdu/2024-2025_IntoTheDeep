@@ -165,9 +165,8 @@ public class SpecimenBlueRight extends LinearOpMode {
         // TODO: Need to do red or blue according to alliance color.
 //            goToVSlidePos(POSITION_Y_LOW,2);
 
-
-        startDriveMovement(670, 0, Math.toRadians(0), 0.6, 5, 5, Math.toRadians(3), 2);
         startVSlideMovement(POSITION_Y_HIGH);
+        startDriveMovement(670, 0, Math.toRadians(0), 0.6, 5, 5, Math.toRadians(3), 2);
         robot.OArmL.setPosition(0.97);//  good
         robot.OArmR.setPosition(0.97);//
         robot.OArmL.setPosition(OArmRearSpecimenPick);
@@ -178,10 +177,7 @@ public class SpecimenBlueRight extends LinearOpMode {
         startVSlideMovement(POSITION_Y_HIGHHH);
         sleep(300);
         robot.OClaw.setPosition(OClawOpen); //
-        delayTimer.reset();
-        while (delayTimer.milliseconds() < 200 && opModeIsActive()) {
-            // Other tasks can be processed here
-        }
+
 
         startVSlideMovement(POSITION_A_BOTTOM);
         robot.OArmL.setPosition(OArmRearSpecimenPick);
@@ -288,13 +284,13 @@ public class SpecimenBlueRight extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-//            updateVSlidePIDControl(); // 更新滑轨位置
+            updateVSlidePIDControl(); // 更新滑轨位置
             if (movementActive) {
-                myGoToPos(targetX, targetY,targetH,moveSpeed,targetmoveAccuracyX,targetmoveAccuracyY,targetangleAccuracy,targettimeoutS);
-//                myGoToPosSingle(targetX, targetY, targetH, moveSpeed); // 更新驱动位置
+//                myGoToPos(targetX, targetY,targetH,moveSpeed,targetmoveAccuracyX,targetmoveAccuracyY,targetangleAccuracy,targettimeoutS);
+                myGoToPosSingle(targetX, targetY, targetH, moveSpeed); // 更新驱动位置
             }
 
-            updateVSlidePIDControl(); // 更新滑轨位置
+
         }
 
 
@@ -317,7 +313,7 @@ public void startDriveMovement(double x, double y, double h, double speed, doubl
     this.targetangleAccuracy=angleAccuracy;
     this.targettimeoutS=timeoutS;
     this.movementActive = true;
-    //myGoToPos(targetX, targetY,targetH,moveSpeed,targetmoveAccuracyX,targetmoveAccuracyY,targetangleAccuracy,targettimeoutS);
+   myGoToPos(targetX, targetY,targetH,moveSpeed,targetmoveAccuracyX,targetmoveAccuracyY,targetangleAccuracy,targettimeoutS);
 
 }
 
@@ -464,12 +460,6 @@ public void startDriveMovement(double x, double y, double h, double speed, doubl
         telemetry.addData("Power L", powerL);
         telemetry.update();
 
-//        // 如果达到目标位置，停止滑轨运动，但保持抗重力功率
-//        if (pidControllerVS.onTarget()) {
-//            robot.VSMotorL.setPower(0.1); // 保持位置的最小功率
-//            robot.VSMotorR.setPower(0.1);
-//            pidActiveVS = false; // 停止 PID 控制
-//        }
         // 在 updateVSlidePIDControl 中加入抗重力逻辑
         if (!pidActiveVS && Math.abs(robot.VSMotorL.getCurrentPosition() - pidTargetPositionVS) > 10) {
             double holdPowerVS = pidControllerVS.performPID(robot.VSMotorL.getCurrentPosition());
