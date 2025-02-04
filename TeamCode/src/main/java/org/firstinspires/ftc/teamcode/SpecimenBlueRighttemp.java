@@ -196,8 +196,9 @@ public class SpecimenBlueRighttemp extends LinearOpMode {
         waitForStart();
 ////////////////////////////tune PIDｏｆ　Ｙ　/////////////////////////////////////////////////
         myGoToPos(670, 0, Math.toRadians(0), 0.3, 5, 5, Math.toRadians(3), 1);
-
 /////////////////////////////////////////////////////////////////////////////////////
+
+
 
 // the first preload specimen
         //////////////////////////////////////////move robot close to chamber and adjust slides high///////////
@@ -347,7 +348,12 @@ public class SpecimenBlueRighttemp extends LinearOpMode {
         goToVSlidePos(POSITION_A_BOTTOM,1.5);
         robot.OArmL.setPosition(OArmRearSpecimenPick);
         robot.OArmR.setPosition(OArmRearSpecimenPick);
-//        sleep(500);
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+        //        sleep(500);
 //        robot.OArmL.setPosition(0.97);
 //        robot.OArmR.setPosition(0.97);
 //        myGoToPos(200, 0, Math.toRadians(0), 0.6, 5, 5, Math.toRadians(3), 2);
