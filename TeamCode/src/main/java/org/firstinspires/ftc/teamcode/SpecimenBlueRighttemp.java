@@ -176,25 +176,28 @@ public class SpecimenBlueRighttemp extends LinearOpMode {
         robot.OArmL.setPosition(0.97);//  good
         robot.OArmR.setPosition(0.97);//
         while (opModeIsActive()) {
-            if (movementActive) {
-               myGoToPos(targetX,targetY,targetH,moveSpeed,targetmoveAccuracyX,targetmoveAccuracyY,targetangleAccuracy,targettimeoutS);
- //            myGoToPosSingle(targetX, targetY, targetH, moveSpeed); // 更新驱动位置
-            }
             updateVSlidePIDControl(); // 更新滑轨位置
+            if (movementActive) {
+ //              myGoToPos(targetX,targetY,targetH,moveSpeed,targetmoveAccuracyX,targetmoveAccuracyY,targetangleAccuracy,targettimeoutS);
+             myGoToPosSingle(targetX, targetY, targetH, moveSpeed); // 更新驱动位置
+            }
+
             if (!movementActive && !pidActiveVS){
                 break;
             }
         }
 
-        startDriveMovement(950, 0, Math.toRadians(0), 0.3, 5, 5, Math.toRadians(3), 1);
-        startVSlideMovement(POSITION_Y_HIGHHH);
-//        robot.OClaw.setPosition(OClawOpen);
-//        startVSlideMovement(POSITION_A_BOTTOM);
-//        robot.OArmL.setPosition(OArmRearSpecimenPick);
-//        robot.OArmR.setPosition(OArmRearSpecimenPick);
-
-
-
+        myGoToPos(950, 0, Math.toRadians(0), 0.3, 5, 5, Math.toRadians(3), 1);
+        goToVSlidePos(POSITION_Y_HIGHHH,1);
+        robot.OClaw.setPosition(OClawOpen);
+        sleep(300);
+        goToVSlidePos(POSITION_A_BOTTOM,1.5);
+        robot.OArmL.setPosition(OArmRearSpecimenPick);
+        robot.OArmR.setPosition(OArmRearSpecimenPick);
+        myGoToPos(670, 0, Math.toRadians(0), 0.6, 5, 5, Math.toRadians(3), 2);
+        robot.OArmL.setPosition(OArmRearSpecimenPick);
+        robot.OArmR.setPosition(OArmRearSpecimenPick);
+        myGoToPos(200, -1150, Math.toRadians(0), 0.6, 5, 5, Math.toRadians(3), 2);
 
 //            goToVSlidePos(POSITION_Y_HIGH,0.5);
 
@@ -484,7 +487,10 @@ public void goToVSlidePos(int targetPosition, double timeoutS) {
         telemetry.addData("GlobalY", GlobalY);
         telemetry.addData("GlobalH", Math.toDegrees(GlobalH));
         telemetry.update();
-
+        if (((Math.abs(-x + GlobalX) <= targetmoveAccuracyX && Math.abs(-y + GlobalY) <= targetmoveAccuracyY && Math.abs(angleWrapRad(-h + GlobalH)) <= targetangleAccuracy)) || (runtime.seconds() >= targettimeoutS))
+        {
+            movementActive = false;
+        }
     }
 
 
@@ -598,7 +604,7 @@ public void goToVSlidePos(int targetPosition, double timeoutS) {
 //            pidActiveVS = false; // 停止 PID 控制
 //        }
         // 在 updateVSlidePIDControl 中加入抗重力逻辑
-        if (!pidActiveVS && Math.abs(robot.VSMotorL.getCurrentPosition() - pidTargetPositionVS) > 10) {
+        if (pidActiveVS && Math.abs(robot.VSMotorL.getCurrentPosition() - pidTargetPositionVS) < 10) {
             double holdPowerVS = pidControllerVS.performPID(robot.VSMotorL.getCurrentPosition());
             robot.VSMotorL.setPower(holdPowerVS);
             robot.VSMotorR.setPower(holdPowerVS);
