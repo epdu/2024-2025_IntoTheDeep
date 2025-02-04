@@ -181,7 +181,7 @@ public class SpecimenBlueRighttemp extends LinearOpMode {
  //            myGoToPosSingle(targetX, targetY, targetH, moveSpeed); // 更新驱动位置
             }
             updateVSlidePIDControl(); // 更新滑轨位置
-            if (!movementActive && pidActiveVS){
+            if (!movementActive && !pidActiveVS){
                 break;
             }
         }
