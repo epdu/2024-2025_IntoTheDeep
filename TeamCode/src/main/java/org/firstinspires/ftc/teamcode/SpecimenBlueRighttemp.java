@@ -200,8 +200,7 @@ public class SpecimenBlueRighttemp extends LinearOpMode {
         myGoToPos(200, -1150, Math.toRadians(0), 0.6, 5, 5, Math.toRadians(3), 2);
 
 //            goToVSlidePos(POSITION_Y_HIGH,0.5);
-
-        //
+//
 //        delayTimer.reset();
 //        while (delayTimer.milliseconds() < 200 && opModeIsActive()) {
 //            // Other tasks can be processed here
