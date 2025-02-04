@@ -28,7 +28,6 @@ import static org.firstinspires.ftc.teamcode.Constants_CS.POSITION_A_BOTTOM;
 import static org.firstinspires.ftc.teamcode.Constants_CS.POSITION_Y_HIGH;
 import static org.firstinspires.ftc.teamcode.Constants_CS.POSITION_Y_HIGHHH;
 import static org.firstinspires.ftc.teamcode.Constants_CS.SLIDE_POWER_V;
-
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.Pose2d;
@@ -37,12 +36,37 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
-
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import org.firstinspires.ftc.teamcode.roadrunner.PinpointDrive;
+import java.util.Locale;
+import static org.firstinspires.ftc.teamcode.Constants_CS.*;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
+//import org.firstinspires.ftc.teamcode.notUsing.GoBildaPinpointDriver;
+import org.firstinspires.ftc.teamcode.roadrunner.PinpointDrive;
+import java.util.Locale;
+import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.roadrunner.PinpointDrive;
 import java.util.Locale;
 
 /*
@@ -78,7 +102,7 @@ public class SpecimenBlueRighttemp extends LinearOpMode {
 
 
     public float DriveTrains_ReducePOWER=0.75f;
-    //   DriveTrains_ReducePOWER = 0.75f;
+//   DriveTrains_ReducePOWER = 0.75f;
 //    DriveTrains_ReducePOWER = speedLimiterSlower;//************************
     HardwareTeletubbies robot = new HardwareTeletubbies();
     public String fieldOrRobotCentric = "robot";
@@ -167,10 +191,13 @@ public class SpecimenBlueRighttemp extends LinearOpMode {
 
 //        Pose2d currentPose = drive.getPose();
         // Wait for the game to start (driver presses START)
+
+
         waitForStart();
 
 
-
+// the first preload specimen
+        //////////////////////////////////////////move robot close to chamber and adjust slides high///////////
         startDriveMovement(670, 0, Math.toRadians(0), 0.6, 5, 5, Math.toRadians(3), 2);
         startVSlideMovement(POSITION_Y_HIGH);
         robot.OArmL.setPosition(0.97);//  good
@@ -178,8 +205,7 @@ public class SpecimenBlueRighttemp extends LinearOpMode {
         while (opModeIsActive()) {
             updateVSlidePIDControl(); // 更新滑轨位置
             if (movementActive) {
- //              myGoToPos(targetX,targetY,targetH,moveSpeed,targetmoveAccuracyX,targetmoveAccuracyY,targetangleAccuracy,targettimeoutS);
-             myGoToPosSingle(targetX, targetY, targetH, moveSpeed); // 更新驱动位置
+              myGoToPosSingle(targetX, targetY, targetH, moveSpeed); // 更新驱动位置
             }
 
             if (!movementActive && !pidActiveVS){
@@ -188,31 +214,145 @@ public class SpecimenBlueRighttemp extends LinearOpMode {
         }
 
         myGoToPos(950, 0, Math.toRadians(0), 0.3, 5, 5, Math.toRadians(3), 1);
-        goToVSlidePos(POSITION_Y_HIGHHH,1);
-        robot.OClaw.setPosition(OClawOpen);
         sleep(300);
+        ////////////////////////////////////in front of chamber and ready to hang////////////////////////////
+        goToVSlidePos(POSITION_Y_HIGHHH,1);
+        sleep(300);
+        robot.OClaw.setPosition(OClawOpen);
+        myGoToPos(670, 0, Math.toRadians(0), 0.3, 5, 5, Math.toRadians(3), 1);
         goToVSlidePos(POSITION_A_BOTTOM,1.5);
         robot.OArmL.setPosition(OArmRearSpecimenPick);
         robot.OArmR.setPosition(OArmRearSpecimenPick);
-        myGoToPos(670, 0, Math.toRadians(0), 0.6, 5, 5, Math.toRadians(3), 2);
+        ////////////////////////////////////finishing hanging and reset claw and arms/////////////////////////////
+        myGoToPos(200, -1150, Math.toRadians(0), 0.6, 5, 5, Math.toRadians(3), 2);
+        sleep(1000);
+        ///////////////////////////////////move to front of human player let human player to line the specimen up with claw///////
+// the second preload specimen
+        myGoToPos(0, -1150, Math.toRadians(0), 0.6, 5, 5, Math.toRadians(3), 2);
+        robot.OClaw.setPosition(OClawSpecimenChambers);
+            delayTimer.reset();
+            while (delayTimer.milliseconds() < 200 && opModeIsActive()) {
+                // Other tasks can be processed here
+            }
+        myGoToPos(200, -1150, Math.toRadians(0), 0.6, 5, 5, Math.toRadians(3), 2);robot.OArmL.setPosition(0.97);
+        robot.OArmR.setPosition(0.97);
+        myGoToPos(200, 0, Math.toRadians(0), 0.6, 5, 5, Math.toRadians(3), 2);
+
+
+        startDriveMovement(670, 0, Math.toRadians(0), 0.6, 5, 5, Math.toRadians(3), 2);
+        startVSlideMovement(POSITION_Y_HIGH);
+        while (opModeIsActive()) {
+            updateVSlidePIDControl(); // 更新滑轨位置
+            if (movementActive) {
+                myGoToPosSingle(targetX, targetY, targetH, moveSpeed); // 更新驱动位置
+            }
+
+            if (!movementActive && !pidActiveVS){
+                break;
+            }
+        }
+        myGoToPos(950, 0, Math.toRadians(0), 0.3, 5, 5, Math.toRadians(3), 1);
+        sleep(300);
+        goToVSlidePos(POSITION_Y_HIGHHH,1);
+        sleep(300);
+        robot.OClaw.setPosition(OClawOpen);
+        myGoToPos(670, 0, Math.toRadians(0), 0.3, 5, 5, Math.toRadians(3), 1);
+        goToVSlidePos(POSITION_A_BOTTOM,1.5);
         robot.OArmL.setPosition(OArmRearSpecimenPick);
         robot.OArmR.setPosition(OArmRearSpecimenPick);
+// the third  on field specimen（left）
+
+        myGoToPos(670, -750, Math.toRadians(0), 0.6, 5, 5, Math.toRadians(3), 2);
+        myGoToPos(1600, -750, Math.toRadians(0), 0.6, 5, 5, Math.toRadians(3), 2);
+        myGoToPos(1600, -1150, Math.toRadians(0), 0.6, 5, 5, Math.toRadians(3), 2);
         myGoToPos(200, -1150, Math.toRadians(0), 0.6, 5, 5, Math.toRadians(3), 2);
+        myGoToPos(50, -1150, Math.toRadians(0), 0.55, 5, 5, Math.toRadians(3), 2);
+        goToPosStop ();
+        sleep(600);
+        myGoToPos(0, -1150, Math.toRadians(0), 0.3, 5, 5, Math.toRadians(3), 2);
+        robot.OClaw.setPosition(OClawSpecimenChambers);
+        delayTimer.reset();
+        while (delayTimer.milliseconds() < 200 && opModeIsActive()) {
+                // Other tasks can be processed here
+        }
+        myGoToPos(50, -1150, Math.toRadians(0), 0.55, 5, 5, Math.toRadians(3), 2);
+        robot.OArmR.setPosition(0.97);
+        myGoToPos(200, 0, Math.toRadians(0), 0.6, 5, 5, Math.toRadians(3), 2);
 
+
+        startDriveMovement(670, 0, Math.toRadians(0), 0.6, 5, 5, Math.toRadians(3), 2);
+        startVSlideMovement(POSITION_Y_HIGH);
+        while (opModeIsActive()) {
+            updateVSlidePIDControl(); // 更新滑轨位置
+            if (movementActive) {
+                myGoToPosSingle(targetX, targetY, targetH, moveSpeed); // 更新驱动位置
+            }
+
+            if (!movementActive && !pidActiveVS){
+                break;
+            }
+        }
+        myGoToPos(950, 0, Math.toRadians(0), 0.3, 5, 5, Math.toRadians(3), 1);
+        sleep(300);
+        goToVSlidePos(POSITION_Y_HIGHHH,1);
+        sleep(300);
+        robot.OClaw.setPosition(OClawOpen);
+        myGoToPos(670, 0, Math.toRadians(0), 0.3, 5, 5, Math.toRadians(3), 1);
+        goToVSlidePos(POSITION_A_BOTTOM,1.5);
+        robot.OArmL.setPosition(OArmRearSpecimenPick);
+        robot.OArmR.setPosition(OArmRearSpecimenPick);
+
+//        sleep(500);
+//        robot.OArmL.setPosition(0.97);
+//        robot.OArmR.setPosition(0.97);
+//        myGoToPos(200, 0, Math.toRadians(0), 0.6, 5, 5, Math.toRadians(3), 2);
+//////            myGoToPos(100, 0, Math.toRadians(0), 0.6, 5, 5, Math.toRadians(3), 2);
+//        goToVSlidePos(POSITION_Y_HIGH,1);
+////            robot.OArmL.setPosition(OArmTransferPosition);
+////            robot.OArmR.setPosition(OArmTransferPosition);
+//        //just added
+//        myGoToPos(670, 150, Math.toRadians(0), 0.6, 5, 5, Math.toRadians(3), 2);
+////            goToVSlidePos(POSITION_Y_HIGH,0.5);
+//        myGoToPos(950, 150, Math.toRadians(0), 0.3, 5, 5, Math.toRadians(3), 2);
+
+        myGoToPos(25, -1150, Math.toRadians(0), 0.6, 5, 5, Math.toRadians(3), 2);
+        sleep(300);
+        myGoToPos(-5, -1150, Math.toRadians(0), 0.3, 5, 5, Math.toRadians(3), 2);
+        robot.OClaw.setPosition(OClawSpecimenChambers); //
+        sleep(500);
+        delayTimer.reset();
+        while (delayTimer.milliseconds() < 200 && opModeIsActive()) {
+            // Other tasks can be processed here
+        }
+        myGoToPos(100, -1150, Math.toRadians(0), 0.6, 5, 5, Math.toRadians(3), 2);
+        myGoToPos(100, 0, Math.toRadians(0), 0.6, 5, 5, Math.toRadians(3), 2);
+        robot.OArmL.setPosition(0.97);
+        robot.OArmR.setPosition(0.97);
+        goToVSlidePos(POSITION_Y_HIGH,1);myGoToPos(670, 0, Math.toRadians(0), 0.6, 5, 5, Math.toRadians(3), 2);
 //            goToVSlidePos(POSITION_Y_HIGH,0.5);
-//
-//        delayTimer.reset();
-//        while (delayTimer.milliseconds() < 200 && opModeIsActive()) {
-//            // Other tasks can be processed here
-//        }
+        myGoToPos(950, 1000, Math.toRadians(0), 0.3, 5, 5, Math.toRadians(3), 2);
+        goToVSlidePos(POSITION_Y_HIGHHH,2);
+        sleep(300);
+        robot.OClaw.setPosition(OClawOpen); //
+        delayTimer.reset();
+        while (delayTimer.milliseconds() < 200 && opModeIsActive()) {
+            // Other tasks can be processed here
+        }
+        robot.OArmL.setPosition(OArmRearSpecimenPick);
+        robot.OArmR.setPosition(OArmRearSpecimenPick);
+        delayTimer.reset();
+        while (delayTimer.milliseconds() < 200 && opModeIsActive()) {
+            // Other tasks can be processed here
+        }
+        goToVSlidePos(POSITION_A_BOTTOM,2);
 
 
-//        delayTimer.reset();
-//        while (delayTimer.milliseconds() < 200 && opModeIsActive()) {
-//            // Other tasks can be processed here
-//        }
-//
-//        sleep(300);
+
+
+
+
+
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -291,7 +431,7 @@ public class SpecimenBlueRighttemp extends LinearOpMode {
 //
 //
 //
-//
+///////////////////////pause
 //
 //
 //        myGoToPos(670, 0, Math.toRadians(0), 0.6, 5, 5, Math.toRadians(3), 2);
