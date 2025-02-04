@@ -126,7 +126,7 @@ public class SpecimenBlueRighttemp extends LinearOpMode {
     Gyro gyro = new Gyro(); // 创建 Gyro 类的对象
     private ElapsedTime runtime = new ElapsedTime();
     public String armPositionCuzBorS ="NOLL"; //new variable for it and arm will go back of robo
-//    Slide slide;
+//    verticalSlide verticalslide;
 //    Intake intake;
 //    Outtake outtake;
 //    GoToHSlidePos goToHSlidePos;
@@ -170,18 +170,24 @@ public class SpecimenBlueRighttemp extends LinearOpMode {
         waitForStart();
 
 
-        // TODO: Need to do red or blue according to alliance color.
-//            goToVSlidePos(POSITION_Y_LOW,2);
-
 
         startDriveMovement(670, 0, Math.toRadians(0), 0.6, 5, 5, Math.toRadians(3), 2);
         startVSlideMovement(POSITION_Y_HIGH);
         robot.OArmL.setPosition(0.97);//  good
         robot.OArmR.setPosition(0.97);//
-//
-//
-//        startDriveMovement(950, 0, Math.toRadians(0), 0.3, 5, 5, Math.toRadians(3), 1);
-//        startVSlideMovement(POSITION_Y_HIGHHH);
+        while (opModeIsActive()) {
+            if (movementActive) {
+               myGoToPos(targetX,targetY,targetH,moveSpeed,targetmoveAccuracyX,targetmoveAccuracyY,targetangleAccuracy,targettimeoutS);
+ //            myGoToPosSingle(targetX, targetY, targetH, moveSpeed); // 更新驱动位置
+            }
+            updateVSlidePIDControl(); // 更新滑轨位置
+            if (!movementActive && pidActiveVS){
+                break;
+            }
+        }
+
+        startDriveMovement(950, 0, Math.toRadians(0), 0.3, 5, 5, Math.toRadians(3), 1);
+        startVSlideMovement(POSITION_Y_HIGHHH);
 //        robot.OClaw.setPosition(OClawOpen);
 //        startVSlideMovement(POSITION_A_BOTTOM);
 //        robot.OArmL.setPosition(OArmRearSpecimenPick);
@@ -303,15 +309,7 @@ public class SpecimenBlueRighttemp extends LinearOpMode {
 //        }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        while (opModeIsActive()) {
 
-//            updateVSlidePIDControl(); // 更新滑轨位置
-            if (movementActive) {
-                myGoToPosSingle(targetX, targetY, targetH, moveSpeed); // 更新驱动位置
-            }
-
-            updateVSlidePIDControl(); // 更新滑轨位置
-        }
 
 
 //        while (opModeIsActive()) {
