@@ -1071,8 +1071,17 @@ public void goToVSlidePos(int targetPosition, double timeoutS) {
         lastErrorY = error;
         timerY.reset();
         double output = (error*KpY) + (derivative*KdY) + (integralSumY*KiY);
+        telemetry.addData("KpY", KpY);
+        telemetry.addData("KiY", KiY);
+        telemetry.addData("KdY", KdY);
+        telemetry.addData("output", output);
+        telemetry.addData("error", error);
+        telemetry.addData("reference", reference);
+        telemetry.addData("state", state);
+        telemetry.update();
         return output;
     }
+    /////////////////////tuning PID/////////////////////////
     public double myPIDControlH(double reference, double state) {
         double error = angleWrapRad(-reference + state);
         integralSum += error*timer.seconds();
@@ -1080,6 +1089,7 @@ public void goToVSlidePos(int targetPosition, double timeoutS) {
         lastError = error;
         timer.reset();
         double output = (error*Kp) + (derivative*Kd) + (integralSum*Ki) + (feedfoward*Kf);
+
         return output;
     }
 
