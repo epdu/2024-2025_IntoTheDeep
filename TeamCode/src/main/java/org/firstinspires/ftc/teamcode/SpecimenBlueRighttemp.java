@@ -150,6 +150,7 @@ public class SpecimenBlueRighttemp extends LinearOpMode {
     Gyro gyro = new Gyro(); // 创建 Gyro 类的对象
     private ElapsedTime runtime = new ElapsedTime();
     public String armPositionCuzBorS ="NOLL"; //new variable for it and arm will go back of robo
+    public int ii=0;
 //    verticalSlide verticalslide;
 //    Intake intake;
 //    Outtake outtake;
@@ -194,20 +195,8 @@ public class SpecimenBlueRighttemp extends LinearOpMode {
 
 
         waitForStart();
-////////////////////////////tune PID of Y /////////////////////////////////////////////////
-        myGoToPos(0, 1200, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1);
-        myGoToPos(0, 0, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1);
-        myGoToPos(0, -1200, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1);
-        myGoToPos(0, 1200, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1);
-        myGoToPos(0, -1200, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1);
-        myGoToPos(0, 1200, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1);
-        myGoToPos(0, -1200, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1);
-        myGoToPos(0, 1200, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1);
-        myGoToPos(0, -1200, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1);
-        myGoToPos(0, 1200, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1);
-        myGoToPos(0, 0, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1);
 
-/////////////////////////////////////////////////////////////////////////////////////
+////////////KpX=0.0015; KpY=0.0037; for 0.7 power /////////////////////////////////////////////////////////////////////////
 
 //
 //
@@ -362,6 +351,25 @@ public class SpecimenBlueRighttemp extends LinearOpMode {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
+////////////////////////////tune PID of Y /////////////////////////////////////////////////
+//while(ii < 10){
+//    myGoToPos(600, 0, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 4);
+//        sleep(1000);
+//    myGoToPos(-600, 0, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 4);
+//          sleep(1000);
+//          ii=ii+1;
+//        }
+        //       myGoToPos(0, 1200, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 4);
+//        //myGoToPos(0, 0, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1);
+//        myGoToPos(0, -1800, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1);
+//        myGoToPos(0, 1800, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1);
+//        myGoToPos(0, -1800, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1);
+//        myGoToPos(0, 1800, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1);
+//        myGoToPos(0, -1800, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1);
+//        myGoToPos(0, 1800, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1);
+//        myGoToPos(0, -1800, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1);
+//        myGoToPos(0, 1800, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1);
+//        myGoToPos(0, 0, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1);
 //
 //
 //        //        sleep(500);
@@ -1005,16 +1013,16 @@ public void goToVSlidePos(int targetPosition, double timeoutS) {
     double Kf = 0.025;//0.25
     private double lastError = 0;
     double integralSumX = 0;
-    double KpX=0.005;
+    double KpX=0.0015; .//power 0.7,,,,,, KpX=0.005; 0.0045 0.0037 0.003 0.0023 0.002 0.0017 0.0015 over shoot, 0.001 too less
     double KiX=0.0000005;   //Kxp/KYp ratio is affected by the robot weight balance
     double KdX=0.0002;// KXf/KYf ratio is affected by the robot weight balance
     double feedfowardX = 0;
     private double lastErrorX = 0;
 
     double integralSumY = 0;
-    double KpY=0.047; //start tyr with 0.005 300  only 180 0.047
-    double KiY=0.0000005;   //Kxp/KYp ratio is affected by the robot weight balance
-    double KdY=0.0002;// KXf/KYf ratio is affected by the robot weight balance
+    double KpY=0.0037; // power 0.7,,,,,, 0.0035 a little bit less
+    double KiY=0.000000005;   //Kxp/KYp ratio is affected by the robot weight balance
+    double KdY=0.000002;// KXf/KYf ratio is affected by the robot weight balance
     double feedfowardY = 0;
     private double lastErrorY = 0;
 
@@ -1061,13 +1069,9 @@ public void goToVSlidePos(int targetPosition, double timeoutS) {
         lastErrorX = error;
         timerX.reset();
         double output = (error*KpX) + (derivative*KdX) + (integralSumX*KiX);
-        telemetry.addData("KpX", KpX);
-        telemetry.addData("KiX", KiX);
-        telemetry.addData("KdX", KdX);
-        telemetry.addData("output", output);
-        telemetry.addData("error", error);
-        telemetry.addData("reference", reference);
-        telemetry.addData("state", state);
+        telemetry.addData("targetX", targetX);
+        telemetry.addData("outputX", output);
+        telemetry.addData("errorX", error);
         telemetry.update();
         return output;
     }
@@ -1079,13 +1083,10 @@ public void goToVSlidePos(int targetPosition, double timeoutS) {
         lastErrorY = error;
         timerY.reset();
         double output = (error*KpY) + (derivative*KdY) + (integralSumY*KiY);
-        telemetry.addData("KpY", KpY);
-        telemetry.addData("KiY", KiY);
-        telemetry.addData("KdY", KdY);
-        telemetry.addData("output", output);
-        telemetry.addData("error", error);
-        telemetry.addData("reference", reference);
-        telemetry.addData("state", state);
+//        telemetry.addData("reference", reference);
+        telemetry.addData("targetY", targetY);
+        telemetry.addData("outputY", output);
+        telemetry.addData("errorY", error);
         telemetry.update();
         return output;
     }
