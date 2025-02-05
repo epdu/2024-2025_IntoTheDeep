@@ -194,7 +194,7 @@ public class SpecimenBlueRighttemp extends LinearOpMode {
 
 
         waitForStart();
-////////////////////////////tune PIDｏｆ　Ｙ　/////////////////////////////////////////////////
+////////////////////////////tune PID of Y /////////////////////////////////////////////////
         myGoToPos(0, 1200, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1);
         myGoToPos(0, 0, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1);
         myGoToPos(0, -1200, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1);
@@ -206,7 +206,6 @@ public class SpecimenBlueRighttemp extends LinearOpMode {
         myGoToPos(0, -1200, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1);
         myGoToPos(0, 1200, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1);
         myGoToPos(0, 0, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1);
-
 /////////////////////////////////////////////////////////////////////////////////////
 
 //
