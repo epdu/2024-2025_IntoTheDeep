@@ -1061,6 +1061,14 @@ public void goToVSlidePos(int targetPosition, double timeoutS) {
         lastErrorX = error;
         timerX.reset();
         double output = (error*KpX) + (derivative*KdX) + (integralSumX*KiX);
+        telemetry.addData("KpX", KpX);
+        telemetry.addData("KiX", KiX);
+        telemetry.addData("KdX", KdX);
+        telemetry.addData("output", output);
+        telemetry.addData("error", error);
+        telemetry.addData("reference", reference);
+        telemetry.addData("state", state);
+        telemetry.update();
         return output;
     }
 
