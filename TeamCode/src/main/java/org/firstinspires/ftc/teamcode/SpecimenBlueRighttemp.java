@@ -102,7 +102,7 @@ public class SpecimenBlueRighttemp extends LinearOpMode {
 
 
     public float DriveTrains_ReducePOWER=0.75f;
-//   DriveTrains_ReducePOWER = 0.75f;
+    //   DriveTrains_ReducePOWER = 0.75f;
 //    DriveTrains_ReducePOWER = speedLimiterSlower;//************************
     HardwareTeletubbies robot = new HardwareTeletubbies();
     public String fieldOrRobotCentric = "robot";
@@ -150,7 +150,8 @@ public class SpecimenBlueRighttemp extends LinearOpMode {
     Gyro gyro = new Gyro(); // 创建 Gyro 类的对象
     private ElapsedTime runtime = new ElapsedTime();
     public String armPositionCuzBorS ="NOLL"; //new variable for it and arm will go back of robo
-//    verticalSlide verticalslide;
+    public int ii=0;
+    //    verticalSlide verticalslide;
 //    Intake intake;
 //    Outtake outtake;
 //    GoToHSlidePos goToHSlidePos;
@@ -194,21 +195,8 @@ public class SpecimenBlueRighttemp extends LinearOpMode {
 
 
         waitForStart();
-////////////////////////////tune PID of Y /////////////////////////////////////////////////
-        myGoToPos(0, 1200, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1);
-        myGoToPos(0, 0, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1);
-        myGoToPos(0, -1200, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1);
-        myGoToPos(0, 1200, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1);
-        myGoToPos(0, -1200, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1);
-        myGoToPos(0, 1200, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1);
-        myGoToPos(0, -1200, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1);
-        myGoToPos(0, 1200, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1);
-        myGoToPos(0, -1200, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1);
-        myGoToPos(0, 1200, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1);
-        myGoToPos(0, 0, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1);
-/////////////////////////////////////////////////////////////////////////////////////
 
-//
+////////////KpX=0.0015; KpY=0.0037; for 0.7 power /////////////////////////////////////////////////////////////
 //
 //// the first preload specimen
 //        //////////////////////////////////////////move robot close to chamber and adjust slides high///////////
@@ -221,7 +209,6 @@ public class SpecimenBlueRighttemp extends LinearOpMode {
 //            if (movementActive) {
 //              myGoToPosSingle(targetX, targetY, targetH, moveSpeed); // 更新驱动位置
 //            }
-//
 //            if (!movementActive && !pidActiveVS){
 //                break;
 //            }
@@ -361,6 +348,31 @@ public class SpecimenBlueRighttemp extends LinearOpMode {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
+
+
+
+
+
+
+////////////////////////////tune PID of Y /////////////////////////////////////////////////
+//while(ii < 10){
+//    myGoToPos(600, 0, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 4);
+//        sleep(1000);
+//    myGoToPos(-600, 0, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 4);
+//          sleep(1000);
+//          ii=ii+1;
+//        }
+        //       myGoToPos(0, 1200, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 4);
+//        //myGoToPos(0, 0, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1);
+//        myGoToPos(0, -1800, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1);
+//        myGoToPos(0, 1800, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1);
+//        myGoToPos(0, -1800, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1);
+//        myGoToPos(0, 1800, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1);
+//        myGoToPos(0, -1800, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1);
+//        myGoToPos(0, 1800, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1);
+//        myGoToPos(0, -1800, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1);
+//        myGoToPos(0, 1800, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1);
+//        myGoToPos(0, 0, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1);
 //
 //
 //        //        sleep(500);
@@ -530,67 +542,67 @@ public class SpecimenBlueRighttemp extends LinearOpMode {
     }
 
 
-///////////////////////////////////////
-public void startVSlideMovement(int targetPosition) {
-    startVSlidePIDControl(targetPosition); // 启动PID
-}
-public void startDriveMovement(double x, double y, double h, double speed, double moveAccuracyX, double moveAccuracyY, double angleAccuracy, double timeoutS)
-{
-    this.targetX = x;
-    this.targetY = y;
-    this.targetH = h;
-    this.moveSpeed = speed;
-    this.targetmoveAccuracyX=moveAccuracyX;
-    this.targetmoveAccuracyY=moveAccuracyY;
-    this.targetangleAccuracy=angleAccuracy;
-    this.targettimeoutS=timeoutS;
-    this.movementActive = true;
+    ///////////////////////////////////////
+    public void startVSlideMovement(int targetPosition) {
+        startVSlidePIDControl(targetPosition); // 启动PID
+    }
+    public void startDriveMovement(double x, double y, double h, double speed, double moveAccuracyX, double moveAccuracyY, double angleAccuracy, double timeoutS)
+    {
+        this.targetX = x;
+        this.targetY = y;
+        this.targetH = h;
+        this.moveSpeed = speed;
+        this.targetmoveAccuracyX=moveAccuracyX;
+        this.targetmoveAccuracyY=moveAccuracyY;
+        this.targetangleAccuracy=angleAccuracy;
+        this.targettimeoutS=timeoutS;
+        this.movementActive = true;
 //    myGoToPos(targetX, targetY,targetH,moveSpeed,targetmoveAccuracyX,targetmoveAccuracyY,targetangleAccuracy,targettimeoutS);
-
-}
-
-public void goToVSlidePos(int targetPosition, double timeoutS) {
-    robot.VSMotorL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//    robot.VSMotorR.setMode(DcMotor.RunMode.RUN_USING_ENCODER); // 初始化 PID 控制器
-    pidControllerVS.reset();
-    pidControllerVS.enable();
-    pidControllerVS.setSetpoint(targetPosition);
-    pidControllerVS.setTolerance(10); // 允许误差范围
-    pidActiveVS = true; // 激活 PID 控制
-
-    runtime.reset(); // 重置计时器
-
-    while (opModeIsActive() && runtime.seconds() < timeoutS) {
-        if (!pidActiveVS) return;
-        int currentPositionL = robot.VSMotorL.getCurrentPosition();
-
-        // 计算 PID 输出
-        double powerL = pidControllerVS.performPID(currentPositionL);
-
-        // 控制电机功率
-        robot.VSMotorL.setPower(Range.clip(powerL * 0.9, -1.0, 1.0));
-        robot.VSMotorR.setPower(Range.clip(powerL * 0.9, -1.0, 1.0));
-
-        // 输出 Telemetry 信息
-        telemetry.addData("PID Target", targetPosition);
-        telemetry.addData("Current Position VL", currentPositionL);
-        telemetry.addData("Power V", powerL);
-        telemetry.update();
-
-        // 检查是否达到目标位置
-        if (!pidActiveVS && Math.abs(robot.VSMotorL.getCurrentPosition() - pidTargetPositionVS) > 10) {
-            double holdPowerVS = pidControllerVS.performPID(robot.VSMotorL.getCurrentPosition());
-            robot.VSMotorL.setPower(holdPowerVS);
-            robot.VSMotorR.setPower(holdPowerVS);
-            pidActiveVS = false; // 停止 PID 控制
-            break;
-        }
 
     }
 
+    public void goToVSlidePos(int targetPosition, double timeoutS) {
+        robot.VSMotorL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//    robot.VSMotorR.setMode(DcMotor.RunMode.RUN_USING_ENCODER); // 初始化 PID 控制器
+        pidControllerVS.reset();
+        pidControllerVS.enable();
+        pidControllerVS.setSetpoint(targetPosition);
+        pidControllerVS.setTolerance(10); // 允许误差范围
+        pidActiveVS = true; // 激活 PID 控制
+
+        runtime.reset(); // 重置计时器
+
+        while (opModeIsActive() && runtime.seconds() < timeoutS) {
+            if (!pidActiveVS) return;
+            int currentPositionL = robot.VSMotorL.getCurrentPosition();
+
+            // 计算 PID 输出
+            double powerL = pidControllerVS.performPID(currentPositionL);
+
+            // 控制电机功率
+            robot.VSMotorL.setPower(Range.clip(powerL * 0.9, -1.0, 1.0));
+            robot.VSMotorR.setPower(Range.clip(powerL * 0.9, -1.0, 1.0));
+
+            // 输出 Telemetry 信息
+            telemetry.addData("PID Target", targetPosition);
+            telemetry.addData("Current Position VL", currentPositionL);
+            telemetry.addData("Power V", powerL);
+            telemetry.update();
+
+            // 检查是否达到目标位置
+            if (!pidActiveVS && Math.abs(robot.VSMotorL.getCurrentPosition() - pidTargetPositionVS) > 10) {
+                double holdPowerVS = pidControllerVS.performPID(robot.VSMotorL.getCurrentPosition());
+                robot.VSMotorL.setPower(holdPowerVS);
+                robot.VSMotorR.setPower(holdPowerVS);
+                pidActiveVS = false; // 停止 PID 控制
+                break;
+            }
+
+        }
+
         robot.VSMotorL.setPower(0.0);
         robot.VSMotorR.setPower(0.0); // 防止震荡时继续保持微功率
-}
+    }
 
     //////////////////////////////////////////////////////////////
     /////////////////////////////////////
@@ -1004,16 +1016,16 @@ public void goToVSlidePos(int targetPosition, double timeoutS) {
     double Kf = 0.025;//0.25
     private double lastError = 0;
     double integralSumX = 0;
-    double KpX=0.005;
+    double KpX=0.0015; //power 0.7,,,,,, KpX=0.005; 0.0045 0.0037 0.003 0.0023 0.002 0.0017  over shoot, 0.001 too less
     double KiX=0.0000005;   //Kxp/KYp ratio is affected by the robot weight balance
     double KdX=0.0002;// KXf/KYf ratio is affected by the robot weight balance
     double feedfowardX = 0;
     private double lastErrorX = 0;
 
     double integralSumY = 0;
-    double KpY=0.047; //start tyr with 0.005 300  only 180 0.047
-    double KiY=0.0000005;   //Kxp/KYp ratio is affected by the robot weight balance
-    double KdY=0.0002;// KXf/KYf ratio is affected by the robot weight balance
+    double KpY=0.0037; // power 0.7,,,,,, 0.0035 a little bit less
+    double KiY=0.000000005;   //Kxp/KYp ratio is affected by the robot weight balance
+    double KdY=0.000002;// KXf/KYf ratio is affected by the robot weight balance
     double feedfowardY = 0;
     private double lastErrorY = 0;
 
@@ -1060,13 +1072,9 @@ public void goToVSlidePos(int targetPosition, double timeoutS) {
         lastErrorX = error;
         timerX.reset();
         double output = (error*KpX) + (derivative*KdX) + (integralSumX*KiX);
-        telemetry.addData("KpX", KpX);
-        telemetry.addData("KiX", KiX);
-        telemetry.addData("KdX", KdX);
-        telemetry.addData("output", output);
-        telemetry.addData("error", error);
-        telemetry.addData("reference", reference);
-        telemetry.addData("state", state);
+        telemetry.addData("targetX", targetX);
+        telemetry.addData("outputX", output);
+        telemetry.addData("errorX", error);
         telemetry.update();
         return output;
     }
@@ -1078,13 +1086,10 @@ public void goToVSlidePos(int targetPosition, double timeoutS) {
         lastErrorY = error;
         timerY.reset();
         double output = (error*KpY) + (derivative*KdY) + (integralSumY*KiY);
-        telemetry.addData("KpY", KpY);
-        telemetry.addData("KiY", KiY);
-        telemetry.addData("KdY", KdY);
-        telemetry.addData("output", output);
-        telemetry.addData("error", error);
-        telemetry.addData("reference", reference);
-        telemetry.addData("state", state);
+//        telemetry.addData("reference", reference);
+        telemetry.addData("targetY", targetY);
+        telemetry.addData("outputY", output);
+        telemetry.addData("errorY", error);
         telemetry.update();
         return output;
     }
