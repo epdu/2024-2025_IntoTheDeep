@@ -197,8 +197,6 @@ public class SpecimenBlueRighttemp extends LinearOpMode {
         waitForStart();
 
 ////////////KpX=0.0015; KpY=0.0037; for 0.7 power /////////////////////////////////////////////////////////////////////////
-
-//
 //
 //// the first preload specimen
 //        //////////////////////////////////////////move robot close to chamber and adjust slides high///////////
