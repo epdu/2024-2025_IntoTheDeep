@@ -1017,7 +1017,7 @@ public void goToVSlidePos(int targetPosition, double timeoutS) {
     double Kf = 0.025;//0.25
     private double lastError = 0;
     double integralSumX = 0;
-    double KpX=0.0015; .//power 0.7,,,,,, KpX=0.005; 0.0045 0.0037 0.003 0.0023 0.002 0.0017 0.0015 over shoot, 0.001 too less
+    double KpX=0.0015; //power 0.7,,,,,, KpX=0.005; 0.0045 0.0037 0.003 0.0023 0.002 0.0017  over shoot, 0.001 too less
     double KiX=0.0000005;   //Kxp/KYp ratio is affected by the robot weight balance
     double KdX=0.0002;// KXf/KYf ratio is affected by the robot weight balance
     double feedfowardX = 0;
