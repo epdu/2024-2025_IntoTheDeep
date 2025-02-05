@@ -209,7 +209,6 @@ public class SpecimenBlueRighttemp extends LinearOpMode {
 //            if (movementActive) {
 //              myGoToPosSingle(targetX, targetY, targetH, moveSpeed); // 更新驱动位置
 //            }
-//
 //            if (!movementActive && !pidActiveVS){
 //                break;
 //            }
