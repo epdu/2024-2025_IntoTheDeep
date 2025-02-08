@@ -98,6 +98,7 @@ For support, contact tech@gobilda.com
 @Autonomous(name="AAAAA Right four specimens two preloaded", group="Linear OpMode")
 //@Disabled
 //face to the bar right space for 4 of them only
+
 public class SpecimenFourTwoPlusTwo extends LinearOpMode {
 
 
@@ -196,6 +197,8 @@ public class SpecimenFourTwoPlusTwo extends LinearOpMode {
 
         waitForStart();
 
+
+
 ////////////KpX=0.0015; KpY=0.0037; for 0.7 power /////////////////////////////////////////////////////////////
 
 // the first preload specimen
@@ -227,6 +230,9 @@ public class SpecimenFourTwoPlusTwo extends LinearOpMode {
         myGoToPos(200, -1150, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 2);
         sleep(1000);
         ///////////////////////////////////move to front of human player let human player to line the specimen up with claw///////
+
+
+/////////////////////////////////////////////////////////////////////////////
 // the second preload specimen
         //////////////////////////////pick up specimen from human player/////////////////////////////
         myGoToPos(0, -1150, Math.toRadians(0), 0.3, 5, 5, Math.toRadians(3), 2);
@@ -263,6 +269,8 @@ public class SpecimenFourTwoPlusTwo extends LinearOpMode {
         robot.OArmL.setPosition(OArmRearSpecimenPick);
         robot.OArmR.setPosition(OArmRearSpecimenPick);
         ////////////////////////////////////finishing hanging and reset claw and arms/////////////////////////////
+
+
 
 // the third  on field specimen（left）
         ////////////////////////////////////navigate to the left specimen and push it to home////////////////////////////
@@ -308,6 +316,8 @@ public class SpecimenFourTwoPlusTwo extends LinearOpMode {
         goToVSlidePos(POSITION_A_BOTTOM,1.5);
         robot.OArmL.setPosition(OArmRearSpecimenPick);
         robot.OArmR.setPosition(OArmRearSpecimenPick);
+
+
 // the fourth on field specimen（middle）
 
         ////////////////////////////////////navigate to the left specimen and push it to home////////////////////////////
@@ -350,8 +360,14 @@ public class SpecimenFourTwoPlusTwo extends LinearOpMode {
         robot.OArmL.setPosition(OArmRearSpecimenPick);
         robot.OArmR.setPosition(OArmRearSpecimenPick);
 
+
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
+
+
+
+
+
 
 
 
