@@ -98,6 +98,7 @@ For support, contact tech@gobilda.com
 @Autonomous(name="AAAAA Right four specimens two preloaded", group="Linear OpMode")
 //@Disabled
 //face to the bar right space for 4 of them only
+//02082025
 public class SpecimenFourTwoPlusTwo extends LinearOpMode {
 
 
