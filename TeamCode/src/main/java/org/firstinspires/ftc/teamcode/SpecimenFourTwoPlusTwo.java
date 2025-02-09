@@ -151,6 +151,8 @@ public class SpecimenFourTwoPlusTwo extends LinearOpMode {
     Gyro gyro = new Gyro(); // 创建 Gyro 类的对象
     private ElapsedTime runtime = new ElapsedTime();
     public String armPositionCuzBorS ="NOLL"; //new variable for it and arm will go back of robo
+    public static double lastOArmLPosition = 0.0;
+    public static double lastOArmRPosition = 0.0;
     public int ii=0;
     //    verticalSlide verticalslide;
 //    Intake intake;
@@ -209,6 +211,8 @@ public class SpecimenFourTwoPlusTwo extends LinearOpMode {
         startVSlideMovement(POSITION_Y_HIGH);
         robot.OArmL.setPosition(0.97);//  good
         robot.OArmR.setPosition(0.97);//
+        lastOArmLPosition= robot.OArmL.getPosition();
+        lastOArmRPosition= robot.OArmR.getPosition();
         while (opModeIsActive()) {
             updateVSlidePIDControl(); // 更新滑轨位置
             if (movementActive) {
@@ -228,6 +232,8 @@ public class SpecimenFourTwoPlusTwo extends LinearOpMode {
         goToVSlidePos(POSITION_A_BOTTOM,0.9);
         robot.OArmL.setPosition(OArmRearSpecimenPick);
         robot.OArmR.setPosition(OArmRearSpecimenPick);
+        lastOArmLPosition= robot.OArmL.getPosition();
+        lastOArmRPosition= robot.OArmR.getPosition();
         ////////////////////////////////////finishing hanging and reset claw and arms/////////////////////////////
 
         //reset and start moving towards the two specimen and pushing back
@@ -259,9 +265,13 @@ public class SpecimenFourTwoPlusTwo extends LinearOpMode {
             // Other tasks can be processed here
         }
 //        /////////////////////////////picked it up and move away from the wall, move arm and then to start position/////////////////
-//        myGoToPos(200, -1150, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 2);
+        myGoToPos(200, -1200, Math.toRadians(0), 0.5, 5, 5, Math.toRadians(3), 1.65);
+        //added 02082025 8:03pm
+        //        myGoToPos(200, -1150, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 2);
         robot.OArmL.setPosition(0.97);
         robot.OArmR.setPosition(0.97);
+        lastOArmLPosition= robot.OArmL.getPosition();
+        lastOArmRPosition= robot.OArmR.getPosition();
         myGoToPos(200, 100, Math.toRadians(0), 0.8, 5, 5, Math.toRadians(3), 1.65);
 //        ///////////////////////////move Synchronous both drive train and slides//////////////////////////
         startDriveMovement(670, 100, Math.toRadians(0), 0.65, 5, 5, Math.toRadians(3), 1.8);
@@ -275,7 +285,8 @@ public class SpecimenFourTwoPlusTwo extends LinearOpMode {
                 break;
             }
         }
-        myGoToPos(950, 100, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 0.9);
+        myGoToPos(950, 100, Math.toRadians(0), 0.6, 5, 5, Math.toRadians(3), 0.9);
+        //power to be 0.6 from 0.7
         sleep(300);
 //        ////////////////////////////////////in front of chamber and ready to hang////////////////////////////
         goToVSlidePos(POSITION_Y_HIGHHH,0.9);
@@ -284,6 +295,8 @@ public class SpecimenFourTwoPlusTwo extends LinearOpMode {
         goToVSlidePos(POSITION_A_BOTTOM,1.2);
         robot.OArmL.setPosition(OArmRearSpecimenPick);
         robot.OArmR.setPosition(OArmRearSpecimenPick);
+        lastOArmLPosition= robot.OArmL.getPosition();
+        lastOArmRPosition= robot.OArmR.getPosition();
         myGoToPos(300, 100, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 0.8);
         myGoToPos(300, -760, Math.toRadians(0), 0.8, 5, 5, Math.toRadians(3), 0.9);
         myGoToPos(200, -1150, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 0.5);
@@ -304,6 +317,8 @@ public class SpecimenFourTwoPlusTwo extends LinearOpMode {
 //        myGoToPos(200, -1150, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 2);
         robot.OArmL.setPosition(0.97);
         robot.OArmR.setPosition(0.97);
+        lastOArmLPosition= robot.OArmL.getPosition();
+        lastOArmRPosition= robot.OArmR.getPosition();
         myGoToPos(200, 200, Math.toRadians(0), 0.8, 5, 5, Math.toRadians(3), 1.8);
 //        ///////////////////////////move Synchronous both drive train and slides//////////////////////////
         startDriveMovement(670, 200, Math.toRadians(0), 0.65, 5, 5, Math.toRadians(3), 1.7);
@@ -327,6 +342,8 @@ public class SpecimenFourTwoPlusTwo extends LinearOpMode {
         goToVSlidePos(POSITION_A_BOTTOM,0.9);
         robot.OArmL.setPosition(0.5);
         robot.OArmR.setPosition(0.5);
+        lastOArmLPosition= robot.OArmL.getPosition();
+        lastOArmRPosition= robot.OArmR.getPosition();
 
 
 
