@@ -98,6 +98,7 @@ For support, contact tech@gobilda.com
 @Autonomous(name="AAAAA Right four specimens two preloaded", group="Linear OpMode")
 //@Disabled
 //face to the bar right space for 4 of them only
+// two preload and push three home
 //02082025
 public class SpecimenFourTwoPlusTwo extends LinearOpMode {
 
@@ -151,8 +152,6 @@ public class SpecimenFourTwoPlusTwo extends LinearOpMode {
     Gyro gyro = new Gyro(); // 创建 Gyro 类的对象
     private ElapsedTime runtime = new ElapsedTime();
     public String armPositionCuzBorS ="NOLL"; //new variable for it and arm will go back of robo
-    public static double lastOArmLPosition = 0.0;
-    public static double lastOArmRPosition = 0.0;
     public int ii=0;
     //    verticalSlide verticalslide;
 //    Intake intake;
@@ -177,42 +176,17 @@ public class SpecimenFourTwoPlusTwo extends LinearOpMode {
         telemetry.update();
 
 
-/////////////////////////////////////////////////////////////////////////////
-//        drive = new PinpointDrive(hardwareMap, beginPose);
-//        beginPose = new Pose2d(-17.5, 60.0, Math.toRadians(-90));
-//        ( DistanceUnit.INCH,-17.5, 60.0,AngleUnit.RADIANS,-(90));
-//        Pose2d startPose = new Pose2d(startX, startY, startHeading);
-//        Pose2d preloadPose = new Pose2d(scorePreloadX, scorePreloadY, Math.toRadians(-90));
-///////////////////////////////////////////////////////////////////////////////////////////
-
-//        telemetry.addData("Status", "Initialized");
-//        telemetry.addData("X offset", robot.odo.getXOffset());
-//        telemetry.addData("Y offset", robot.odo.getYOffset());
-//
-//        telemetry.addData("Device Version Number:", robot.odo.getDeviceVersion());
-//        telemetry.addData("Device Scalar", robot.odo.getYawScalar());
-//        telemetry.update();
-
-//        Pose2d currentPose = drive.getPose();
-        // Wait for the game to start (driver presses START)
-
 
         waitForStart();
 
 ////////////KpX=0.0015; KpY=0.0037; for 0.7 power /////////////////////////////////////////////////////////////
+////////now try speed 0.8/////////////////////
 
-// the first preload specimen
-        //////////////////////////////////////////move robot close to chamber and adjust slides high///////////
-
-
-        //testieeeee
-        startHSlidePIDControl(POSITION_X_IN);
-        startDriveMovement(670, 0, Math.toRadians(0), 0.65, 5, 5, Math.toRadians(3), 2.3);
+///////////////////////////////////////////move robot close to chamber and adjust slides high///////////
+        startDriveMovement(810, 0, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 0.5);
         startVSlideMovement(POSITION_Y_HIGH);
         robot.OArmL.setPosition(0.97);//  good
         robot.OArmR.setPosition(0.97);//
-        lastOArmLPosition= robot.OArmL.getPosition();
-        lastOArmRPosition= robot.OArmR.getPosition();
         while (opModeIsActive()) {
             updateVSlidePIDControl(); // 更新滑轨位置
             if (movementActive) {
@@ -222,139 +196,565 @@ public class SpecimenFourTwoPlusTwo extends LinearOpMode {
                 break;
             }
         }
-        myGoToPos(940, 0, Math.toRadians(0), 0.5, 5, 5, Math.toRadians(3), 0.9);
-        sleep(300);
+        myGoToPos(800, 0, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 0.3);
+        //from 810 to 800  0.5- 0.3
+        myGoToPos(820, 0, Math.toRadians(0), 0.4, 3, 3, Math.toRadians(1), 0.2);
+        // 0.3-- 0.2
         ////////////////////////////////////in front of chamber and ready to hang////////////////////////////
-        goToVSlidePos(POSITION_Y_HIGHHH,0.8);
-        sleep(200);
+        goToVSlidePos(POSITION_Y_HIGHHH,0.4);
         robot.OClaw.setPosition(OClawOpen);
-        myGoToPos(570, 0, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 0.8);
-        goToVSlidePos(POSITION_A_BOTTOM,0.9);
+        goToHSlidePos(20,0.2);
+        myGoToPos(570, 0, Math.toRadians(0), 0.85, 3, 3, Math.toRadians(1), 0.3);
+        goToVSlidePos(POSITION_A_BOTTOM,0.8);
         robot.OArmL.setPosition(OArmRearSpecimenPick);
         robot.OArmR.setPosition(OArmRearSpecimenPick);
-        lastOArmLPosition= robot.OArmL.getPosition();
-        lastOArmRPosition= robot.OArmR.getPosition();
-        ////////////////////////////////////finishing hanging and reset claw and arms/////////////////////////////
+        //////////////////////////////finishing hanging the FIRST and reset claw and arms/////////////////////////////
+        ///////FIRSTFIRSTFIRSTFIRSTFIRSTFIRSTFIRSTFIRSTFIRSTFIRSTFIRSTFIRSTFIRSTFIRST////////
+////////////////////////////////////////navigate to the left specimen and push it to home////////////////////////////
+        myGoToPos(500, -850, Math.toRadians(0), 0.85, 3, 3, Math.toRadians(1), 1.1);
+        goToHSlidePos(20,0.1);
+        myGoToPos(1200, -850, Math.toRadians(0), 0.85, 3, 3, Math.toRadians(1), 1.0);
+        myGoToPos(1200, -1175, Math.toRadians(0), 0.85, 3, 3, Math.toRadians(1), 0.4);
+        // time 0.3- 0.4 y 1170 -1195 back to 1175
+        myGoToPos(200, -1175, Math.toRadians(0), 0.85, 3, 3, Math.toRadians(1), 1.35);
+ //       goToHSlidePos(20,0.2);
+        myGoToPos(1200, -1125, Math.toRadians(0), 0.85, 3, 3, Math.toRadians(1), 1.35);
+        myGoToPos(1200, -1470, Math.toRadians(0), 0.85, 3, 3, Math.toRadians(1), 0.4);
+        myGoToPos(200, -1470, Math.toRadians(0), 0.85, 3, 3, Math.toRadians(1), 1.25);
+        myGoToPos(200, -800, Math.toRadians(0), 0.85, 3, 3, Math.toRadians(1), 0.3);
+//        sleep(100);
+        myGoToPos(-69, -800, Math.toRadians(0), 0.85, 3, 3, Math.toRadians(1), 0.8);
+        sleep(350);
+        robot.OClaw.setPosition(OClawSpecimenChambers);
+        sleep(100);
+        robot.OArmL.setPosition(0.97);//  good
+        robot.OArmR.setPosition(0.97);//
+        myGoToPos(200, -800, Math.toRadians(0), 0.85, 3, 3, Math.toRadians(1), 0.8);
+        myGoToPos(0, 80, Math.toRadians(0), 0.85, 3, 3, Math.toRadians(1), 1.2);
+////        ///////////////////////////move Synchronous both drive train and slides//////////////////////////
+        startDriveMovement(620, 80, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 0.5);
+        startVSlideMovement(POSITION_Y_HIGH);
+        robot.OArmL.setPosition(0.97);//  good
+        robot.OArmR.setPosition(0.97);//
+        while (opModeIsActive()) {
+            updateVSlidePIDControl(); // 更新滑轨位置
+            if (movementActive) {
+                myGoToPosSingle(targetX, targetY, targetH, moveSpeed); // 更新驱动位置
+            }
+            if (!movementActive && !pidActiveVS){
+                break;
+            }
+        }
+        myGoToPos(755, 80, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 0.3);
+        myGoToPos(860, 80, Math.toRadians(0), 0.4, 3, 3, Math.toRadians(1), 0.2);
+// 570 -- 820  620-620-820 no hard crash, but still move backward 12cm away 620-7400-820 no hard crash, but still move backward 4cm away
+// 620-790-820 with crash, but still move backward 4cm away 620-780-860 good for previous run but not now
+        //reduce it t obe 620-760-860
+        //reduce it t obe 620-750-860
+        //reduce it t obe 620-740-860
+//        ////////////////////////////////////in front of chamber and ready to hang////////////////////////////
+        goToVSlidePos(POSITION_Y_HIGHHH,0.4);
+        robot.OClaw.setPosition(OClawOpen);
+        goToHSlidePos(20,0.1);
+        myGoToPos(570, 80, Math.toRadians(0), 0.85, 3, 3, Math.toRadians(1), 0.5);
+        goToVSlidePos(POSITION_A_BOTTOM,0.8);
+        robot.OArmL.setPosition(OArmRearSpecimenPick);
+        robot.OArmR.setPosition(OArmRearSpecimenPick);
+////////////////////////////////////finishing hanging SECOND and reset claw and arms/////////////////////////////
+        ///////////SECOND SECOND SECOND SECOND SECOND SECOND SECOND SECOND SECOND SECOND SECOND SECOND SECOND SECOND SECOND ///
+        myGoToPos(200, -900, Math.toRadians(0), 0.85, 3, 3, Math.toRadians(1), 1.19);
+//        sleep(300);
+        myGoToPos(-69, -900, Math.toRadians(0), 0.85, 3, 3, Math.toRadians(1), 0.55);
+        sleep(100);
+        robot.OClaw.setPosition(OClawSpecimenChambers);
+        sleep(100);
+        robot.OArmL.setPosition(0.97);//  good
+        robot.OArmR.setPosition(0.97);//
+        myGoToPos(200, -900, Math.toRadians(0), 0.8, 3, 3, Math.toRadians(1), 0.5);
+        myGoToPos(0, 130, Math.toRadians(0), 0.8, 3, 3, Math.toRadians(1), 1.19);
+////        ///////////////////////////move Synchronous both drive train and slides//////////////////////////
+        startDriveMovement(620, 130, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 0.5);
+        startVSlideMovement(POSITION_Y_HIGH);
+        robot.OArmL.setPosition(0.97);//  good
+        robot.OArmR.setPosition(0.97);//
+        while (opModeIsActive()) {
+            updateVSlidePIDControl(); // 更新滑轨位置
+            if (movementActive) {
+                myGoToPosSingle(targetX, targetY, targetH, moveSpeed); // 更新驱动位置
+            }
+            if (!movementActive && !pidActiveVS){
+                break;
+            }
+        }
+        myGoToPos(750, 130, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 0.3);
+        myGoToPos(860, 130, Math.toRadians(0), 0.4, 3, 3, Math.toRadians(1), 0.2);
+// 570 -- 820  620-620-820 no hard crash, but still move backward 12cm away 620-7400-820 no hard crash, but still move backward 4cm away
+// 620-790-820 with crash, but still move backward 4cm away 620-750-860 ?with
+//        ////////////////////////////////////in front of chamber and ready to hang////////////////////////////
+        goToVSlidePos(POSITION_Y_HIGHHH,0.3);
+        robot.OClaw.setPosition(OClawOpen);
+        goToHSlidePos(20,0.1);
+        robot.OArmL.setPosition(OArmRearSpecimenPick);
+        robot.OArmR.setPosition(OArmRearSpecimenPick);
+        goToVSlidePos(POSITION_A_BOTTOM,0.8);
+        myGoToPos(500, 130, Math.toRadians(0), 0.85, 3, 3, Math.toRadians(1), 0.5);
+//        myGoToPos(570, 250, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 0.8);
+////////////////////////////////////finishing hanging THIRD and reset claw and arms/////////////////////////////
+        ///////////////// THIRD   THIRD  THIRD  THIRD  THIRD  THIRD  THIRD  THIRD
+        myGoToPos(200, -900, Math.toRadians(0), 0.85, 3, 3, Math.toRadians(1), 1.19);
+        myGoToPos(-69, -900, Math.toRadians(0), 0.85, 3, 3, Math.toRadians(1), 0.55);
+        sleep(100);
+        robot.OClaw.setPosition(OClawSpecimenChambers);
+        sleep(100);
+        robot.OArmL.setPosition(0.97);//  good
+        robot.OArmR.setPosition(0.97);//
+        myGoToPos(200, -900, Math.toRadians(0), 0.85, 3, 3, Math.toRadians(1), 0.55);
+        myGoToPos(0, 220, Math.toRadians(0), 0.85, 3, 3, Math.toRadians(1), 1.25);
+////        ///////////////////////////move Synchronous both drive train and slides//////////////////////////
+        startDriveMovement(620, 220, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 0.5);
+        startVSlideMovement(POSITION_Y_HIGH);
+        robot.OArmL.setPosition(0.97);//  good
+        robot.OArmR.setPosition(0.97);//
+        while (opModeIsActive()) {
+            updateVSlidePIDControl(); // 更新滑轨位置
+            if (movementActive) {
+                myGoToPosSingle(targetX, targetY, targetH, moveSpeed); // 更新驱动位置
+            }
+            if (!movementActive && !pidActiveVS){
+                break;
+            }
+        }
+        myGoToPos(750, 220, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 0.5);
+        myGoToPos(860, 220, Math.toRadians(0), 0.4, 3, 3, Math.toRadians(1), 0.3);
+// 570 -- 820  620-620-820 no hard crash, but still move backward 12cm away 620-7400-820 no hard crash, but still move backward 4cm away
+// 620-790-820 with crash, but still move backward 4cm away 620-750-860 ?with
+//        ////////////////////////////////////in front of chamber and ready to hang////////////////////////////
+        goToVSlidePos(POSITION_Y_HIGHHH,0.4);
+//        sleep(100);
+        robot.OClaw.setPosition(OClawOpen);
+        robot.OArmL.setPosition(0.46);
+        robot.OArmR.setPosition(0.46);
+//        robot.OArmL.setPosition(OArmRearSpecimenPick);
+//        robot.OArmR.setPosition(OArmRearSpecimenPick);
+//        goToHSlidePos(20,0.1);
+        goToVSlidePos(POSITION_A_BOTTOM,0.8);
+        myGoToPos(570, 220, Math.toRadians(0), 0.8, 3, 3, Math.toRadians(1), 0.5);
+//        myGoToPos(570, 300, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 0.8);
+////////////////////////////////////finishing hanging FOUR and reset claw and arms/////////////////////////////
 
-        //reset and start moving towards the two specimen and pushing back
-        myGoToPos(200, 0, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 0.6);
-        myGoToPos(200, -900, Math.toRadians(0), 0.8, 5, 5, Math.toRadians(3), 0.7);
-        myGoToPos(1400, -900, Math.toRadians(0), 0.8, 5, 5, Math.toRadians(3), 0.8);
-        myGoToPos(1400, -1180, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 0.6);
-// //       myGoToPos(200, -1150, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 2);
-        myGoToPos(200, -1180, Math.toRadians(0), 0.78, 5, 5, Math.toRadians(3), 1.1);
-//        ////////////////////////////////////navigate to the midddle specimen and push it to home////////////////////////////
-        myGoToPos(1400, -1180, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1.1);
-        myGoToPos(1400, -1420, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 0.5);
-        myGoToPos(200, -1420, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 0.9);
-        myGoToPos(200, -1200, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 0.5);
+///////////////////////try speend 0.8///////////////
 
-        //piking up 2d specimen
-//        myGoToPos(200, -1150, Math.toRadians(0), 0.79, 5, 5, Math.toRadians(3), 0.5);
+/////////////////////////// Beginning of working with speed 0.7 good for pick up to preload then pushing//////////////////////////////////
+// the first preload specimen
+/////////////////////////////////////////////move robot close to chamber and adjust slides high///////////
+//        startDriveMovement(810, 0, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 0.7);
+//        startVSlideMovement(POSITION_Y_HIGH);
+//        robot.OArmL.setPosition(0.97);//  good
+//        robot.OArmR.setPosition(0.97);//
+//        while (opModeIsActive()) {
+//            updateVSlidePIDControl(); // 更新滑轨位置
+//            if (movementActive) {
+//                myGoToPosSingle(targetX, targetY, targetH, moveSpeed); // 更新驱动位置
+//            }
+//            if (!movementActive && !pidActiveVS){
+//                break;
+//            }
+//        }
+//        myGoToPos(810, 0, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 0.5);
+//        myGoToPos(820, 0, Math.toRadians(0), 0.4, 3, 3, Math.toRadians(1), 0.3);
+//        ////////////////////////////////////in front of chamber and ready to hang////////////////////////////
+//        goToVSlidePos(POSITION_Y_HIGHHH,0.3);
+////        sleep(100);
+//        robot.OClaw.setPosition(OClawOpen);
+//        goToHSlidePos(20,0.3);
+//        myGoToPos(570, 0, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(1), 0.3);
+//        goToVSlidePos(POSITION_A_BOTTOM,0.8);
+//        robot.OArmL.setPosition(OArmRearSpecimenPick);
+//        robot.OArmR.setPosition(OArmRearSpecimenPick);
+//        //////////////////////////////finishing hanging and reset claw and arms/////////////////////////////
+//        /////////////////////////// good for pick up to preload then pushing//////////////////////////////////
+//////////////////////////////////////////navigate to the left specimen and push it to home////////////////////////////
+////        myGoToPos(200, -400, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 0.8);
+//        myGoToPos(400, -870, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 1.19);
+//        goToHSlidePos(20,0.3);
+//        myGoToPos(1200, -870, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 1.19);
+//        myGoToPos(1200, -1170, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 0.5);
+//        myGoToPos(200, -1170, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 1.3);
+//        goToHSlidePos(20,0.3);
+//        myGoToPos(1200, -1170, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 1.3);
+//        myGoToPos(1200, -1450, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 0.5);
+//        myGoToPos(200, -1450, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 1.5);
+//        myGoToPos(200, -800, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 0.5);
+//        sleep(100);
+//        myGoToPos(-69, -800, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 0.5);
+//        robot.OClaw.setPosition(OClawSpecimenChambers);
+//        sleep(200);
+//        robot.OArmL.setPosition(0.97);//  good
+//        robot.OArmR.setPosition(0.97);//
+//        myGoToPos(200, -800, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 0.8);
+//        myGoToPos(0, 150, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 1.3);
+//////        ///////////////////////////move Synchronous both drive train and slides//////////////////////////
+//        startDriveMovement(620, 150, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 1);
+//        startVSlideMovement(POSITION_Y_HIGH);
+//        robot.OArmL.setPosition(0.97);//  good
+//        robot.OArmR.setPosition(0.97);//
+//        while (opModeIsActive()) {
+//            updateVSlidePIDControl(); // 更新滑轨位置
+//            if (movementActive) {
+//                myGoToPosSingle(targetX, targetY, targetH, moveSpeed); // 更新驱动位置
+//            }
+//            if (!movementActive && !pidActiveVS){
+//                break;
+//            }
+//        }
+//        myGoToPos(740, 150, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 0.5);
+//        myGoToPos(860, 150, Math.toRadians(0), 0.4, 3, 3, Math.toRadians(1), 0.3);
+//// 570 -- 820  620-620-820 no hard crash, but still move backward 12cm away 620-7400-820 no hard crash, but still move backward 4cm away
+//// 620-790-820 with crash, but still move backward 4cm away 620-780-860 good for previous run but not now
+//        //reduce it t obe 620-760-860
+//        //reduce it t obe 620-750-860
+//        //reduce it t obe 620-740-860
+////        ////////////////////////////////////in front of chamber and ready to hang////////////////////////////
+//        goToVSlidePos(POSITION_Y_HIGHHH,0.3);
+////        sleep(100);
+//        robot.OClaw.setPosition(OClawOpen);
+//        goToHSlidePos(20,0.3);
+//        myGoToPos(570, 150, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 0.8);
+//        goToVSlidePos(POSITION_A_BOTTOM,0.8);
+//        robot.OArmL.setPosition(OArmRearSpecimenPick);
+//        robot.OArmR.setPosition(OArmRearSpecimenPick);
+//////////////////////////////////////finishing hanging SECOND and reset claw and arms/////////////////////////////
+//
+//
+//        myGoToPos(200, -900, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 1.19);
+//        sleep(300);
+//        myGoToPos(-69, -900, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 0.5);
+//        robot.OClaw.setPosition(OClawSpecimenChambers);
+//        sleep(200);
+//        robot.OArmL.setPosition(0.97);//  good
+//        robot.OArmR.setPosition(0.97);//
+//        myGoToPos(200, -900, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 0.5);
+//        myGoToPos(0, 250, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 1.19);
+//////        ///////////////////////////move Synchronous both drive train and slides//////////////////////////
+//        startDriveMovement(620, 250, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 1);
+//        startVSlideMovement(POSITION_Y_HIGH);
+//        robot.OArmL.setPosition(0.97);//  good
+//        robot.OArmR.setPosition(0.97);//
+//        while (opModeIsActive()) {
+//            updateVSlidePIDControl(); // 更新滑轨位置
+//            if (movementActive) {
+//                myGoToPosSingle(targetX, targetY, targetH, moveSpeed); // 更新驱动位置
+//            }
+//            if (!movementActive && !pidActiveVS){
+//                break;
+//            }
+//        }
+//        myGoToPos(740, 250, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 0.5);
+//        myGoToPos(860, 250, Math.toRadians(0), 0.4, 3, 3, Math.toRadians(1), 0.3);
+//// 570 -- 820  620-620-820 no hard crash, but still move backward 12cm away 620-7400-820 no hard crash, but still move backward 4cm away
+//// 620-790-820 with crash, but still move backward 4cm away 620-750-860 ?with
+////        ////////////////////////////////////in front of chamber and ready to hang////////////////////////////
+//        goToVSlidePos(POSITION_Y_HIGHHH,0.4);
+////        sleep(100);
+//        robot.OClaw.setPosition(OClawOpen);
+//        robot.OArmL.setPosition(OArmRearSpecimenPick);
+//        robot.OArmR.setPosition(OArmRearSpecimenPick);
+//        goToHSlidePos(20,0.3);
+////        myGoToPos(570, 250, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 0.8);
+//        goToVSlidePos(POSITION_A_BOTTOM,0.8);
+//
+//////////////////////////////////////finishing hanging THIRD and reset claw and arms/////////////////////////////
+
+///////////////////////////////End of working with speed of 0.7///////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // sleep(3000);
+// ////////////////////////navigate to the home for second preload specimen from left corner////////////////////////////
+//        myGoToPos(570, -1000, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 1.0);
+//        myGoToPos(-90, -1000, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 0.7);
+// //       myGoToPos(-69, -1000, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 0.7);
+//        sleep(500);
+//        robot.OClaw.setPosition(OClawSpecimenChambers);
+//        sleep(200);
+//        robot.OArmL.setPosition(0.97);//  good
+//        robot.OArmR.setPosition(0.97);//
+////        delayTimer.reset();
+////        while (delayTimer.milliseconds() < 200 && opModeIsActive()) {
+////            // Other tasks can be processed here
+////        }
+//        myGoToPos(200, -1000, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 1.7);
+////        robot.OArmL.setPosition(0.97);
+////        robot.OArmR.setPosition(0.97);
+//        myGoToPos(0, 150, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 1.7);
+//
+//
+
+////        ////////////////////////////////////navigate to the left specimen and push it to home////////////////////////////
+//        myGoToPos(200, 100, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 0.5);
+//        myGoToPos(200, -750, Math.toRadians(0), 0.8, 5, 5, Math.toRadians(3), 0.8);
+//        myGoToPos(1600, -750, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1.9);
+//        myGoToPos(1600, -1150, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1.9);
+//// //       myGoToPos(200, -1150, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 2);
+//        myGoToPos(200, -1150, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1.9);
+////        ////////////////////////////////////navigate to the midddle specimen and push it to home////////////////////////////
+//        myGoToPos(1600, -1150, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1.9);
+//        myGoToPos(1600, -1400, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1.9);
+//        myGoToPos(200, -1400, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1.9);
+
+//////        ///////////////////////////move Synchronous both drive train and slides//////////////////////////
+//        startDriveMovement(620, 150, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 1);
+//        startVSlideMovement(POSITION_Y_HIGH);
+//        robot.OArmL.setPosition(0.97);//  good
+//        robot.OArmR.setPosition(0.97);//
+//        while (opModeIsActive()) {
+//            updateVSlidePIDControl(); // 更新滑轨位置
+//            if (movementActive) {
+//                myGoToPosSingle(targetX, targetY, targetH, moveSpeed); // 更新驱动位置
+//            }
+//            if (!movementActive && !pidActiveVS){
+//                break;
+//            }
+//        }
+//        myGoToPos(780, 150, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 1.6);
+//        myGoToPos(860, 150, Math.toRadians(0), 0.4, 3, 3, Math.toRadians(1), 0.8);
+//// 570 -- 820  620-620-820 no hard crash, but still move backward 12cm away 620-7400-820 no hard crash, but still move backward 4cm away
+//// 620-790-820 with crash, but still move backward 4cm away 620-780-860 ?with
+////        ////////////////////////////////////in front of chamber and ready to hang////////////////////////////
+//        goToVSlidePos(POSITION_Y_HIGHHH,0.8);
+//        sleep(100);
+//        robot.OClaw.setPosition(OClawOpen);
+//        goToHSlidePos(20,0.4);
+//        myGoToPos(570, 150, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 0.8);
+//        goToVSlidePos(POSITION_A_BOTTOM,0.85);
+//        robot.OArmL.setPosition(OArmRearSpecimenPick);
+//        robot.OArmR.setPosition(OArmRearSpecimenPick);
+//////////////////////////////////////finishing hanging and reset claw and arms/////////////////////////////
+// //       myGoToPos(570, 100, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 0.5);
+////        //reset and start moving towards the two specimen and pushing back
+//        goToHSlidePos(20,0.4);
+
+
+/////////////////////////// good for pick up to preload then pushing//////////////////////////////////
+
+
+
+
+
+
+        //testieeeee
+//        goToHSlidePos(0,0.2);
+//   //     startDriveMovement(670, 0, Math.toRadians(0), 0.8, 5, 5, Math.toRadians(3), 0.4);
+//        myGoToPos(670, 0, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 0.7);
+        //     startDriveMovement(670, 0, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 0.7);
+/////////////////////////// good for pick up to preload then pushing//////////////////////////////////
+// the first preload specimen
+///////////////////////////////////////////move robot close to chamber and adjust slides high///////////
+//        startDriveMovement(810, 0, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 0.7);
+//        startVSlideMovement(POSITION_Y_HIGH);
+//        robot.OArmL.setPosition(0.97);//  good
+//        robot.OArmR.setPosition(0.97);//
+//        while (opModeIsActive()) {
+//            updateVSlidePIDControl(); // 更新滑轨位置
+//            if (movementActive) {
+//                myGoToPosSingle(targetX, targetY, targetH, moveSpeed); // 更新驱动位置
+//            }
+//            if (!movementActive && !pidActiveVS){
+//                break;
+//            }
+//        }
+//        myGoToPos(810, 0, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 0.5);
+//        myGoToPos(820, 0, Math.toRadians(0), 0.4, 3, 3, Math.toRadians(1), 0.3);
+//
+//        ////////////////////////////////////in front of chamber and ready to hang////////////////////////////
+//        goToVSlidePos(POSITION_Y_HIGHHH,0.8);
+//        sleep(100);
+//        robot.OClaw.setPosition(OClawOpen);
+//        goToHSlidePos(20,0.3);
+//        myGoToPos(570, 0, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(1), 0.3);
+//        goToVSlidePos(POSITION_A_BOTTOM,0.85);
+//        robot.OArmL.setPosition(OArmRearSpecimenPick);
+//        robot.OArmR.setPosition(OArmRearSpecimenPick);
+//////////////////////////////////////finishing hanging and reset claw and arms/////////////////////////////
+//////////////////////////////////////navigate to the home for second preload specimen from left corner////////////////////////////
+//        myGoToPos(570, -1000, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 1.0);
+//        myGoToPos(-90, -1000, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 0.7);
+// //       myGoToPos(-69, -1000, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 0.7);
+//        sleep(500);
+//        robot.OClaw.setPosition(OClawSpecimenChambers);
+//        sleep(200);
+//        robot.OArmL.setPosition(0.97);//  good
+//        robot.OArmR.setPosition(0.97);//
+////        delayTimer.reset();
+////        while (delayTimer.milliseconds() < 200 && opModeIsActive()) {
+////            // Other tasks can be processed here
+////        }
+//        myGoToPos(200, -1000, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 1.7);
+////        robot.OArmL.setPosition(0.97);
+////        robot.OArmR.setPosition(0.97);
+//        myGoToPos(0, 150, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 1.7);
+//
+//
+//////        ///////////////////////////move Synchronous both drive train and slides//////////////////////////
+//        startDriveMovement(620, 150, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 1);
+//        startVSlideMovement(POSITION_Y_HIGH);
+//        robot.OArmL.setPosition(0.97);//  good
+//        robot.OArmR.setPosition(0.97);//
+//        while (opModeIsActive()) {
+//            updateVSlidePIDControl(); // 更新滑轨位置
+//            if (movementActive) {
+//                myGoToPosSingle(targetX, targetY, targetH, moveSpeed); // 更新驱动位置
+//            }
+//            if (!movementActive && !pidActiveVS){
+//                break;
+//            }
+//        }
+//        myGoToPos(780, 150, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 1.6);
+//        myGoToPos(860, 150, Math.toRadians(0), 0.4, 3, 3, Math.toRadians(1), 0.8);
+//// 570 -- 820  620-620-820 no hard crash, but still move backward 12cm away 620-7400-820 no hard crash, but still move backward 4cm away
+//// 620-790-820 with crash, but still move backward 4cm away 620-780-860 ?with
+////        ////////////////////////////////////in front of chamber and ready to hang////////////////////////////
+//        goToVSlidePos(POSITION_Y_HIGHHH,0.8);
+//        sleep(100);
+//        robot.OClaw.setPosition(OClawOpen);
+//        goToHSlidePos(20,0.4);
+//        myGoToPos(570, 150, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 0.8);
+//        goToVSlidePos(POSITION_A_BOTTOM,0.85);
+//        robot.OArmL.setPosition(OArmRearSpecimenPick);
+//        robot.OArmR.setPosition(OArmRearSpecimenPick);
+//////////////////////////////////////finishing hanging and reset claw and arms/////////////////////////////
+// //       myGoToPos(570, 100, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 0.5);
+////        //reset and start moving towards the two specimen and pushing back
+//        goToHSlidePos(20,0.4);
+
+
+/////////////////////////// good for pick up to preload then pushing//////////////////////////////////
+//
+//        myGoToPos(200, -400, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 0.8);
+//        myGoToPos(200, -900, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 0.8);
+//        myGoToPos(1400, -900, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 0.8);
+//        myGoToPos(1400, -1130, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 0.8);
+//        myGoToPos(100, -1130, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 1.19);
+//////////////////////////////////////////navigate to the middle specimen and push it to home////////////////////////////
+//        myGoToPos(1400, -1130, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 1.19);
+//        myGoToPos(1400, -1380, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 1.19);
+//        myGoToPos(200, -1380, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 1.19);
+//        myGoToPos(200, -1100, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 1.19);
+
+//        myGoToPos(1400, -1130, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1.1);
+//        myGoToPos(1400, -1380, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 0.5);
+//        myGoToPos(200, -1380, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 1.1);
+//        myGoToPos(200, -1100, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 0.6);
+//
+//////////////piking up 3d specimen
+////        myGoToPos(200, -1150, Math.toRadians(0), 0.79, 5, 5, Math.toRadians(3), 0.5);
         sleep(500);
-        ///////////////////////////////////move to front of human player let human player to line the specimen up with claw///////
-//////////////////////////
-//// the second preload specimen
-//        //////////////////////////////pick up specimen from human player/////////////////////////////
-        myGoToPos(-65, -1200, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 0.5);
-        sleep(300);
-        robot.OClaw.setPosition(OClawSpecimenChambers);
-        sleep(100);
-        delayTimer.reset();
-        while (delayTimer.milliseconds() < 200 && opModeIsActive()) {
-            // Other tasks can be processed here
-        }
-//        /////////////////////////////picked it up and move away from the wall, move arm and then to start position/////////////////
-        myGoToPos(200, -1200, Math.toRadians(0), 0.5, 5, 5, Math.toRadians(3), 1.65);
-        //added 02082025 8:03pm
-        //        myGoToPos(200, -1150, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 2);
-        robot.OArmL.setPosition(0.97);
-        robot.OArmR.setPosition(0.97);
-        lastOArmLPosition= robot.OArmL.getPosition();
-        lastOArmRPosition= robot.OArmR.getPosition();
-        myGoToPos(200, 100, Math.toRadians(0), 0.8, 5, 5, Math.toRadians(3), 1.65);
-//        ///////////////////////////move Synchronous both drive train and slides//////////////////////////
-        startDriveMovement(670, 100, Math.toRadians(0), 0.65, 5, 5, Math.toRadians(3), 1.8);
-        startVSlideMovement(POSITION_Y_HIGH);
-        while (opModeIsActive()) {
-            updateVSlidePIDControl(); // 更新滑轨位置
-            if (movementActive) {
-                myGoToPosSingle(targetX, targetY, targetH, moveSpeed); // 更新驱动位置
-            }
-            if (!movementActive && !pidActiveVS){
-                break;
-            }
-        }
-        myGoToPos(950, 100, Math.toRadians(0), 0.6, 5, 5, Math.toRadians(3), 0.9);
-        //power to be 0.6 from 0.7
-        sleep(300);
-//        ////////////////////////////////////in front of chamber and ready to hang////////////////////////////
-        goToVSlidePos(POSITION_Y_HIGHHH,0.9);
-        sleep(300);
-        robot.OClaw.setPosition(OClawOpen);
-        goToVSlidePos(POSITION_A_BOTTOM,1.2);
-        robot.OArmL.setPosition(OArmRearSpecimenPick);
-        robot.OArmR.setPosition(OArmRearSpecimenPick);
-        lastOArmLPosition= robot.OArmL.getPosition();
-        lastOArmRPosition= robot.OArmR.getPosition();
-        myGoToPos(300, 100, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 0.8);
-        myGoToPos(300, -760, Math.toRadians(0), 0.8, 5, 5, Math.toRadians(3), 0.9);
-        myGoToPos(200, -1150, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 0.5);
-        sleep(700);
-        ///////////////////////////////////move to front of human player let human player to line the specimen up with claw///////
-//////////////////////////
-//// the second specimen done
-//        //////////////////////////////pick up specimen from human player/////////////////////////////
-        myGoToPos(-68, -1150, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 0.5);
-        sleep(300);
-        robot.OClaw.setPosition(OClawSpecimenChambers);
-        sleep(100);
-        delayTimer.reset();
-        while (delayTimer.milliseconds() < 200 && opModeIsActive()) {
-            // Other tasks can be processed here
-        }
-//        /////////////////////////////picked it up and move away from the wall, move arm and then to start position/////////////////
-//        myGoToPos(200, -1150, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 2);
-        robot.OArmL.setPosition(0.97);
-        robot.OArmR.setPosition(0.97);
-        lastOArmLPosition= robot.OArmL.getPosition();
-        lastOArmRPosition= robot.OArmR.getPosition();
-        myGoToPos(200, 200, Math.toRadians(0), 0.8, 5, 5, Math.toRadians(3), 1.8);
-//        ///////////////////////////move Synchronous both drive train and slides//////////////////////////
-        startDriveMovement(670, 200, Math.toRadians(0), 0.65, 5, 5, Math.toRadians(3), 1.7);
-        startVSlideMovement(POSITION_Y_HIGH);
-        while (opModeIsActive()) {
-            updateVSlidePIDControl(); // 更新滑轨位置
-            if (movementActive) {
-                myGoToPosSingle(targetX, targetY, targetH, moveSpeed); // 更新驱动位置
-            }
-            if (!movementActive && !pidActiveVS){
-                break;
-            }
-        }
-        myGoToPos(950, 200, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 0.75);
-        sleep(300);
-//        ////////////////////////////////////in front of chamber and ready to hang////////////////////////////
-        goToVSlidePos(POSITION_Y_HIGHHH,0.9);
-        sleep(300);
-        robot.OClaw.setPosition(OClawOpen);
-        myGoToPos(670, 200, Math.toRadians(0), 0.5, 5, 5, Math.toRadians(3), 0.75);
-        goToVSlidePos(POSITION_A_BOTTOM,0.9);
-        robot.OArmL.setPosition(0.5);
-        robot.OArmR.setPosition(0.5);
-        lastOArmLPosition= robot.OArmL.getPosition();
-        lastOArmRPosition= robot.OArmR.getPosition();
+//        ///////////////////////////////////move to front of human player let human player to line the specimen up with claw///////
+////////////////////////////
+////// the second preload specimen
+////        //////////////////////////////pick up specimen from human player/////////////////////////////
+//        myGoToPos(-65, -1100, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 0.5);
+//        sleep(300);
+//        robot.OClaw.setPosition(OClawSpecimenChambers);
+//        sleep(100);
+//        delayTimer.reset();
+//        while (delayTimer.milliseconds() < 200 && opModeIsActive()) {
+//            // Other tasks can be processed here
+//        }
+////        /////////////////////////////picked it up and move away from the wall, move arm and then to start position/////////////////
+////        myGoToPos(200, -1150, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 2);
+//        robot.OArmL.setPosition(0.97);
+//        robot.OArmR.setPosition(0.97);
+//        myGoToPos(200, 100, Math.toRadians(0), 0.8, 5, 5, Math.toRadians(3), 1.65);
+////        ///////////////////////////move Synchronous both drive train and slides//////////////////////////
+//        startDriveMovement(670, 100, Math.toRadians(0), 0.65, 5, 5, Math.toRadians(3), 1.3);
+//        startVSlideMovement(POSITION_Y_HIGH);
+//        while (opModeIsActive()) {
+//            updateVSlidePIDControl(); // 更新滑轨位置
+//            if (movementActive) {
+//                myGoToPosSingle(targetX, targetY, targetH, moveSpeed); // 更新驱动位置
+//            }
+//            if (!movementActive && !pidActiveVS){
+//                break;
+//            }
+//        }
+//        myGoToPos(900, 100, Math.toRadians(0), 0.65, 5, 5, Math.toRadians(3), 0.7);
+//        goToHSlidePos(0,0.4);
+//        sleep(300);
+////        ////////////////////////////////////in front of chamber and ready to hang////////////////////////////
+//        goToVSlidePos(POSITION_Y_HIGHHH,0.8);
+//        sleep(300);
+//        robot.OClaw.setPosition(OClawOpen);
+//        goToVSlidePos(POSITION_A_BOTTOM,0.8);
+//        robot.OArmL.setPosition(OArmRearSpecimenPick);
+//        robot.OArmR.setPosition(OArmRearSpecimenPick);
+//        myGoToPos(300, 100, Math.toRadians(0), 0.8, 5, 5, Math.toRadians(3), 0.7);
+//        myGoToPos(300, -760, Math.toRadians(0), 0.8, 5, 5, Math.toRadians(3), 0.9);
+//        myGoToPos(200, -1000, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 0.5);
+//        sleep(700);
+//        ///////////////////////////////////move to front of human player let human player to line the specimen up with claw///////
+////////////////////////////
+////// the second specimen done
+////        //////////////////////////////pick up specimen from human player/////////////////////////////
+//        myGoToPos(-70, -1000, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 0.5);
+//        sleep(400);
+//        robot.OClaw.setPosition(OClawSpecimenChambers);
+//        sleep(100);
+//        delayTimer.reset();
+//        while (delayTimer.milliseconds() < 200 && opModeIsActive()) {
+//            // Other tasks can be processed here
+//        }
+////        /////////////////////////////picked it up and move away from the wall, move arm and then to start position/////////////////
+////        myGoToPos(200, -1150, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 2);
+//        robot.OArmL.setPosition(0.97);
+//        robot.OArmR.setPosition(0.97);
+//        myGoToPos(200, 200, Math.toRadians(0), 0.8, 5, 5, Math.toRadians(3), 1.8);
+////        ///////////////////////////move Synchronous both drive train and slides//////////////////////////
+//        startDriveMovement(670, 200, Math.toRadians(0), 0.65, 5, 5, Math.toRadians(3), 1.4);
+//        startVSlideMovement(POSITION_Y_HIGH);
+//        while (opModeIsActive()) {
+//            updateVSlidePIDControl(); // 更新滑轨位置
+//            if (movementActive) {
+//                myGoToPosSingle(targetX, targetY, targetH, moveSpeed); // 更新驱动位置
+//            }
+//            if (!movementActive && !pidActiveVS){
+//                break;
+//            }
+//        }
+//        myGoToPos(900, 200, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 0.75);
+//        sleep(300);
+////        ////////////////////////////////////in front of chamber and ready to hang////////////////////////////
+//        goToVSlidePos(POSITION_Y_HIGHHH,0.9);
+//        sleep(300);
+//        robot.OClaw.setPosition(OClawOpen);
+//        myGoToPos(670, 200, Math.toRadians(0), 0.5, 5, 5, Math.toRadians(3), 0.75);
+//        robot.OArmL.setPosition(0.46);
+//        robot.OArmR.setPosition(0.46);
+//        goToVSlidePos(POSITION_A_BOTTOM,0.75);
+//        goToHSlidePos(0,0.2);
+//
+//
+//
+//
 
 
 
 
 
-
-
-
-
-
-
+////////////////////////////////////////////////////////////////////////
 
 
 //        startDriveMovement(670, 0, Math.toRadians(0), 0.65, 5, 5, Math.toRadians(3), 2.3);
@@ -497,11 +897,15 @@ public class SpecimenFourTwoPlusTwo extends LinearOpMode {
 
 
 ////////////////////////////tune PID of Y /////////////////////////////////////////////////
-//while(ii < 10){
-//    myGoToPos(600, 0, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 4);
-//        sleep(1000);
-//    myGoToPos(-600, 0, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 4);
+//while(ii < 15){
+//    myGoToPos(0, 600, Math.toRadians(0), 0.7, 0.1, 0.1, Math.toRadians(0.1), 4);
+//        sleep(3000);
+//    myGoToPos(0, 0, Math.toRadians(0), 0.7, 0.1, 0.1, Math.toRadians(0.1), 4);
+//    sleep(3000);
+//    myGoToPos(0, -600, Math.toRadians(0), 0.7, 0.1, 0.1, Math.toRadians(0.1), 4);
 //          sleep(1000);
+//    myGoToPos(0, 0, Math.toRadians(0), 0.7, 0.1, 0.1, Math.toRadians(0.1), 4);
+//    sleep(3000);
 //          ii=ii+1;
 //        }
         //       myGoToPos(0, 1200, Math.toRadians(0), 0.7, 5, 5, Math.toRadians(3), 4);
@@ -849,6 +1253,115 @@ public class SpecimenFourTwoPlusTwo extends LinearOpMode {
 
 
 
+    public void refresh(){
+        robot.odo.update();
+        Pose2D pos = robot.odo.getPosition();
+        GlobalX = pos.getX(DistanceUnit.MM);
+        GlobalY = pos.getY(DistanceUnit.MM);
+        GlobalH = pos.getHeading(AngleUnit.RADIANS);
+    }
+
+    ///////////////////////////
+    double integralSum = 0;
+    double feedfoward = 0;
+    double Kp = 1.313; //1.213-1.3213-1.4213-1.5213 good    0.99    0.59 for 2102025 0.6
+    double Ki = 0.01;// 0.028   0.2 for2102025 0.32
+    double Kd = 0.0000217;// 0.017 for 21020250.17
+    double Kf = 0.025;//0.25
+    private double lastError = 0;
+    double integralSumX = 0;
+    double KpX=0.0019; //power 0.7,,,,,, KpX=0.005; 0.0045 0.0037 0.003 0.0023 0.002 0.0017  over shoot, 0.001 too less
+    double KiX=0.0000005;   //Kxp/KYp ratio is affected by the robot weight balance
+    double KdX=0.0002;// KXf/KYf ratio is affected by the robot weight balance
+    double feedfowardX = 0;
+    private double lastErrorX = 0;
+
+    double integralSumY = 0;
+    double KpY=0.0028; // power 0.7,,,,,, 0.0035 a little bit less 0.0037 A LITTLE BIT MORE
+    double KiY=0.000000005;   //Kxp/KYp ratio is affected by the robot weight balance
+    double KdY=0.000002;// KXf/KYf ratio is affected by the robot weight balance
+    double feedfowardY = 0;
+    private double lastErrorY = 0;
+
+
+    //////////////////////////
+    /*
+
+
+    double integralSum = 0;
+    double feedfoward = 0;
+    double Kp = 0.6;
+    double Ki = 0.32;
+    double Kd = 0.17;
+    double Kf = 0.25;
+    private double lastError = 0;
+
+
+
+    double integralSumX = 0;
+    double KpX=0.04;
+    double KiX=0.002;   //Kxp/KYp ratio is affected by the robot weight balance
+    double KdX=0.008;// KXf/KYf ratio is affected by the robot weight balance
+    double feedfowardX = 0;
+    private double lastErrorX = 0;
+
+    double integralSumY = 0;
+    double KpY=0.04;
+    double KiY=0.002;   //Kxp/KYp ratio is affected by the robot weight balance
+    double KdY=0.008;// KXf/KYf ratio is affected by the robot weight balance
+    double feedfowardY = 0;
+    private double lastErrorY = 0;
+    */
+
+    double correctFactorCoeff = 300;
+    double initialDistanceToTarget = 0;
+
+    ElapsedTime timer = new ElapsedTime();
+    ElapsedTime timerX = new ElapsedTime();
+    ElapsedTime timerY = new ElapsedTime();
+    public double myPIDControlX(double reference, double state) {
+        double error = -reference + state;
+        integralSumX += error*timerX.seconds();
+        double derivative = (error - lastErrorX) / (timerX.seconds());
+        lastErrorX = error;
+        timerX.reset();
+        double output = (error*KpX) + (derivative*KdX) + (integralSumX*KiX);
+        telemetry.addData("targetX", targetX);
+        telemetry.addData("outputX", output);
+        telemetry.addData("errorX", error);
+        telemetry.update();
+        return output;
+    }
+
+    public double myPIDControlY(double reference, double state) {
+        double error = -reference + state;
+        integralSumY += error*timerY.seconds();
+        double derivative = (error - lastErrorY) / (timerY.seconds());
+        lastErrorY = error;
+        timerY.reset();
+        double output = (error*KpY) + (derivative*KdY) + (integralSumY*KiY);
+//        telemetry.addData("reference", reference);
+        telemetry.addData("targetY", targetY);
+        telemetry.addData("outputY", output);
+        telemetry.addData("errorY", error);
+        telemetry.update();
+        return output;
+    }
+    /////////////////////tuning PID/////////////////////////
+    public double myPIDControlH(double reference, double state) {
+        double error = angleWrapRad(-reference + state);
+        integralSum += error*timer.seconds();
+        double derivative = (error - lastError) / (timer.seconds());
+        lastError = error;
+        timer.reset();
+        double output = (error*Kp) + (derivative*Kd) + (integralSum*Ki) + (feedfoward*Kf);
+        telemetry.addData("targetH", targetH);
+        telemetry.addData("outputH", output);
+        telemetry.addData("errorH", error);
+        telemetry.update();
+        return output;
+    }
+
     ////////////////////////////////////////////////////////////
 
     private void moveVSlideToPosition ( int targetPosition){
@@ -920,7 +1433,7 @@ public class SpecimenFourTwoPlusTwo extends LinearOpMode {
             }
         }
 
-        robot.HSMotor.setPower(0.1); // 防止震荡时继续保持微功率
+        robot.HSMotor.setPower(0); // 防止震荡时继续保持微功率
     } ///////////startVSlidePIDControl///////////////
 
     /// 初始化 PID 控制器
@@ -1139,112 +1652,6 @@ public class SpecimenFourTwoPlusTwo extends LinearOpMode {
         }
 
         return angle;
-    }
-
-    public void refresh(){
-        robot.odo.update();
-        Pose2D pos = robot.odo.getPosition();
-        GlobalX = pos.getX(DistanceUnit.MM);
-        GlobalY = pos.getY(DistanceUnit.MM);
-        GlobalH = pos.getHeading(AngleUnit.RADIANS);
-    }
-
-    ///////////////////////////
-    double integralSum = 0;
-    double feedfoward = 0;
-    double Kp = 0.59; //0.6
-    double Ki = 0.2;//0.32
-    double Kd = 0.017;//0.17
-    double Kf = 0.025;//0.25
-    private double lastError = 0;
-    double integralSumX = 0;
-    double KpX=0.0015; //power 0.7,,,,,, KpX=0.005; 0.0045 0.0037 0.003 0.0023 0.002 0.0017  over shoot, 0.001 too less
-    double KiX=0.0000005;   //Kxp/KYp ratio is affected by the robot weight balance
-    double KdX=0.0002;// KXf/KYf ratio is affected by the robot weight balance
-    double feedfowardX = 0;
-    private double lastErrorX = 0;
-
-    double integralSumY = 0;
-    double KpY=0.0037; // power 0.7,,,,,, 0.0035 a little bit less
-    double KiY=0.000000005;   //Kxp/KYp ratio is affected by the robot weight balance
-    double KdY=0.000002;// KXf/KYf ratio is affected by the robot weight balance
-    double feedfowardY = 0;
-    private double lastErrorY = 0;
-
-
-    //////////////////////////
-    /*
-
-
-    double integralSum = 0;
-    double feedfoward = 0;
-    double Kp = 0.6;
-    double Ki = 0.32;
-    double Kd = 0.17;
-    double Kf = 0.25;
-    private double lastError = 0;
-
-
-
-    double integralSumX = 0;
-    double KpX=0.04;
-    double KiX=0.002;   //Kxp/KYp ratio is affected by the robot weight balance
-    double KdX=0.008;// KXf/KYf ratio is affected by the robot weight balance
-    double feedfowardX = 0;
-    private double lastErrorX = 0;
-
-    double integralSumY = 0;
-    double KpY=0.04;
-    double KiY=0.002;   //Kxp/KYp ratio is affected by the robot weight balance
-    double KdY=0.008;// KXf/KYf ratio is affected by the robot weight balance
-    double feedfowardY = 0;
-    private double lastErrorY = 0;
-    */
-
-    double correctFactorCoeff = 300;
-    double initialDistanceToTarget = 0;
-
-    ElapsedTime timer = new ElapsedTime();
-    ElapsedTime timerX = new ElapsedTime();
-    ElapsedTime timerY = new ElapsedTime();
-    public double myPIDControlX(double reference, double state) {
-        double error = -reference + state;
-        integralSumX += error*timerX.seconds();
-        double derivative = (error - lastErrorX) / (timerX.seconds());
-        lastErrorX = error;
-        timerX.reset();
-        double output = (error*KpX) + (derivative*KdX) + (integralSumX*KiX);
-        telemetry.addData("targetX", targetX);
-        telemetry.addData("outputX", output);
-        telemetry.addData("errorX", error);
-        telemetry.update();
-        return output;
-    }
-
-    public double myPIDControlY(double reference, double state) {
-        double error = -reference + state;
-        integralSumY += error*timerY.seconds();
-        double derivative = (error - lastErrorY) / (timerY.seconds());
-        lastErrorY = error;
-        timerY.reset();
-        double output = (error*KpY) + (derivative*KdY) + (integralSumY*KiY);
-//        telemetry.addData("reference", reference);
-        telemetry.addData("targetY", targetY);
-        telemetry.addData("outputY", output);
-        telemetry.addData("errorY", error);
-        telemetry.update();
-        return output;
-    }
-    /////////////////////tuning PID/////////////////////////
-    public double myPIDControlH(double reference, double state) {
-        double error = angleWrapRad(-reference + state);
-        integralSum += error*timer.seconds();
-        double derivative = (error - lastError) / (timer.seconds());
-        lastError = error;
-        timer.reset();
-        double output = (error*Kp) + (derivative*Kd) + (integralSum*Ki) + (feedfoward*Kf);
-
-        return output;
     }
 
     public double PIDControlH(double reference, double state) {

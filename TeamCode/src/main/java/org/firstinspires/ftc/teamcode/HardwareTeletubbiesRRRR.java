@@ -1,5 +1,9 @@
 
 package org.firstinspires.ftc.teamcode;
+
+import static org.firstinspires.ftc.teamcode.Constants_CS.IClawCloseInitialization;
+import static org.firstinspires.ftc.teamcode.Constants_CS.OClawCloseInitialization;
+
 import com.acmerobotics.roadrunner.ftc.GoBildaPinpointDriverRR;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -10,9 +14,9 @@ import com.qualcomm.robotcore.hardware.PwmControl;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ServoImplEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import static org.firstinspires.ftc.teamcode.Constants_CS.*;
-//DriveTrains_POWER update from 0.5 tobe 0.95
+
 /**
  * This is NOT an opmode.
  *
@@ -39,7 +43,7 @@ import static org.firstinspires.ftc.teamcode.Constants_CS.*;
  *
  */
 //Good version 02082024
-public class HardwareTeletubbies
+public class HardwareTeletubbiesRRRR
 {
     /* local OpMode members. */
     HardwareMap hwMap =  null;
@@ -79,7 +83,7 @@ public class HardwareTeletubbies
 //           public DcMotor TMotor; // For testing
 
     IMU imu;
-    public static final double DriveTrains_POWER =  0.95 ;// reduced power of driving train motors
+    public static final double DriveTrains_POWER =  0.5 ;// reduced power of driving train motors
     public static final double MID_SERVO       =  0.5 ;
     public static final double ARM_UP_POWER    =  0.45 ;
     public static final double ARM_DOWN_POWER  = -0.45 ;
@@ -179,8 +183,7 @@ public class HardwareTeletubbies
 //Begin Definition and Initialization of outtake Claw Servo
         OClaw = hwMap.get(Servo.class, "OClaw");//expansion hub port  0==>5
 //               OClaw.setPosition(0.548);//  12122024
-        OClaw.setPosition(OClawCloseInitialization);// 02142025
-        OClaw.setPosition(OClawCloseSuperTight);  //feel too loose updated on 0214
+        OClaw.setPosition(OClawCloseInitialization);
 //End Definition and Initialization of outtake Claw Servo
 
 //Begin Definition and Initialization of outtake ArmL and ArmR Servos
@@ -211,11 +214,7 @@ public class HardwareTeletubbies
         backwards is a negative number.
          */
         //  odo.setOffsets(-84.0, -224.0); //these are tuned for 3110-0002-0001 Product Insight #1
-//        odo.setOffsets(23.0, -8.0);  before 0210 this is to pinpoint center
-        odo.setOffsets(28.5, 156.0);
-        //02102025 update the off to be center of robot by suggestion for Ethan
-        // robot measured with length  Y=35.8cm X=29.3cm.X pod 11.8 to the left wall
-        // Y pod 2.3 cm behind the front wall
+        odo.setOffsets(23.0, -8.0);
 //        odo.setOffsets(-210, -150);
         /*
         Set the kind of pods used by your robot. If you're using goBILDA odometry pods, select either
