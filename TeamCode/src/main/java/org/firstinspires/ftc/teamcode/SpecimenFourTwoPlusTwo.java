@@ -208,7 +208,7 @@ public class SpecimenFourTwoPlusTwo extends LinearOpMode {
         ////////////////////////////////////in front of chamber and ready to hang////////////////////////////
         goToVSlidePos(POSITION_Y_HIGHHH,0.4);
         robot.OClaw.setPosition(OClawOpen);
-        goToHSlidePos(20,0.2);
+        goToHSlidePos(0,0.2);
         myGoToPos(570, 0, Math.toRadians(0), 0.85, 3, 3, Math.toRadians(1), 0.3);
         goToVSlidePos(POSITION_A_BOTTOM,0.8);
         robot.OArmL.setPosition(OArmRearSpecimenPick);
@@ -219,13 +219,13 @@ public class SpecimenFourTwoPlusTwo extends LinearOpMode {
         ///////FIRSTFIRSTFIRSTFIRSTFIRSTFIRSTFIRSTFIRSTFIRSTFIRSTFIRSTFIRSTFIRSTFIRST////////
 ////////////////////////////////////////navigate to the left specimen and push it to home////////////////////////////
         myGoToPos(500, -850, Math.toRadians(0), 0.85, 3, 3, Math.toRadians(1), 1.1);
-        goToHSlidePos(20,0.1);
+        goToHSlidePos(0,0.1);
         myGoToPos(1200, -850, Math.toRadians(0), 0.85, 3, 3, Math.toRadians(1), 1.0);
         myGoToPos(1200, -1175, Math.toRadians(0), 0.85, 3, 3, Math.toRadians(1), 0.4);
         // time 0.3- 0.4 y 1170 -1195 back to 1175
-        myGoToPos(300, -1175, Math.toRadians(0), 0.85, 3, 3, Math.toRadians(1), 0.35);
- //       goToHSlidePos(20,0.2);
-        myGoToPos(300, -1125, Math.toRadians(0), 0.85, 3, 3, Math.toRadians(1), 1.35);
+        myGoToPos(300, -1175, Math.toRadians(0), 0.85, 3, 3, Math.toRadians(1), 1.35);
+ //       goToHSlidePos(0,0.2);
+        myGoToPos(300, -1125, Math.toRadians(0), 0.85, 3, 3, Math.toRadians(1), 0.35);
         myGoToPos(1200, -1125, Math.toRadians(0), 0.85, 3, 3, Math.toRadians(1), 1.35);
         myGoToPos(1200, -1470, Math.toRadians(0), 0.85, 3, 3, Math.toRadians(1), 0.4);
         myGoToPos(300, -1470, Math.toRadians(0), 0.85, 3, 3, Math.toRadians(1), 1.25);
@@ -267,7 +267,7 @@ public class SpecimenFourTwoPlusTwo extends LinearOpMode {
 //        ////////////////////////////////////in front of chamber and ready to hang////////////////////////////
         goToVSlidePos(POSITION_Y_HIGHHH,0.4);
         robot.OClaw.setPosition(OClawOpen);
-        goToHSlidePos(20,0.1);
+        goToHSlidePos(0,0.1);
         myGoToPos(570, 80, Math.toRadians(0), 0.85, 3, 3, Math.toRadians(1), 0.5);
         goToVSlidePos(POSITION_A_BOTTOM,0.8);
         robot.OArmL.setPosition(OArmRearSpecimenPick);
@@ -311,7 +311,7 @@ public class SpecimenFourTwoPlusTwo extends LinearOpMode {
 //        ////////////////////////////////////in front of chamber and ready to hang////////////////////////////
         goToVSlidePos(POSITION_Y_HIGHHH,0.3);
         robot.OClaw.setPosition(OClawOpen);
-        goToHSlidePos(20,0.1);
+        goToHSlidePos(0,0.1);
         robot.OArmL.setPosition(OArmRearSpecimenPick);
         robot.OArmR.setPosition(OArmRearSpecimenPick);
         lastOArmLPosition= robot.OArmL.getPosition();
@@ -362,7 +362,7 @@ public class SpecimenFourTwoPlusTwo extends LinearOpMode {
         lastOArmRPosition= robot.OArmL.getPosition();
 //        robot.OArmL.setPosition(OArmRearSpecimenPick);
 //        robot.OArmR.setPosition(OArmRearSpecimenPick);
-//        goToHSlidePos(20,0.1);
+//        goToHSlidePos(0,0.1);
         goToVSlidePos(POSITION_A_BOTTOM,0.8);
         myGoToPos(570, 220, Math.toRadians(0), 0.8, 3, 3, Math.toRadians(1), 0.5);
 //        myGoToPos(570, 300, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 0.8);
