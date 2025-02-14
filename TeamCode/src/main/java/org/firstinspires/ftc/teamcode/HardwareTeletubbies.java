@@ -166,7 +166,6 @@ public class HardwareTeletubbies
 
 //End Definition and Initialization of Wristxpitch Servo
 
-
 //Begin Definition and Initialization of intake ArmL and ArmR Servos
 
         IArmL = hwMap.get(Servo.class, "IArmL");//control hub port 2
