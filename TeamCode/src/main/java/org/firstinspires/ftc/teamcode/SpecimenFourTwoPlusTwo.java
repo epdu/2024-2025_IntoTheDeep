@@ -95,10 +95,10 @@ For support, contact tech@gobilda.com
 -Ethan Doak
  */
 
-@Autonomous(name="AAAAA Right four specimens two preloaded", group="Linear OpMode")
+@Autonomous(name="AAAAA Right 4 specimens 2 preloaded", group="Linear OpMode")
 //@Disabled
 //face to the bar right space for 4 of them only
-// two preload and push three home
+// two preload and push two home
 //02082025
 public class SpecimenFourTwoPlusTwo extends LinearOpMode {
 
