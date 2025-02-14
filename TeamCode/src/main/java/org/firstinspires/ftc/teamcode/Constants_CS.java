@@ -18,8 +18,8 @@ public class Constants_CS {
     public static final int POSITION_Y_HIGH = 800;// 1270Vertical slides all the way up
     public static final int POSITION_Y_HIGHH = 2300;// 1300Vertical slides all the way up 1500 1900 still a little bit low//bucket
     public static final int POSITION_Y_HIGHHH = 1400;//Vertical slides all the way up
-    public static final double SLIDE_POWER_H = 0.6; // Adjust as needed
-    public static final double SLIDE_POWER_V = 0.8; // Adjust as needed
+    public static final double SLIDE_POWER_H = 0.7; // Adjust as needed
+    public static final double SLIDE_POWER_V = 0.85; // Adjust as needed
     public static final double IClawOpen = 0.32;
     public static final double IClawCloseLose = 0.485;//was 0.54
     public static final double IClawCloseInitialization = 0.48;
@@ -40,7 +40,7 @@ public class Constants_CS {
  //   public static final double OArmRearSpecimenPick = 0.06;//before 0126205
     public static final double OArmBucket = 0.3;
     public static final double OClawSpecimenChambers = 0.548;
-    public static final double WristzyawRight = 0.06;
+    public static final double WristzyawRight = 0.15;
     public static final double WristzyawLeft = 0.5;
     public static final double WristxpitchDown = 0.65;
     public static final double WristxpitchIntermedia4PositionAdjust =0.5;
