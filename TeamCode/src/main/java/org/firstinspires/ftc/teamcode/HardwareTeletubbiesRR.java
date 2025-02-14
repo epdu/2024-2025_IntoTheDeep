@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode;
 import static org.firstinspires.ftc.teamcode.Constants_CS.IClawCloseInitialization;
 import static org.firstinspires.ftc.teamcode.Constants_CS.OClawCloseInitialization;
 
+import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.ftc.GoBildaPinpointDriverRR;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -74,6 +75,7 @@ public class HardwareTeletubbiesRR
     public DcMotor VSMotorR; //vertical Slides motor right
     GoBildaPinpointDriver odo; // Declare OpMode member for the Odometry Computer
     public GoBildaPinpointDriverRR pinpoint;
+//    private PinpointDrive drive;
     public double GlobalX = 0;
     public double GlobalY = 0;
     public double GlobalH = 0;
@@ -207,7 +209,11 @@ public class HardwareTeletubbiesRR
 ///////////////////////////////////////GoBildaPinpointDriver//////////////////////////////
 //        odo = hwMap.get(GoBildaPinpointDriver.class,"odo"); //expansion hub i2c port 1
         pinpoint = hwMap.get(GoBildaPinpointDriverRR.class, "pinpoint"); // guess for RR only
-         /*
+//        pinpoint = new GoBildaPinpointDriverRR(hwMap);
+//        pinpoint = new GoBildaPinpointDriverRR(hwMap);
+//        pinpoint.setPoseEstimate(new Pose2d(0, 0, 0));
+        pinpoint.setPosition(new Pose2d(0, 0, 0));
+        /*
         Set the odometry pod positions relative to the point that the odometry computer tracks around.
         The X pod offset refers to how far sideways from the tracking point the
         X (forward) odometry pod is. Left of the center is a positive number,
