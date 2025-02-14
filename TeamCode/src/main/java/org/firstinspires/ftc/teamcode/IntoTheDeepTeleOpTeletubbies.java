@@ -79,7 +79,6 @@ public class IntoTheDeepTeleOpTeletubbies extends LinearOpMode {
     private PIDController pidControllerHS = new PIDController(0.005, 0.0000005, 0.0002);// (0.005, 0.0000005, 0.0002) good for target 300 (1.9, 0.014, 4.9)
     // Tune these values  POSITION_B_EXTRUDETransfer = 600;//horizontal slides  out //600 is too much
 
-
     ButtonHandler dpadDownHandler = new ButtonHandler();
     ButtonHandler dpadUpHandler = new ButtonHandler();
     ButtonHandler dpadLeftHandler = new ButtonHandler();
