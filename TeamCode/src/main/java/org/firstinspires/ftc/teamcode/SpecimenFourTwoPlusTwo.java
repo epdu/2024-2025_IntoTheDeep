@@ -223,9 +223,9 @@ public class SpecimenFourTwoPlusTwo extends LinearOpMode {
         myGoToPos(1200, -850, Math.toRadians(0), 0.85, 3, 3, Math.toRadians(1), 1.0);
         myGoToPos(1200, -1175, Math.toRadians(0), 0.85, 3, 3, Math.toRadians(1), 0.4);
         // time 0.3- 0.4 y 1170 -1195 back to 1175
-        myGoToPos(300, -1125, Math.toRadians(0), 0.85, 3, 3, Math.toRadians(1), 0.35);
+        myGoToPos(300, -1175, Math.toRadians(0), 0.85, 3, 3, Math.toRadians(1), 0.35);
  //       goToHSlidePos(20,0.2);
-        myGoToPos(1200, -1125, Math.toRadians(0), 0.85, 3, 3, Math.toRadians(1), 1.35);
+        myGoToPos(300, -1125, Math.toRadians(0), 0.85, 3, 3, Math.toRadians(1), 1.35);
         myGoToPos(1200, -1125, Math.toRadians(0), 0.85, 3, 3, Math.toRadians(1), 1.35);
         myGoToPos(1200, -1470, Math.toRadians(0), 0.85, 3, 3, Math.toRadians(1), 0.4);
         myGoToPos(300, -1470, Math.toRadians(0), 0.85, 3, 3, Math.toRadians(1), 1.25);
