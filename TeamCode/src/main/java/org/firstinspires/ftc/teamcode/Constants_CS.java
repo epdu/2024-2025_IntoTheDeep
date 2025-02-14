@@ -53,6 +53,9 @@ public class Constants_CS {
     public static final double  IArmRUp = 0.602;
     public static final double OArmLInitialization = 0.97;
     public static final double OArmRInitialization = 0.97;
+    public static final double OArmLInitializationhigher = 0.8;
+    public static final double OArmRInitializationhigher = 0.8;
+
     public static final double SERVO_STEP = 0.01; // 每次调整的伺服步长
     public static final double servoPosition = 0.5;
     public static final double SLIDE_POWER = 0.8; // Adjust as needed
