@@ -95,10 +95,10 @@ For support, contact tech@gobilda.com
 -Ethan Doak
  */
 
-@Autonomous(name="AAAAA Right four specimens two preloaded", group="Linear OpMode")
+@Autonomous(name="AAAAA Right 4 specimens 2 preloaded", group="Linear OpMode")
 //@Disabled
 //face to the bar right space for 4 of them only
-// two preload and push three home
+// two preload and push two home
 //02082025
 public class SpecimenFourTwoPlusTwo extends LinearOpMode {
 
@@ -152,6 +152,9 @@ public class SpecimenFourTwoPlusTwo extends LinearOpMode {
     Gyro gyro = new Gyro(); // 创建 Gyro 类的对象
     private ElapsedTime runtime = new ElapsedTime();
     public String armPositionCuzBorS ="NOLL"; //new variable for it and arm will go back of robo
+
+    public static double lastOArmLPosition = 0.0;
+    public static double lastOArmRPosition = 0.0;
     public int ii=0;
     //    verticalSlide verticalslide;
 //    Intake intake;
@@ -187,6 +190,8 @@ public class SpecimenFourTwoPlusTwo extends LinearOpMode {
         startVSlideMovement(POSITION_Y_HIGH);
         robot.OArmL.setPosition(0.97);//  good
         robot.OArmR.setPosition(0.97);//
+        lastOArmLPosition= robot.OArmL.getPosition();
+        lastOArmRPosition= robot.OArmL.getPosition();
         while (opModeIsActive()) {
             updateVSlidePIDControl(); // 更新滑轨位置
             if (movementActive) {
@@ -208,6 +213,8 @@ public class SpecimenFourTwoPlusTwo extends LinearOpMode {
         goToVSlidePos(POSITION_A_BOTTOM,0.8);
         robot.OArmL.setPosition(OArmRearSpecimenPick);
         robot.OArmR.setPosition(OArmRearSpecimenPick);
+        lastOArmLPosition= robot.OArmL.getPosition();
+        lastOArmRPosition= robot.OArmR.getPosition();
         //////////////////////////////finishing hanging the FIRST and reset claw and arms/////////////////////////////
         ///////FIRSTFIRSTFIRSTFIRSTFIRSTFIRSTFIRSTFIRSTFIRSTFIRSTFIRSTFIRSTFIRSTFIRST////////
 ////////////////////////////////////////navigate to the left specimen and push it to home////////////////////////////
@@ -230,6 +237,8 @@ public class SpecimenFourTwoPlusTwo extends LinearOpMode {
         sleep(100);
         robot.OArmL.setPosition(0.97);//  good
         robot.OArmR.setPosition(0.97);//
+        lastOArmLPosition= robot.OArmL.getPosition();
+        lastOArmRPosition= robot.OArmL.getPosition();
         myGoToPos(200, -800, Math.toRadians(0), 0.85, 3, 3, Math.toRadians(1), 0.8);
         myGoToPos(0, 80, Math.toRadians(0), 0.85, 3, 3, Math.toRadians(1), 1.2);
 ////        ///////////////////////////move Synchronous both drive train and slides//////////////////////////
@@ -237,6 +246,8 @@ public class SpecimenFourTwoPlusTwo extends LinearOpMode {
         startVSlideMovement(POSITION_Y_HIGH);
         robot.OArmL.setPosition(0.97);//  good
         robot.OArmR.setPosition(0.97);//
+        lastOArmLPosition= robot.OArmL.getPosition();
+        lastOArmRPosition= robot.OArmL.getPosition();
         while (opModeIsActive()) {
             updateVSlidePIDControl(); // 更新滑轨位置
             if (movementActive) {
@@ -261,6 +272,8 @@ public class SpecimenFourTwoPlusTwo extends LinearOpMode {
         goToVSlidePos(POSITION_A_BOTTOM,0.8);
         robot.OArmL.setPosition(OArmRearSpecimenPick);
         robot.OArmR.setPosition(OArmRearSpecimenPick);
+        lastOArmLPosition= robot.OArmL.getPosition();
+        lastOArmRPosition= robot.OArmL.getPosition();
 ////////////////////////////////////finishing hanging SECOND and reset claw and arms/////////////////////////////
         ///////////SECOND SECOND SECOND SECOND SECOND SECOND SECOND SECOND SECOND SECOND SECOND SECOND SECOND SECOND SECOND ///
         myGoToPos(200, -900, Math.toRadians(0), 0.85, 3, 3, Math.toRadians(1), 1.19);
@@ -271,6 +284,8 @@ public class SpecimenFourTwoPlusTwo extends LinearOpMode {
         sleep(100);
         robot.OArmL.setPosition(0.97);//  good
         robot.OArmR.setPosition(0.97);//
+        lastOArmLPosition= robot.OArmL.getPosition();
+        lastOArmRPosition= robot.OArmL.getPosition();
         myGoToPos(200, -900, Math.toRadians(0), 0.8, 3, 3, Math.toRadians(1), 0.5);
         myGoToPos(0, 130, Math.toRadians(0), 0.8, 3, 3, Math.toRadians(1), 1.19);
 ////        ///////////////////////////move Synchronous both drive train and slides//////////////////////////
@@ -278,6 +293,8 @@ public class SpecimenFourTwoPlusTwo extends LinearOpMode {
         startVSlideMovement(POSITION_Y_HIGH);
         robot.OArmL.setPosition(0.97);//  good
         robot.OArmR.setPosition(0.97);//
+        lastOArmLPosition= robot.OArmL.getPosition();
+        lastOArmRPosition= robot.OArmL.getPosition();
         while (opModeIsActive()) {
             updateVSlidePIDControl(); // 更新滑轨位置
             if (movementActive) {
@@ -297,6 +314,8 @@ public class SpecimenFourTwoPlusTwo extends LinearOpMode {
         goToHSlidePos(20,0.1);
         robot.OArmL.setPosition(OArmRearSpecimenPick);
         robot.OArmR.setPosition(OArmRearSpecimenPick);
+        lastOArmLPosition= robot.OArmL.getPosition();
+        lastOArmRPosition= robot.OArmL.getPosition();
         goToVSlidePos(POSITION_A_BOTTOM,0.8);
         myGoToPos(500, 130, Math.toRadians(0), 0.85, 3, 3, Math.toRadians(1), 0.5);
 //        myGoToPos(570, 250, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 0.8);
@@ -309,6 +328,8 @@ public class SpecimenFourTwoPlusTwo extends LinearOpMode {
         sleep(100);
         robot.OArmL.setPosition(0.97);//  good
         robot.OArmR.setPosition(0.97);//
+        lastOArmLPosition= robot.OArmL.getPosition();
+        lastOArmRPosition= robot.OArmL.getPosition();
         myGoToPos(200, -900, Math.toRadians(0), 0.85, 3, 3, Math.toRadians(1), 0.55);
         myGoToPos(0, 220, Math.toRadians(0), 0.85, 3, 3, Math.toRadians(1), 1.25);
 ////        ///////////////////////////move Synchronous both drive train and slides//////////////////////////
@@ -316,6 +337,8 @@ public class SpecimenFourTwoPlusTwo extends LinearOpMode {
         startVSlideMovement(POSITION_Y_HIGH);
         robot.OArmL.setPosition(0.97);//  good
         robot.OArmR.setPosition(0.97);//
+        lastOArmLPosition= robot.OArmL.getPosition();
+        lastOArmRPosition= robot.OArmL.getPosition();
         while (opModeIsActive()) {
             updateVSlidePIDControl(); // 更新滑轨位置
             if (movementActive) {
@@ -335,6 +358,8 @@ public class SpecimenFourTwoPlusTwo extends LinearOpMode {
         robot.OClaw.setPosition(OClawOpen);
         robot.OArmL.setPosition(0.46);
         robot.OArmR.setPosition(0.46);
+        lastOArmLPosition= robot.OArmL.getPosition();
+        lastOArmRPosition= robot.OArmL.getPosition();
 //        robot.OArmL.setPosition(OArmRearSpecimenPick);
 //        robot.OArmR.setPosition(OArmRearSpecimenPick);
 //        goToHSlidePos(20,0.1);

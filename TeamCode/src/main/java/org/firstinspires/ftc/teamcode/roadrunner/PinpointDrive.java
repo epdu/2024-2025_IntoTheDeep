@@ -22,6 +22,7 @@ import org.firstinspires.ftc.teamcode.roadrunner.messages.PoseMessage;
  * Unless otherwise noted, comments are from Gobilda
  */
 public class PinpointDrive extends MecanumDrive {
+//public class PinpointDrive extends SampleMecanumDrive {
     public static Params PARAMS = new Params();
     public GoBildaPinpointDriverRR pinpoint;
     private Pose2d lastPinpointPose = pose;
@@ -111,10 +112,11 @@ public class PinpointDrive extends MecanumDrive {
          */
         //These are tuned for 3110-0002-0001 Product Insight #1
         // RR localizer note: These units are inches, presets are converted from mm (which is why they are inexact)
-        public double xOffset = 2;
-        public double yOffset = -4.5;
-
-
+//        public double xOffset = 2;
+//        public double yOffset = -4.5;
+//        odo.setOffsets(23.0, -8.0);
+        public double xOffset = 0.9055118; //02082025
+        public double yOffset = -0.31496062992125984;
         /*
         Set the kind of pods used by your robot. If you're using goBILDA odometry pods, select either
         the goBILDA_SWINGARM_POD or the goBILDA_4_BAR_POD.
@@ -126,15 +128,16 @@ public class PinpointDrive extends MecanumDrive {
         To get this value from inPerTick, first convert the value to millimeters (multiply by 25.4)
         and then take its inverse (one over the value)
          */
-        public double encoderResolution = GoBildaPinpointDriverRR.goBILDA_SWINGARM_POD;
-
+//        public double encoderResolution = GoBildaPinpointDriverRR.goBILDA_SWINGARM_POD;
+        public double encoderResolution = GoBildaPinpointDriverRR.goBILDA_4_BAR_POD;
 
         /*
         Set the direction that each of the two odometry pods count. The X (forward) pod should
         increase when you move the robot forward. And the Y (strafe) pod should increase when
         you move the robot to the left.
          */
-        public GoBildaPinpointDriver.EncoderDirection xDirection = GoBildaPinpointDriver.EncoderDirection.FORWARD;
+//                odo.setEncoderDirections(org.firstinspires.ftc.teamcode.GoBildaPinpointDriver.EncoderDirection.REVERSED, org.firstinspires.ftc.teamcode.GoBildaPinpointDriver.EncoderDirection.FORWARD);
+        public GoBildaPinpointDriver.EncoderDirection xDirection = GoBildaPinpointDriver.EncoderDirection.REVERSED;
         public GoBildaPinpointDriver.EncoderDirection yDirection = GoBildaPinpointDriver.EncoderDirection.FORWARD;
     }
 

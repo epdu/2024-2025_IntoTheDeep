@@ -190,10 +190,11 @@ public class HardwareTeletubbies
         OArmL.setPwmRange(new PwmControl.PwmRange(500, 2500));
         OArmR.setPwmRange(new PwmControl.PwmRange(500, 2500));
         OArmR.setDirection(Servo.Direction.REVERSE);
-        OArmL.setPosition(0.8);// a lil higher than below
-        OArmR.setPosition(0.8);//
-//        OArmL.setPosition(0.97);//  good
-//        OArmR.setPosition(0.97);//
+        initializeOArmPosition();
+
+//        OArmL.setPosition(0.8);// a lil higher than below
+//        OArmR.setPosition(0.8);//
+
 
 ////End Definition and Initialization of outtake ArmL and ArmR Servos
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -310,6 +311,15 @@ public class HardwareTeletubbies
     }
     public void setAllPower(double p){
         setMotorPower(p,p,p,p);
+    }
+    public void initializeOArmPosition() {
+        if (SpecimenFourTwoPlusTwo.lastOArmLPosition > 0 || SpecimenFourTwoPlusTwo.lastOArmRPosition > 0) { // Restore saved position
+            OArmL.setPosition(SpecimenFourTwoPlusTwo.lastOArmLPosition);
+            OArmR.setPosition(SpecimenFourTwoPlusTwo.lastOArmRPosition);
+        } else { // Default position if no saved value
+            OArmL.setPosition(Constants_CS.OArmLInitializationhigher);
+            OArmR.setPosition(Constants_CS.OArmRInitializationhigher);
+        }
     }
 }
 
