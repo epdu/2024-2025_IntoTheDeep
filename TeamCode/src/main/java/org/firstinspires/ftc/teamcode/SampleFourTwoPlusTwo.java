@@ -24,50 +24,30 @@ package org.firstinspires.ftc.teamcode;
 
 import static org.firstinspires.ftc.teamcode.Constants_CS.OArmRearSpecimenPick;
 import static org.firstinspires.ftc.teamcode.Constants_CS.OClawOpen;
+import static org.firstinspires.ftc.teamcode.Constants_CS.OClawSpecimenChambers;
 import static org.firstinspires.ftc.teamcode.Constants_CS.POSITION_A_BOTTOM;
 import static org.firstinspires.ftc.teamcode.Constants_CS.POSITION_Y_HIGH;
 import static org.firstinspires.ftc.teamcode.Constants_CS.POSITION_Y_HIGHHH;
 import static org.firstinspires.ftc.teamcode.Constants_CS.SLIDE_POWER_V;
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
-import com.acmerobotics.roadrunner.Pose2d;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
-import org.firstinspires.ftc.teamcode.roadrunner.PinpointDrive;
-import java.util.Locale;
-import static org.firstinspires.ftc.teamcode.Constants_CS.*;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.acmerobotics.roadrunner.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
+
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
+import org.firstinspires.ftc.teamcode.roadrunner.PinpointDrive;
+
+import java.util.Locale;
+
 //import org.firstinspires.ftc.teamcode.notUsing.GoBildaPinpointDriver;
-import org.firstinspires.ftc.teamcode.roadrunner.PinpointDrive;
-import java.util.Locale;
-import com.acmerobotics.roadrunner.Pose2d;
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.roadrunner.PinpointDrive;
-import java.util.Locale;
+
 
 /*
 This opmode shows how to use the goBILDA® Pinpoint Odometry Computer.
@@ -95,12 +75,12 @@ For support, contact tech@gobilda.com
 -Ethan Doak
  */
 
-@Autonomous(name="AAAAA Right 4 specimens 2 preloaded", group="Linear OpMode")
+@Autonomous(name="AAAAA Left 3 samples 1 preloaded", group="Linear OpMode")
 //@Disabled
 //face to the bar right space for 4 of them only
 // two preload and push two home
 //faster version
-public class SpecimenFourTwoPlusTwo extends LinearOpMode {
+public class SampleFourTwoPlusTwo extends LinearOpMode {
 
 
     public float DriveTrains_ReducePOWER=0.75f;
@@ -182,29 +162,11 @@ public class SpecimenFourTwoPlusTwo extends LinearOpMode {
 ////////////////////////////////////////////////////////////////////////////////////02142025
 ////////////KpX=0.0015; KpY=0.0037; for 0.7 power /////////////////////////////////////////////////////////////
 
-///////////////////////////////////////////move robot close to chamber and adjust slides high///////////
-// method one
-//        startDriveMovement(610, 0, Math.toRadians(0), 0.95, 3, 3, Math.toRadians(1), 0.1);
-//       //this one does not change distance but speed
-//        startVSlideMovement(POSITION_Y_HIGH);
-//        robot.OArmL.setPosition(0.97);//  good
-//        robot.OArmR.setPosition(0.97);//
-//        lastOArmLPosition= robot.OArmL.getPosition();
-//        lastOArmRPosition= robot.OArmL.getPosition();
-//        while (opModeIsActive()) {
-//            updateVSlidePIDControl();
-//            myGoToPosSingle(targetX, targetY, targetH, moveSpeed);
-//
-//            if (!pidActiveVS && !movementActive) {
-//                break;
-//            }
-//        }
-//        sleep(2000);
-//
-        // 0 80 130 180?
-        //0 80 160 200
-// method two
-        startDriveMovement(810, 0, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 0.1);
+        myGoToPos(400, 0, Math.toRadians(0), 0.95, 3, 3, Math.toRadians(1), 1.3);
+        myGoToPos(400, 0, Math.toRadians(-45), 0.95, 3, 3, Math.toRadians(1), 1.3);
+        myGoToPos(200, 400, Math.toRadians(-45), 0.95, 3, 3, Math.toRadians(1), 1.3);
+sleep(10000);
+       startDriveMovement(810, 0, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 0.1);
         startVSlideMovement(POSITION_Y_HIGH);
         robot.OArmL.setPosition(0.97);//  good
         robot.OArmR.setPosition(0.97);//

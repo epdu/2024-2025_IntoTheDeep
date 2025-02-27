@@ -5,7 +5,7 @@ package org.firstinspires.ftc.teamcode;
 import com.acmerobotics.roadrunner.Pose2d;
 
 public class Constants_CS {
-    public static final int POSITION_X_IN = 30; // horizontal slides all the way in
+    public static final int POSITION_X_IN = 20; // horizontal slides all the way in
     public static final int POSITION_B_EXTRUDE = 100;//horizontal slides  out //600
     public static final int POSITION_B_testing = 80;//horizontal slides  out //600
     public static final int POSITION_B_EXTRUDETransfer = 100;//horizontal slides  out //600 is too much
@@ -21,7 +21,7 @@ public class Constants_CS {
     public static final double SLIDE_POWER_H = 0.7; // Adjust as needed
     public static final double SLIDE_POWER_V = 0.85; // Adjust as needed
     public static final double IClawOpen = 0.32;
-    public static final double IClawCloseLose = 0.485;//was 0.54
+    public static final double IClawCloseLose = 0.48;//was 0.54
     public static final double IClawCloseInitialization = 0.48;
     public static final double IClawCloseTight = 0.54;
     public static final double IClawCloseSuperTight = 0.543;
@@ -39,7 +39,7 @@ public class Constants_CS {
     public static final double OArmRearSpecimenPick = 0.072;
  //   public static final double OArmRearSpecimenPick = 0.06;//before 0126205
     public static final double OArmBucket = 0.3;
-    public static final double OClawSpecimenChambers = 0.548;
+    public static final double OClawSpecimenChambers = 0.546;
     public static final double WristzyawRight = 0.15;
     public static final double WristzyawLeft = 0.5;
     public static final double WristxpitchDown = 0.65;

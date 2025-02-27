@@ -316,6 +316,8 @@ public class IntoTheDeepTeleOpTeletubbies extends LinearOpMode {
 
 //one key ready for transfer
                 if (gamepad1.right_bumper) { //
+                    startHSlidePIDControl(200);
+//                    moveHSlideToPosition(60);
                     robot.OArmL.setPosition(OArmTransferPosition);//transfer position
                     robot.OArmR.setPosition(OArmTransferPosition);
                     robot.Wristxpitch.setPosition(WristxpitchIntermedia4PositionAdjust); // Wristxpitch
@@ -325,14 +327,16 @@ public class IntoTheDeepTeleOpTeletubbies extends LinearOpMode {
                         // Other tasks can be processed here
                     } // 防止快速连击导致模式快速切换
 //                    robot.IClaw.setPosition(IClawCloseTight); //  0.543
-                    robot.IClaw.setPosition(IClawCloseSuperTight); //  0.544
-                    startHSlidePIDControl(30);
-//                    moveHSlideToPosition(30);
-                    sleep(500);
+                    robot.IClaw.setPosition(IClawCloseLose); //  0.544
+//                    startHSlidePIDControl(60);
+                    moveHSlideToPosition(60);
+                    sleep(200);
                     robot.Wristxpitch.setPosition(0.05); // Wristxpitch
-                    robot.IArmL.setPosition(0.65);
-                    robot.IArmR.setPosition(0.65);
-                    sleep(500);
+                    robot.IArmL.setPosition(0.6);
+                    robot.IArmR.setPosition(0.60);
+                    moveHSlideToPosition(60);
+//                  startHSlidePIDControl(60);
+                    sleep(200);
                     robot.OClaw.setPosition(OClawCloseTight); // close 0.543 hold
                     sleep(500);
                     robot.IClaw.setPosition(IClawOpen); //open
@@ -441,6 +445,8 @@ public class IntoTheDeepTeleOpTeletubbies extends LinearOpMode {
 
 //one key ready for transfer
                 if (gamepad1.right_bumper) { //
+//                    moveHSlideToPosition(60);
+                    startHSlidePIDControl(200);
                     robot.OArmL.setPosition(OArmTransferPosition);//transfer position
                     robot.OArmR.setPosition(OArmTransferPosition);
                     robot.Wristxpitch.setPosition(WristxpitchIntermedia4PositionAdjust); // Wristxpitch
@@ -449,26 +455,24 @@ public class IntoTheDeepTeleOpTeletubbies extends LinearOpMode {
                     while (delayTimer.milliseconds() < 600 && opModeIsActive()) {
                         // Other tasks can be processed here
                     } // 防止快速连击导致模式快速切换
-//                    robot.IClaw.setPosition(IClawCloseTight); //  0.54
-                    robot.IClaw.setPosition(OClawCloseSuperTight);
-                    startHSlidePIDControl(POSITION_X_IN);
-//                    moveHSlideToPosition(POSITION_X_IN);
-                    sleep(500);
+//                    robot.IClaw.setPosition(IClawCloseTight); //  0.543
+                    robot.IClaw.setPosition(IClawCloseLose); //  0.544
+//                    startHSlidePIDControl(60);
+//                    moveHSlideToPosition(60);
+                    sleep(200);
                     robot.Wristxpitch.setPosition(0.05); // Wristxpitch
-                    robot.IArmL.setPosition(0.65);
-                    robot.IArmR.setPosition(0.65);
-                    sleep(500);
+                    robot.IArmL.setPosition(0.6);
+                    robot.IArmR.setPosition(0.60);
+//                    moveHSlideToPosition(60);
+//                    startHSlidePIDControl(60);
+                    sleep(200);
                     robot.OClaw.setPosition(OClawCloseTight); // close 0.543 hold
                     sleep(500);
                     robot.IClaw.setPosition(IClawOpen); //open
                     sleep(300);
-//                    moveHSlideToPosition(POSITION_B_EXTRUDETransferC);
-//                    sleep(300);
                     robot.OArmL.setPosition(OArmRearSpecimenPick);
                     robot.OArmR.setPosition(OArmRearSpecimenPick);
-//                    sleep(600);
-//                    moveVSlideToPosition(-POSITION_Y_HIGH);// high
-//                    moveVSlideToPositionPID(-POSITION_Y_HIGH);// high
+//                      startVSlidePIDControl(POSITION_Y_HIGHH);
 
                 }
 
