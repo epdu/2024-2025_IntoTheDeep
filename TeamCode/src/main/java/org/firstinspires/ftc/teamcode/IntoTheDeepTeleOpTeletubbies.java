@@ -316,36 +316,74 @@ public class IntoTheDeepTeleOpTeletubbies extends LinearOpMode {
 
 //one key ready for transfer
                 if (gamepad1.right_bumper) { //
-                    startHSlidePIDControl(200);
-//                    moveHSlideToPosition(60);
                     robot.OArmL.setPosition(OArmTransferPosition);//transfer position
                     robot.OArmR.setPosition(OArmTransferPosition);
                     robot.Wristxpitch.setPosition(WristxpitchIntermedia4PositionAdjust); // Wristxpitch
 //                    sleep(600);
                     delayTimer.reset();
-                    while (delayTimer.milliseconds() < 600 && opModeIsActive()) {
+                    while (delayTimer.milliseconds() < 900 && opModeIsActive()) {
                         // Other tasks can be processed here
                     } // 防止快速连击导致模式快速切换
 //                    robot.IClaw.setPosition(IClawCloseTight); //  0.543
-                    robot.IClaw.setPosition(IClawCloseLose); //  0.544
-//                    startHSlidePIDControl(60);
-                    moveHSlideToPosition(60);
-                    sleep(200);
+                    robot.IClaw.setPosition(IClawCloseSuperTight); //  0.544
+                    startHSlidePIDControl(30);
+//                    moveHSlideToPosition(30);
+                    delayTimer.reset();
+                    while (delayTimer.milliseconds() < 700 && opModeIsActive()) {
+//                        startHSlidePIDControl(30);
+                        // Other tasks can be processed here
+                    } // 防止快速连击导致模式快速切换
+//                    sleep(500);
                     robot.Wristxpitch.setPosition(0.05); // Wristxpitch
-                    robot.IArmL.setPosition(0.6);
-                    robot.IArmR.setPosition(0.60);
-                    moveHSlideToPosition(60);
-//                  startHSlidePIDControl(60);
-                    sleep(200);
+                    robot.IArmL.setPosition(0.65);
+                    robot.IArmR.setPosition(0.65);
+                    startHSlidePIDControl(30);
+                    delayTimer.reset();
+                    while (delayTimer.milliseconds() < 600 && opModeIsActive()) {
+                        // Other tasks can be processed here
+                    } // 防止快速连击导致模式快速切换
+//                    sleep(500);
                     robot.OClaw.setPosition(OClawCloseTight); // close 0.543 hold
-                    sleep(500);
+//                    sleep(500);
+                    delayTimer.reset();
+                    while (delayTimer.milliseconds() < 600 && opModeIsActive()) {
+                        // Other tasks can be processed here
+                    } // 防止快速连击导致模式快速切换
                     robot.IClaw.setPosition(IClawOpen); //open
-                    sleep(300);
-                    robot.OArmL.setPosition(OArmRearSpecimenPick);
-                    robot.OArmR.setPosition(OArmRearSpecimenPick);
-//                      startVSlidePIDControl(POSITION_Y_HIGHH);
+//                    sleep(300);
+                    delayTimer.reset();
+                    while (delayTimer.milliseconds() < 600 && opModeIsActive()) {
+                        // Other tasks can be processed here
+                    } // 防止快速连击导致模式快速切换
+                    robot.OArmL.setPosition(OArmBucket);
+                    robot.OArmR.setPosition(OArmBucket);
 
 
+//                    startHSlidePIDControl(86);
+//                    sleep(200);
+//                    robot.OClaw.setPosition(OClawOpen); // close 0.543 hold
+//                    robot.OArmL.setPosition(OArmTransferPosition);//transfer position
+//                    robot.OArmR.setPosition(OArmTransferPosition);
+//                    robot.Wristxpitch.setPosition(WristxpitchIntermedia4PositionAdjust); // Wristxpitch
+////                    sleep(600);
+//                    startHSlidePIDControl(86);
+//                    sleep(600);
+//////                    robot.IClaw.setPosition(IClawCloseTight); //  0.543
+//                    robot.IClaw.setPosition(IClawCloseLose); //  0.544
+//                    robot.Wristxpitch.setPosition(0.12); // Wristxpitch
+//                    robot.IClaw.setPosition(IClawCloseTight); // close 0.543 hold
+//                    sleep(200);
+//                    robot.IArmL.setPosition(0.59);
+//                    robot.IArmR.setPosition(0.59);
+////                    moveHSlideToPosition(60);
+////                    startHSlidePIDControl(70);
+//                    sleep(700);
+//                    robot.OClaw.setPosition(OClawCloseTight); // close 0.543 hold
+//                    sleep(600);
+//                    robot.IClaw.setPosition(IClawOpen); //open
+//                    sleep(300);
+//                    robot.OArmL.setPosition(OArmRearSpecimenPick);
+//                    robot.OArmR.setPosition(OArmRearSpecimenPick);
                 }
 //one key ready for transfer
 
@@ -445,36 +483,95 @@ public class IntoTheDeepTeleOpTeletubbies extends LinearOpMode {
 
 //one key ready for transfer
                 if (gamepad1.right_bumper) { //
-//                    moveHSlideToPosition(60);
-                    startHSlidePIDControl(200);
                     robot.OArmL.setPosition(OArmTransferPosition);//transfer position
                     robot.OArmR.setPosition(OArmTransferPosition);
                     robot.Wristxpitch.setPosition(WristxpitchIntermedia4PositionAdjust); // Wristxpitch
 //                    sleep(600);
                     delayTimer.reset();
-                    while (delayTimer.milliseconds() < 600 && opModeIsActive()) {
+                    while (delayTimer.milliseconds() < 900 && opModeIsActive()) {
                         // Other tasks can be processed here
                     } // 防止快速连击导致模式快速切换
 //                    robot.IClaw.setPosition(IClawCloseTight); //  0.543
-                    robot.IClaw.setPosition(IClawCloseLose); //  0.544
-//                    startHSlidePIDControl(60);
-//                    moveHSlideToPosition(60);
-                    sleep(200);
+                    robot.IClaw.setPosition(IClawCloseSuperTight); //  0.544
+                    startHSlidePIDControl(30);
+//                    moveHSlideToPosition(30);
+                    delayTimer.reset();
+                    while (delayTimer.milliseconds() < 700 && opModeIsActive()) {
+//                        startHSlidePIDControl(30);
+                        // Other tasks can be processed here
+                    } // 防止快速连击导致模式快速切换
+//                    sleep(500);
                     robot.Wristxpitch.setPosition(0.05); // Wristxpitch
-                    robot.IArmL.setPosition(0.6);
-                    robot.IArmR.setPosition(0.60);
-//                    moveHSlideToPosition(60);
-//                    startHSlidePIDControl(60);
-                    sleep(200);
+                    robot.IArmL.setPosition(0.65);
+                    robot.IArmR.setPosition(0.65);
+                    startHSlidePIDControl(30);
+                    delayTimer.reset();
+                    while (delayTimer.milliseconds() < 600 && opModeIsActive()) {
+                        // Other tasks can be processed here
+                    } // 防止快速连击导致模式快速切换
+//                    sleep(500);
                     robot.OClaw.setPosition(OClawCloseTight); // close 0.543 hold
-                    sleep(500);
+//                    sleep(500);
+                    delayTimer.reset();
+                    while (delayTimer.milliseconds() < 600 && opModeIsActive()) {
+                        // Other tasks can be processed here
+                    } // 防止快速连击导致模式快速切换
                     robot.IClaw.setPosition(IClawOpen); //open
-                    sleep(300);
-                    robot.OArmL.setPosition(OArmRearSpecimenPick);
-                    robot.OArmR.setPosition(OArmRearSpecimenPick);
-//                      startVSlidePIDControl(POSITION_Y_HIGHH);
+//                    sleep(300);
+                    delayTimer.reset();
+                    while (delayTimer.milliseconds() < 600 && opModeIsActive()) {
+                        // Other tasks can be processed here
+                    } // 防止快速连击导致模式快速切换
+                    robot.OArmL.setPosition(OArmBucket);
+                    robot.OArmR.setPosition(OArmBucket);
+//                    startHSlidePIDControl(86);
+////                    sleep(200);
+//                    while (delayTimer.milliseconds() < 1000 && opModeIsActive()) {
+//                    }
+//                    robot.OClaw.setPosition(OClawOpen); // close 0.543 hold
+//                    robot.OArmL.setPosition(OArmTransferPosition);//transfer position
+//                    robot.OArmR.setPosition(OArmTransferPosition);
+//                    robot.Wristxpitch.setPosition(WristxpitchIntermedia4PositionAdjust); // Wristxpitch
+//                    sleep(600);
+////                    startHSlidePIDControl(86);
+////                    while (delayTimer.milliseconds() < 1000 && opModeIsActive()) {
+////                    }
+//
+//                    sleep(600);
+////                    delayTimer.reset();
+////                    while (delayTimer.milliseconds() < 600 && opModeIsActive()) {
+////                        // Other tasks can be processed here
+////                    } // 防止快速连击导致模式快速切换
+//////                    robot.IClaw.setPosition(IClawCloseTight); //  0.543
+//                    robot.IClaw.setPosition(IClawCloseLose); //  0.544
+////                    while (delayTimer.milliseconds() < 1000 && opModeIsActive()) {
+////                    }
+//                    robot.Wristxpitch.setPosition(0.12); // Wristxpitch
+//                    robot.IClaw.setPosition(IClawCloseTight); // close 0.543 hold
+//                    sleep(200);
+////                    while (delayTimer.milliseconds() < 1000 && opModeIsActive()) {
+////                    }
+//                    robot.IArmL.setPosition(0.59);
+//                    robot.IArmR.setPosition(0.59);
+////                    while (delayTimer.milliseconds() < 1000 && opModeIsActive()) {
+////                    }
+////                    moveHSlideToPosition(60);
+////                    startHSlidePIDControl(70);
+////                    sleep(700);
+//                    robot.OClaw.setPosition(OClawCloseTight); // close 0.543 hold
+//                    sleep(600);
+////                    while (delayTimer.milliseconds() < 1000 && opModeIsActive()) {
+////                    }
+//                    robot.IClaw.setPosition(IClawOpen); //open
+//                    sleep(300);
+////                    while (delayTimer.milliseconds() < 1000 && opModeIsActive()) {
+////                    }
+//                    //delayTimer method
+//                    delayTimer.reset();
+//                    robot.OArmL.setPosition(OArmRearSpecimenPick);
+//                    robot.OArmR.setPosition(OArmRearSpecimenPick);
 
-                }
+        }
 
 //one key ready for transfer
 

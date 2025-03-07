@@ -395,7 +395,7 @@ public class SpecimenFourTwoPlusTwo extends LinearOpMode {
 //        robot.OArmR.setPosition(OArmRearSpecimenPick);
 //        goToHSlidePos(0,0.1);
         goToVSlidePos(POSITION_A_BOTTOM,0.8);
-        myGoToPos(570, 200, Math.toRadians(0), 0.95, 3, 3, Math.toRadians(1), 0.5);
+//        myGoToPos(570, 200, Math.toRadians(0), 0.95, 3, 3, Math.toRadians(1), 0.5);
 //        myGoToPos(570, 300, Math.toRadians(0), 0.7, 3, 3, Math.toRadians(1), 0.8);
         sleep(1000);
 
