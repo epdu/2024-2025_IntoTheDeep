@@ -207,36 +207,36 @@ public class SampleFourTwoPlusTwo extends LinearOpMode {
 //tile which basket sit on it. (600,600) to left corner, (600-half the length of the robot ,950- 600-half width of the robot, )
 // 600-175,940-600-147
 //   435,193
-        myGoToPos(400, 0, Math.toRadians(0), 0.95, 3, 3, Math.toRadians(1), 0.6);
-        myGoToPos(400, 190, Math.toRadians(0), 0.95, 3, 3, Math.toRadians(1), 0.6);
-        myGoToPos(400, 190, Math.toRadians(-45), 0.95, 3, 3, Math.toRadians(1), 0.6);
-        myGoToPos(90, 355, Math.toRadians(-45), 0.95, 3, 3, Math.toRadians(1), 0.8);
-        goToVSlidePos(POSITION_Y_HIGHH,2);
+        myGoToPos(400, 0, Math.toRadians(0), 0.95, 3, 3, Math.toRadians(1), 0.55);
+        myGoToPos(400, 190, Math.toRadians(0), 0.95, 3, 3, Math.toRadians(1), 0.55);
+        myGoToPos(400, 190, Math.toRadians(-45), 0.95, 3, 3, Math.toRadians(1), 0.55);
+        myGoToPos(80, 380, Math.toRadians(-45), 0.95, 3, 3, Math.toRadians(1), 0.8);
+        goToVSlidePos(POSITION_Y_HIGHH,1.8);
 //try either of them , see which one works faster , then pick it up
 //        goToVSlidePos(POSITION_Y_HIGHH,0.8);
 //        startVSlidePIDControl(POSITION_Y_HIGHH);
-        sleep(400);
+        sleep(100);
         robot.OArmL.setPosition(OArmBucket);
         robot.OArmR.setPosition(OArmBucket);
-        sleep(400);
+        sleep(100);
         robot.OClaw.setPosition(OClawOpen);
         sleep(400);
         robot.OArmL.setPosition(OArmLInitialization);
         robot.OArmR.setPosition(OArmLInitialization);
-        goToVSlidePos(POSITION_A_BOTTOM,2);
+        goToVSlidePos(POSITION_A_BOTTOM,1.7);
         delayTimer.reset();
-        while (delayTimer.milliseconds() < 400 && opModeIsActive()) {
+        while (delayTimer.milliseconds() < 100 && opModeIsActive()) {
             // Other tasks can be processed here
         }
 //finished the preload one right
 
 //
 //
-        myGoToPos(425, 200, Math.toRadians(-45), 0.95, 3, 3, Math.toRadians(1), 0.8);
-        myGoToPos(650, -200, Math.toRadians(0), 0.95, 3, 3, Math.toRadians(1), 1.4);
+        myGoToPos(425, 200, Math.toRadians(-45), 0.95, 3, 3, Math.toRadians(1), 0.6);
+        myGoToPos(675, 310, Math.toRadians(0), 0.95, 3, 3, Math.toRadians(1), 1.4);
         startHSlidePIDControl(POSITION_B_EXTRUDE);
         delayTimer.reset();
-        while (delayTimer.milliseconds() < 400 && opModeIsActive()) {
+        while (delayTimer.milliseconds() < 300 && opModeIsActive()) {
             // Other tasks can be processed here
         }
         robot.OArmL.setPosition(OArmRearSpecimenPick);
@@ -264,16 +264,16 @@ public class SampleFourTwoPlusTwo extends LinearOpMode {
 //        robot.IArmR.setPosition(IArmRDown);
         //one key ready for pick
         delayTimer.reset();
-        while (delayTimer.milliseconds() < 1000 && opModeIsActive()) {
+        while (delayTimer.milliseconds() < 500 && opModeIsActive()) {
             // Other tasks can be processed here
         }
         robot.IArmL.setPosition(IArmLDownForPick);
         robot.IArmR.setPosition(IArmLDownForPick);
 //// test move the itake arm down two step and one step, see which one works well
-        sleep(400);
+        sleep(250);
         robot.IClaw.setPosition(IClawCloseLose);
         delayTimer.reset();
-        while (delayTimer.milliseconds() < 1000 && opModeIsActive()) {
+        while (delayTimer.milliseconds() < 500 && opModeIsActive()) {
             // Other tasks can be processed here
         }
         robot.IArmL.setPosition(IArmLUp);
@@ -285,15 +285,15 @@ public class SampleFourTwoPlusTwo extends LinearOpMode {
                     robot.Wristxpitch.setPosition(WristxpitchIntermedia4PositionAdjust); // Wristxpitch
 //                    sleep(600);
                     delayTimer.reset();
-                    while (delayTimer.milliseconds() < 900 && opModeIsActive()) {
+                    while (delayTimer.milliseconds() < 500 && opModeIsActive()) {
                         // Other tasks can be processed here
                     } // 防止快速连击导致模式快速切换
 //                    robot.IClaw.setPosition(IClawCloseTight); //  0.543
                     robot.IClaw.setPosition(IClawCloseSuperTight); //  0.544
-                    startHSlidePIDControl(30);
+                    startHSlidePIDControl(35);
 //                    moveHSlideToPosition(30);
                     delayTimer.reset();
-                    while (delayTimer.milliseconds() < 700 && opModeIsActive()) {
+                    while (delayTimer.milliseconds() < 500 && opModeIsActive()) {
 //                        startHSlidePIDControl(30);
                         // Other tasks can be processed here
                     } // 防止快速连击导致模式快速切换
@@ -303,20 +303,20 @@ public class SampleFourTwoPlusTwo extends LinearOpMode {
                     robot.IArmR.setPosition(0.65);
                     startHSlidePIDControl(30);
                     delayTimer.reset();
-                    while (delayTimer.milliseconds() < 600 && opModeIsActive()) {
+                    while (delayTimer.milliseconds() < 400 && opModeIsActive()) {
                         // Other tasks can be processed here
                     } // 防止快速连击导致模式快速切换
 //                    sleep(500);
                     robot.OClaw.setPosition(OClawCloseTight); // close 0.543 hold
 //                    sleep(500);
                     delayTimer.reset();
-                    while (delayTimer.milliseconds() < 600 && opModeIsActive()) {
+                    while (delayTimer.milliseconds() < 400 && opModeIsActive()) {
                         // Other tasks can be processed here
                     } // 防止快速连击导致模式快速切换
                     robot.IClaw.setPosition(IClawOpen); //open
 //                    sleep(300);
                     delayTimer.reset();
-                    while (delayTimer.milliseconds() < 600 && opModeIsActive()) {
+                    while (delayTimer.milliseconds() < 500 && opModeIsActive()) {
                         // Other tasks can be processed here
                     } // 防止快速连击导致模式快速切换
                     robot.OArmL.setPosition(OArmBucket);
@@ -334,15 +334,14 @@ public class SampleFourTwoPlusTwo extends LinearOpMode {
 //// one key ready for transfer
 //        //transfer done
 //        //move to the position for drop sample
-        myGoToPos(400, 0, Math.toRadians(0), 0.95, 3, 3, Math.toRadians(1), 0.6);
-        myGoToPos(400, 190, Math.toRadians(0), 0.95, 3, 3, Math.toRadians(1), 0.6);
-        myGoToPos(400, 190, Math.toRadians(-45), 0.95, 3, 3, Math.toRadians(1), 0.6);
-        myGoToPos(90, 355, Math.toRadians(-45), 0.95, 3, 3, Math.toRadians(1), 0.9);
+        myGoToPos(400, 190, Math.toRadians(0), 0.95, 3, 3, Math.toRadians(1), 0.4);
+        myGoToPos(400, 190, Math.toRadians(-45), 0.95, 3, 3, Math.toRadians(1), 0.5);
+        myGoToPos(85, 365, Math.toRadians(-45), 0.95, 3, 3, Math.toRadians(1), 0.9);
 
 //        myGoToPos(375, 193, Math.toRadians(-45), 0.95, 3, 3, Math.toRadians(1), 1.3);
 //        myGoToPos(70, 350, Math.toRadians(-45), 0.95, 3, 3, Math.toRadians(1), 1.3);
 //        //start to drop
-        goToVSlidePos(POSITION_Y_HIGHH,2);
+        goToVSlidePos(POSITION_Y_HIGHH,1.8);
 ////try either of them , see which one works faster , then pick it up
 ////        goToVSlidePos(POSITION_Y_HIGHH,0.8);
 ////        startVSlidePIDControl(POSITION_Y_HIGHH);
@@ -352,14 +351,14 @@ public class SampleFourTwoPlusTwo extends LinearOpMode {
         sleep(100);
         robot.OClaw.setPosition(OClawOpen);
         delayTimer.reset();
-        while (delayTimer.milliseconds() < 600 && opModeIsActive()) {
+        while (delayTimer.milliseconds() < 500 && opModeIsActive()) {
             // Other tasks can be processed here
         }
         robot.OArmL.setPosition(OArmLInitialization);
         robot.OArmR.setPosition(OArmLInitialization);
         goToVSlidePos(POSITION_A_BOTTOM,2);
         delayTimer.reset();
-        while (delayTimer.milliseconds() < 400 && opModeIsActive()) {
+        while (delayTimer.milliseconds() < 190 && opModeIsActive()) {
             // Other tasks can be processed here
         }
 
@@ -369,14 +368,14 @@ public class SampleFourTwoPlusTwo extends LinearOpMode {
 
 
 //// go for the spark one middle
-        myGoToPos(455, 350, Math.toRadians(-45), 0.95, 3, 3, Math.toRadians(1), 1.1);
-        myGoToPos(650, 510, Math.toRadians(0), 0.95, 3, 3, Math.toRadians(1), 1.1);
+        myGoToPos(455, 350, Math.toRadians(-45), 0.95, 3, 3, Math.toRadians(1), 0.6);
+        myGoToPos(675, 565, Math.toRadians(0), 0.95, 3, 3, Math.toRadians(1), 1.3);
 
 //        myGoToPos(425, 193, Math.toRadians(-45), 0.95, 3, 3, Math.toRadians(1), 1.3);
 //        myGoToPos(125, 350, Math.toRadians(-45), 0.95, 3, 3, Math.toRadians(1), 1.3);
         startHSlidePIDControl(POSITION_B_EXTRUDE);
         delayTimer.reset();
-        while (delayTimer.milliseconds() < 400 && opModeIsActive()) {
+        while (delayTimer.milliseconds() < 300 && opModeIsActive()) {
             // Other tasks can be processed here
         }
         robot.OArmL.setPosition(OArmRearSpecimenPick);
@@ -391,16 +390,16 @@ public class SampleFourTwoPlusTwo extends LinearOpMode {
         robot.IArmL.setPosition(IArmLDown);
         robot.IArmR.setPosition(IArmRDown);
         delayTimer.reset();
-        while (delayTimer.milliseconds() < 1000 && opModeIsActive()) {
+        while (delayTimer.milliseconds() < 200 && opModeIsActive()) {
             // Other tasks can be processed here
         }
         robot.IArmL.setPosition(IArmLDownForPick);
         robot.IArmR.setPosition(IArmLDownForPick);
 //// test move the itake arm down two step and one step, see which one works well
-        sleep(400);
+        sleep(300);
         robot.IClaw.setPosition(IClawCloseLose);
         delayTimer.reset();
-        while (delayTimer.milliseconds() < 1000 && opModeIsActive()) {
+        while (delayTimer.milliseconds() < 400 && opModeIsActive()) {
             // Other tasks can be processed here
         }
         robot.IArmL.setPosition(IArmLUp);
@@ -413,7 +412,7 @@ public class SampleFourTwoPlusTwo extends LinearOpMode {
         robot.Wristxpitch.setPosition(WristxpitchIntermedia4PositionAdjust); // Wristxpitch
 //                    sleep(600);
         delayTimer.reset();
-        while (delayTimer.milliseconds() < 900 && opModeIsActive()) {
+        while (delayTimer.milliseconds() < 500 && opModeIsActive()) {
             // Other tasks can be processed here
         } // 防止快速连击导致模式快速切换
 //                    robot.IClaw.setPosition(IClawCloseTight); //  0.543
@@ -421,7 +420,7 @@ public class SampleFourTwoPlusTwo extends LinearOpMode {
         startHSlidePIDControl(30);
 //                    moveHSlideToPosition(30);
         delayTimer.reset();
-        while (delayTimer.milliseconds() < 700 && opModeIsActive()) {
+        while (delayTimer.milliseconds() < 400 && opModeIsActive()) {
 //                        startHSlidePIDControl(30);
             // Other tasks can be processed here
         } // 防止快速连击导致模式快速切换
@@ -431,56 +430,53 @@ public class SampleFourTwoPlusTwo extends LinearOpMode {
         robot.IArmR.setPosition(0.65);
         startHSlidePIDControl(30);
         delayTimer.reset();
-        while (delayTimer.milliseconds() < 600 && opModeIsActive()) {
+        while (delayTimer.milliseconds() < 400 && opModeIsActive()) {
             // Other tasks can be processed here
         } // 防止快速连击导致模式快速切换
 //                    sleep(500);
         robot.OClaw.setPosition(OClawCloseTight); // close 0.543 hold
 //                    sleep(500);
         delayTimer.reset();
-        while (delayTimer.milliseconds() < 600 && opModeIsActive()) {
+        while (delayTimer.milliseconds() < 400 && opModeIsActive()) {
             // Other tasks can be processed here
         } // 防止快速连击导致模式快速切换
         robot.IClaw.setPosition(IClawOpen); //open
 //                    sleep(300);
         delayTimer.reset();
-        while (delayTimer.milliseconds() < 600 && opModeIsActive()) {
+        while (delayTimer.milliseconds() < 400 && opModeIsActive()) {
             // Other tasks can be processed here
         } // 防止快速连击导致模式快速切换
         robot.OArmL.setPosition(OArmBucket);
         robot.OArmR.setPosition(OArmBucket);
 
         //score
-        myGoToPos(400, 0, Math.toRadians(0), 0.95, 3, 3, Math.toRadians(1), 0.6);
-        myGoToPos(400, 190, Math.toRadians(0), 0.95, 3, 3, Math.toRadians(1), 0.6);
-        myGoToPos(400, 190, Math.toRadians(-45), 0.95, 3, 3, Math.toRadians(1), 0.6);
-        myGoToPos(90, 355, Math.toRadians(-45), 0.95, 3, 3, Math.toRadians(1), 0.9);
+        myGoToPos(400, 190, Math.toRadians(0), 0.95, 3, 3, Math.toRadians(1), 0.5);
+        myGoToPos(400, 190, Math.toRadians(-45), 0.95, 3, 3, Math.toRadians(1), 0.5);
+        myGoToPos(85, 365, Math.toRadians(-45), 0.95, 3, 3, Math.toRadians(1), 0.9);
 
 //        myGoToPos(375, 193, Math.toRadians(-45), 0.95, 3, 3, Math.toRadians(1), 1.3);
 //        myGoToPos(70, 350, Math.toRadians(-45), 0.95, 3, 3, Math.toRadians(1), 1.3);
 //        //start to drop
-        goToVSlidePos(POSITION_Y_HIGHH,2);
+        goToVSlidePos(POSITION_Y_HIGHH,1.8);
 ////try either of them , see which one works faster , then pick it up
 ////        goToVSlidePos(POSITION_Y_HIGHH,0.8);
 ////        startVSlidePIDControl(POSITION_Y_HIGHH);
-        sleep(100);
+        sleep(50);
         robot.OArmL.setPosition(OArmBucket);
         robot.OArmR.setPosition(OArmBucket);
         sleep(100);
         robot.OClaw.setPosition(OClawOpen);
         delayTimer.reset();
-        while (delayTimer.milliseconds() < 600 && opModeIsActive()) {
+        while (delayTimer.milliseconds() < 300 && opModeIsActive()) {
             // Other tasks can be processed here
         }
-        robot.OArmL.setPosition(OArmLInitialization);
-        robot.OArmR.setPosition(OArmLInitialization);
-        goToVSlidePos(POSITION_A_BOTTOM,2);
+        robot.OArmL.setPosition(0.5);
+        robot.OArmR.setPosition(0.5);
+        goToVSlidePos(POSITION_A_BOTTOM,1.8);
         delayTimer.reset();
-        while (delayTimer.milliseconds() < 400 && opModeIsActive()) {
+        while (delayTimer.milliseconds() < 300 && opModeIsActive()) {
             // Other tasks can be processed here
         }
-        robot.OArmL.setPosition(0.46);
-        robot.OArmR.setPosition(0.46);
 
 //
 

@@ -326,7 +326,7 @@ public class IntoTheDeepTeleOpTeletubbies extends LinearOpMode {
                     } // 防止快速连击导致模式快速切换
 //                    robot.IClaw.setPosition(IClawCloseTight); //  0.543
                     robot.IClaw.setPosition(IClawCloseSuperTight); //  0.544
-                    startHSlidePIDControl(30);
+                    startHSlidePIDControl(10);
 //                    moveHSlideToPosition(30);
                     delayTimer.reset();
                     while (delayTimer.milliseconds() < 700 && opModeIsActive()) {
@@ -335,9 +335,13 @@ public class IntoTheDeepTeleOpTeletubbies extends LinearOpMode {
                     } // 防止快速连击导致模式快速切换
 //                    sleep(500);
                     robot.Wristxpitch.setPosition(0.05); // Wristxpitch
-                    robot.IArmL.setPosition(0.65);
-                    robot.IArmR.setPosition(0.65);
-                    startHSlidePIDControl(30);
+                    delayTimer.reset();
+                    while (delayTimer.milliseconds() < 600 && opModeIsActive()) {
+                        // Other tasks can be processed here
+                    } // 防止快速连击导致模式快速切换
+                    robot.IArmL.setPosition(0.605);
+                    robot.IArmR.setPosition(0.605);
+                    startHSlidePIDControl(10);
                     delayTimer.reset();
                     while (delayTimer.milliseconds() < 600 && opModeIsActive()) {
                         // Other tasks can be processed here
@@ -493,7 +497,7 @@ public class IntoTheDeepTeleOpTeletubbies extends LinearOpMode {
                     } // 防止快速连击导致模式快速切换
 //                    robot.IClaw.setPosition(IClawCloseTight); //  0.543
                     robot.IClaw.setPosition(IClawCloseSuperTight); //  0.544
-                    startHSlidePIDControl(30);
+                    startHSlidePIDControl(10);
 //                    moveHSlideToPosition(30);
                     delayTimer.reset();
                     while (delayTimer.milliseconds() < 700 && opModeIsActive()) {
@@ -502,9 +506,13 @@ public class IntoTheDeepTeleOpTeletubbies extends LinearOpMode {
                     } // 防止快速连击导致模式快速切换
 //                    sleep(500);
                     robot.Wristxpitch.setPosition(0.05); // Wristxpitch
-                    robot.IArmL.setPosition(0.65);
-                    robot.IArmR.setPosition(0.65);
-                    startHSlidePIDControl(30);
+                    delayTimer.reset();
+                    while (delayTimer.milliseconds() < 600 && opModeIsActive()) {
+                        // Other tasks can be processed here
+                    } // 防止快速连击导致模式快速切换
+                    robot.IArmL.setPosition(0.605);
+                    robot.IArmR.setPosition(0.605);
+                    startHSlidePIDControl(10);
                     delayTimer.reset();
                     while (delayTimer.milliseconds() < 600 && opModeIsActive()) {
                         // Other tasks can be processed here

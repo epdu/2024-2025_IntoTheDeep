@@ -36,7 +36,7 @@ public class Constants_CS {
     public static final double OClawCloseTight = 0.5496;
     public static final double OClawCloseSuperTight = 0.5496;
     public static final double OArmTransferPosition = 0.999;
-    public static final double OArmRearSpecimenPick = 0.07;
+    public static final double OArmRearSpecimenPick = 0.15;
  //   public static final double OArmRearSpecimenPick = 0.06;//before 0126205
     public static final double OArmBucket = 0.4;
     public static final double OClawSpecimenChambers = 0.546;
@@ -49,8 +49,8 @@ public class Constants_CS {
     public static final double  IArmRDown = 0.705;
     public static final double IArmLDownForPick = 0.7295;
     public static final double  IArmRDownForPick = 0.7295;
-    public static final double IArmLUp = 0.602;
-    public static final double  IArmRUp = 0.602;
+    public static final double IArmLUp = 0.65;
+    public static final double  IArmRUp = 0.65;
     public static final double OArmLInitialization = 0.97;
     public static final double OArmRInitialization = 0.97;
     public static final double OArmLInitializationhigher = 0.8;
