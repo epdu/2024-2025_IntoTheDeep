@@ -9,14 +9,14 @@ public class Constants_CS {
     public static final int POSITION_B_EXTRUDE = 30;//horizontal slides  out //600
     public static final int POSITION_B_testing = 80;//horizontal slides  out //600
     public static final int POSITION_B_EXTRUDETransfer = 100;//horizontal slides  out //600 is too much
-    public static final int POSITION_B_EXTRUDETransferC= 250;//horizontal slides  out //600 is too much
+    public static final int POSITION_B_EXTRUDETransferC= 150;//horizontal slides  out //600 is too much
     //    public static final int POSITION_B_EXTRUDETransferC= 700;//horizontal slides  out //600 is too much
-    public static final int POSITION_B_EXTRUDE_MORE = 380; //horizontal slides all the way out 800
+    public static final int POSITION_B_EXTRUDE_MORE = 265; //horizontal slides all the way out 800
     public static final int POSITION_A_BOTTOM = 0; //Vertical  slides all the way in
     public static final int POSITION_Y_LOWForTest = 300; // Vertical slides up //800 //1000 too high
     public static final int POSITION_Y_LOW = 400; // Vertical slides up //800 //1000 too high
     public static final int POSITION_Y_HIGH = 850;// 1270Vertical slides all the way up
-    public static final int POSITION_Y_HIGHH = 2300;// 1300Vertical slides all the way up 1500 1900 still a little bit low//bucket
+    public static final int POSITION_Y_HIGHH = 2320;// 1300Vertical slides all the way up 1500 1900 still a little bit low//bucket
     public static final int POSITION_Y_HIGHHH = 1400;//Vertical slides all the way up
     public static final double SLIDE_POWER_H = 0.7; // Adjust as needed
     public static final double SLIDE_POWER_V = 0.85; // Adjust as needed
@@ -32,13 +32,13 @@ public class Constants_CS {
      */
     public static final double OClawOpen = 0.3;
     public static final double OClawCloseInitialization = 0.54;
-    public static final double OClawCloseLose = 0.54;
-    public static final double OClawCloseTight = 0.5496;
+    public static final double OClawCloseLose = 0.535;
+    public static final double OClawCloseTight = 0.535;
     public static final double OClawCloseSuperTight = 0.5496;
     public static final double OArmTransferPosition = 0.999;
     public static final double OArmRearSpecimenPick = 0.15;
  //   public static final double OArmRearSpecimenPick = 0.06;//before 0126205
-    public static final double OArmBucket = 0.4;
+    public static final double OArmBucket = 0.365;
     public static final double OClawSpecimenChambers = 0.546;
     public static final double WristzyawRight = 0.15;
     public static final double WristzyawLeft = 0.5;

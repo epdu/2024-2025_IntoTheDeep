@@ -99,10 +99,10 @@ import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.tel
 import static org.firstinspires.ftc.teamcode.FieldCentricMecanumTeleOpTeletubbies.DriveTrains_ReducePOWER;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
-@TeleOp(name = "AAAAAA Huxia TeleOp 04122025 V1")
+@TeleOp(name = "AAAA Huxia TeleOp 04122025 V1")
 //V1 with pid for both slides but not odo
 public class HuxiaTeleOpTeletubbies extends LinearOpMode {
-    public float DriveTrains_ReducePOWER=0.75f;
+    public float DriveTrains_ReducePOWER=0.6f;
     //   DriveTrains_ReducePOWER = 0.75f;
 //    DriveTrains_ReducePOWER = speedLimiterSlower;//************************
     HardwareTeletubbies robot = new HardwareTeletubbies();
@@ -185,7 +185,7 @@ public class HuxiaTeleOpTeletubbies extends LinearOpMode {
                     gamepad1BackHandler.update(gamepad1.back);
 
 //Begin  Extrude H slide
-                    if (gamepad2.dpad_left) { //IN
+                    if (gamepad1.dpad_left) { //IN
                         startHSlidePIDControl(POSITION_X_IN);
                         gamepad1BHandler.reset();
                     }
@@ -228,7 +228,6 @@ public class HuxiaTeleOpTeletubbies extends LinearOpMode {
 
 //one key ready for pick
                     if (gamepad1.left_bumper) { //up if arm is Horizontal, the the wrist is vertical up and down
-                        robot.OClaw.setPosition(OClawOpen); //
                         delayTimer.reset();
                         while (delayTimer.milliseconds() < 200 && opModeIsActive()) {
                             // Other tasks can be processed here
@@ -240,9 +239,20 @@ public class HuxiaTeleOpTeletubbies extends LinearOpMode {
                     }
 
 //one key ready for transfer
-                    if (gamepad1.right_bumper) { //
+                    if (gamepad2.right_bumper) { //
+                        startHSlidePIDControl(10);
+//                    moveHSlideToPosition(30);
+                        delayTimer.reset();
+                        while (delayTimer.milliseconds() < 700 && opModeIsActive()) {
+//                        startHSlidePIDControl(30);
+                            // Other tasks can be processed here
+                        } // 防止快速连击导致模式快速切换
+//                    sleep(500);
+
+
                         robot.OArmL.setPosition(OArmTransferPosition);//transfer position
                         robot.OArmR.setPosition(OArmTransferPosition);
+                        robot.OClaw.setPosition(OClawOpen); // close 0.543 hold
                         robot.Wristxpitch.setPosition(WristxpitchIntermedia4PositionAdjust); // Wristxpitch
 //                    sleep(600);
                         delayTimer.reset();
@@ -316,19 +326,12 @@ public class HuxiaTeleOpTeletubbies extends LinearOpMode {
 
 //Begin  moveVSlideToPosition
                     // 左触发器双功能：轻按和深按
-                    if (gamepad2.dpad_left) { //IN
+                    if (gamepad2.dpad_down) { //IN
                         startVSlidePIDControl(POSITION_A_BOTTOM);
-                        if (armPositionCuzBorS =="POSITION_Y_HIGHHH") {
-                            robot.OArmL.setPosition(OArmRearSpecimenPick);//arm in back of robot
-                            robot.OArmR.setPosition(OArmRearSpecimenPick);
-                        }
-                        if (armPositionCuzBorS =="POSITION_Y_HIGHH") {
                             robot.OArmL.setPosition(OArmTransferPosition);//arm in front of robot
                             robot.OArmR.setPosition(OArmTransferPosition);
-                        }
-                        gamepad2BHandler.reset();
                     }
-                    if (gamepad2.dpad_down) { //EXTRUDE
+                    if (gamepad2.dpad_up) { //EXTRUDE
                         startVSlidePIDControl(POSITION_Y_HIGHH);//bucket high
                         robot.OArmL.setPosition(OArmBucket);
                         robot.OArmR.setPosition(OArmBucket);
@@ -340,18 +343,18 @@ public class HuxiaTeleOpTeletubbies extends LinearOpMode {
 
                         gamepad2XHandler.reset();
                     }
-                    if (gamepad2.dpad_up) { //EXTRUDE_MORE  //moveVSlideToPositionPID(POSITION_Y_HIGH);
-                        startVSlidePIDControl(POSITION_Y_HIGH);
-                        robot.OArmL.setPosition(OArmTransferPosition);
-                        robot.OArmR.setPosition(OArmTransferPosition);
-                        gamepad1XHandler.reset();
-                    }
-                    if (gamepad2.dpad_right) { //EXTRUDE_MORE
-                        startVSlidePIDControl(POSITION_Y_HIGHHH);// very high//specimen high
-                        armPositionCuzBorS = "POSITION_Y_HIGHHH"; //arm is going to go back of robo
-                        gamepad2XHandler.reset();
-
-                    }
+//                    if (gamepad2.dpad_up) { //EXTRUDE_MORE  //moveVSlideToPositionPID(POSITION_Y_HIGH);
+//                        startVSlidePIDControl(POSITION_Y_HIGH);
+//                        robot.OArmL.setPosition(OArmTransferPosition);
+//                        robot.OArmR.setPosition(OArmTransferPosition);
+//                        gamepad1XHandler.reset();
+//                    }
+//                    if (gamepad2.dpad_right) { //EXTRUDE_MORE
+//                        startVSlidePIDControl(POSITION_Y_HIGHHH);// very high//specimen high
+//                        armPositionCuzBorS = "POSITION_Y_HIGHHH"; //arm is going to go back of robo
+//                        gamepad2XHandler.reset();
+//
+//                    }
 
 
 
@@ -361,8 +364,8 @@ public class HuxiaTeleOpTeletubbies extends LinearOpMode {
 //Begin  OArm L and R
 
                     if (gamepad2.y) { //rear specimen    OArmTransferPosition   OArmRearSpecimenPick
-                        robot.OArmL.setPosition(OArmRearSpecimenPick);
-                        robot.OArmR.setPosition(OArmRearSpecimenPick);
+                        robot.OArmL.setPosition(OArmBucket);
+                        robot.OArmR.setPosition(OArmBucket);
                     }
                     if (gamepad2.a) { //front transfer
                         robot.OArmL.setPosition(OArmTransferPosition);
@@ -552,7 +555,7 @@ public class HuxiaTeleOpTeletubbies extends LinearOpMode {
 
         // 计算 PID 输出
         double powerH = pidControllerHS.performPID(currentPositionH);
-        robot.HSMotor.setPower(powerH*0.6);
+        robot.HSMotor.setPower(powerH*0.5);
 
 
         // 输出 Telemetry 信息
@@ -580,9 +583,9 @@ public class HuxiaTeleOpTeletubbies extends LinearOpMode {
 
 
     public void moveDriveTrain_FieldCentric() {
-        double y = gamepad1.left_stick_y * (0.6); // Remember, Y stick value is reversed
-        double x = -gamepad1.left_stick_x * (0.6);
-        double rx = -gamepad1.right_stick_x * (0.5); //*(0.5) is fine
+        double y = gamepad1.left_stick_y * (0.45); // Remember, Y stick value is reversed
+        double x = -gamepad1.left_stick_x * (0.45);
+        double rx = -gamepad1.right_stick_x * (0.45); //*(0.5) is fine
 
         // This button choice was made so that it is hard to hit on accident,
         // it can be freely changed based on preference.
