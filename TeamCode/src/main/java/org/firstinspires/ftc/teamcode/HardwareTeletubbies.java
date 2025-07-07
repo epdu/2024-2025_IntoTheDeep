@@ -3,14 +3,18 @@ package org.firstinspires.ftc.teamcode;
 import com.acmerobotics.roadrunner.ftc.GoBildaPinpointDriverRR;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.PwmControl;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ServoImplEx;
+import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
+
 import static org.firstinspires.ftc.teamcode.Constants_CS.*;
 //DriveTrains_POWER update from 0.5 tobe 0.95
 /**
@@ -44,15 +48,17 @@ public class HardwareTeletubbies
     /* local OpMode members. */
     HardwareMap hwMap =  null;
     /* Public OpMode members. */
-    public DcMotor RFMotor;
-    public DcMotor LFMotor;
-    public DcMotor RBMotor;
-    public DcMotor LBMotor;
+    public DcMotorEx RFMotor;
+    public DcMotorEx LFMotor;
+    public DcMotorEx RBMotor;
+    public DcMotorEx LBMotor;
     public Servo IClaw;
     public Servo OClaw;
     public Servo Wrist;
     public Servo Wristzyaw;
     public Servo Wristxpitch;
+    public VoltageSensor voltageCHub;
+    public VoltageSensor voltageExHub;
     /*
            x right side of the robot
            y forward
@@ -65,9 +71,9 @@ public class HardwareTeletubbies
     public Servo IArmR;
     public ServoImplEx OArmL;
     public ServoImplEx OArmR;
-    public DcMotor HSMotor; //horizontal Slides motor  extruder
-    public DcMotor VSMotorL; //vertical Slides motor left
-    public DcMotor VSMotorR; //vertical Slides motor right
+    public DcMotorEx HSMotor; //horizontal Slides motor  extruder
+    public DcMotorEx VSMotorL; //vertical Slides motor left
+    public DcMotorEx VSMotorR; //vertical Slides motor right
     GoBildaPinpointDriver odo; // Declare OpMode member for the Odometry Computer
     public GoBildaPinpointDriverRR pinpoint;
     public double GlobalX = 0;
@@ -91,10 +97,10 @@ public class HardwareTeletubbies
         hwMap = ahwMap;
 
 //Begin Definition and Initialization of Drivetrain Motors
-        LFMotor   = hwMap.get(DcMotor.class, "LFMotor");//02022024 control hub port 0
-        RFMotor  = hwMap.get(DcMotor.class, "RFMotor"); //02022024 control hub port 1
-        LBMotor   = hwMap.get(DcMotor.class, "LBMotor");//02022024 control hub port 2
-        RBMotor  = hwMap.get(DcMotor.class, "RBMotor");//02022024 control hub port 3
+        LFMotor   = hwMap.get(DcMotorEx.class, "LFMotor");//02022024 control hub port 0
+        RFMotor  = hwMap.get(DcMotorEx.class, "RFMotor"); //02022024 control hub port 1
+        LBMotor   = hwMap.get(DcMotorEx.class, "LBMotor");//02022024 control hub port 2
+        RBMotor  = hwMap.get(DcMotorEx.class, "RBMotor");//02022024 control hub port 3
 
         RBMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         RFMotor.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -111,6 +117,12 @@ public class HardwareTeletubbies
         LBMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         RBMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
+
+        voltageCHub = hwMap.get(VoltageSensor.class, "Control Hub");
+
+        voltageExHub = hwMap.get(VoltageSensor.class, "Expansion Hub 2");
+
+
         // End Definition and Initialization of Drivetrain Motors
 /*
  Expansion port 1 output is reversed
@@ -120,7 +132,7 @@ public class HardwareTeletubbies
 
 //Begin Definition and Initialization of Horizontal Slides  Motor
 
-        HSMotor = hwMap.get(DcMotor.class, "HSMotor");// expansion  hub  port 3
+        HSMotor = hwMap.get(DcMotorEx.class, "HSMotor");// expansion  hub  port 3
         int positionH = HSMotor.getCurrentPosition();
         HSMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         HSMotor.setZeroPowerBehavior((DcMotor.ZeroPowerBehavior.BRAKE));
@@ -129,11 +141,11 @@ public class HardwareTeletubbies
 
 //Begin Definition and Initialization of Vertical Slides Motors
 
-        VSMotorL = hwMap.get(DcMotor.class, "VSMotorL");// expansion  hub port 0
+        VSMotorL = hwMap.get(DcMotorEx.class, "VSMotorL");// expansion  hub port 0
         int positionVL = VSMotorL.getCurrentPosition();
         VSMotorL.setZeroPowerBehavior((DcMotor.ZeroPowerBehavior.BRAKE));
         VSMotorL.setDirection(DcMotorSimple.Direction.REVERSE);
-        VSMotorR = hwMap.get(DcMotor.class, "VSMotorR");// expansion  hub port 2
+        VSMotorR = hwMap.get(DcMotorEx.class, "VSMotorR");// expansion  hub port 2
         int positionVR = VSMotorR.getCurrentPosition();
         VSMotorR.setZeroPowerBehavior((DcMotor.ZeroPowerBehavior.BRAKE));
 
@@ -320,5 +332,7 @@ public class HardwareTeletubbies
             OArmR.setPosition(Constants_CS.OArmRInitializationhigher);
         }
     }
+
+
 }
 

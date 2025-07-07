@@ -4,6 +4,8 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import static org.firstinspires.ftc.teamcode.Constants_CS.*;
@@ -48,6 +50,7 @@ import static org.firstinspires.ftc.teamcode.Constants_CS.speedLimiterFaster;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion;
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.teamcode.HardwareTeletubbies;
@@ -105,6 +108,20 @@ public class IntoTheDeepTeleOpTeletubbies extends LinearOpMode {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         robot.init(hardwareMap);
         gyro.robot.init(hardwareMap);
+
+
+
+
+
+
+        FtcDashboard Dashboard = FtcDashboard.getInstance();
+        Telemetry dashboardTelemetry = Dashboard.getTelemetry();
+
+
+
+
+
+
         Thread driveTrainThread = new Thread(this::runDriveTrain);
         Thread updateVSlidePIDControl = new Thread(this::runupdateVSlidePIDControl);
         Thread updateHSlidePIDControl = new Thread(this::runupdateHSlidePIDControl);
@@ -123,6 +140,19 @@ public class IntoTheDeepTeleOpTeletubbies extends LinearOpMode {
 //            telemetry.addData("Status", "All systems running...");
 //            telemetry.update();
 //            moveDriveTrain_RobotCentric(); // Select either RobotCentricDriveTrain() or FieldCentricDriveTrain() based on your requirements.
+
+            dashboardTelemetry.addData("RF current", robot.RFMotor.getCurrent(CurrentUnit.AMPS));
+            dashboardTelemetry.addData("LF current", robot.LFMotor.getCurrent(CurrentUnit.AMPS));
+            dashboardTelemetry.addData("RB current", robot.RBMotor.getCurrent(CurrentUnit.AMPS));
+            dashboardTelemetry.addData("LB current", robot.LBMotor.getCurrent(CurrentUnit.AMPS));
+            dashboardTelemetry.addData("VSR current", robot.VSMotorR.getCurrent(CurrentUnit.AMPS));
+            dashboardTelemetry.addData("VSL current", robot.VSMotorL.getCurrent(CurrentUnit.AMPS));
+            dashboardTelemetry.addData("Extendo current", robot.HSMotor.getCurrent(CurrentUnit.AMPS));
+            dashboardTelemetry.addData("CHub voltage", robot.voltageCHub.getVoltage());
+            dashboardTelemetry.addData("ExHub voltage", robot.voltageExHub.getVoltage());
+            dashboardTelemetry.update();
+
+
             if (gamepad1.right_stick_button) { //fix it later;
                 DriveTrains_ReducePOWER = 0.25f;
                 telemetry.addData("DriveTrains_ReducePOWER", DriveTrains_ReducePOWER);
@@ -243,6 +273,7 @@ public class IntoTheDeepTeleOpTeletubbies extends LinearOpMode {
 //            telemetry.update();
 //            sleep(300); // 防止快速连击导致模式快速切换
 //        }
+
 // 根据不同模式定义按键功能
         switch (controlMode) {
             case 0:
@@ -719,6 +750,7 @@ public class IntoTheDeepTeleOpTeletubbies extends LinearOpMode {
         telemetry.addData("Power L", powerL);
         telemetry.update();
 
+
 //        // 如果达到目标位置，停止滑轨运动，但保持抗重力功率
 //        if (pidControllerVS.onTarget()) {
 //            robot.VSMotorL.setPower(0.1); // 保持位置的最小功率
@@ -892,6 +924,7 @@ public class IntoTheDeepTeleOpTeletubbies extends LinearOpMode {
         telemetry.addData("targetPosition", targetPosition);
         telemetry.addData("after while HSMotor.getCurrentPosition()",robot.HSMotor.getCurrentPosition());
         telemetry.update();
+
 //        robot.HSMotor.setPower(.15);
 //        robot.HSMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 //        robot.HSMotor.setZeroPowerBehavior((DcMotor.ZeroPowerBehavior.BRAKE));
