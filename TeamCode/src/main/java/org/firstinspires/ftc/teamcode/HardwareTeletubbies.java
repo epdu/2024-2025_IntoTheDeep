@@ -173,7 +173,7 @@ public class HardwareTeletubbies
 
         Wristxpitch = hwMap.get(Servo.class, "Wristxpitch");//control hub port 4
 //        Wristxpitch.setDirection(Servo.Direction.REVERSE); //moved servo from one side to the other side
-        Wristxpitch.setPosition(0.05);//
+        Wristxpitch.setPosition(0.3);//
 
 //End Definition and Initialization of Wristxpitch Servo
 

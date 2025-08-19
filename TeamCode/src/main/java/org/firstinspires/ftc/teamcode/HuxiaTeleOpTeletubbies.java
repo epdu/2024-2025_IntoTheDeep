@@ -185,22 +185,22 @@ public class HuxiaTeleOpTeletubbies extends LinearOpMode {
                     gamepad1BackHandler.update(gamepad1.back);
 
 //Begin  Extrude H slide
-                    if (gamepad1.dpad_left) { //IN
-                        startHSlidePIDControl(POSITION_X_IN);
-                        gamepad1BHandler.reset();
-                    }
-                    if (gamepad1.dpad_down) { //EXTRUDE
-                        startHSlidePIDControl(POSITION_B_EXTRUDE);
-                        gamepad1XHandler.reset();
-                    }
-                    if (gamepad1.dpad_up) { //EXTRUDE_MORE
-                        startHSlidePIDControl(POSITION_B_EXTRUDETransferC);
-                        gamepad1XHandler.reset();
-                    }
-                    if (gamepad1.dpad_right) { //EXTRUDE_MORE
-                        startHSlidePIDControl(POSITION_B_EXTRUDE_MORE);
-                        gamepad1XHandler.reset();
-                    }
+//                    if (gamepad1.dpad_left) { //IN
+//                        startHSlidePIDControl(POSITION_X_IN);
+//                        gamepad1BHandler.reset();
+//                    }
+//                    if (gamepad1.dpad_down) { //EXTRUDE
+//                        startHSlidePIDControl(POSITION_B_EXTRUDE);
+//                        gamepad1XHandler.reset();
+//                    }
+//                    if (gamepad1.dpad_up) { //EXTRUDE_MORE
+//                        startHSlidePIDControl(POSITION_B_EXTRUDETransferC);
+//                        gamepad1XHandler.reset();
+//                    }
+//                    if (gamepad1.dpad_right) { //EXTRUDE_MORE
+//                        startHSlidePIDControl(POSITION_B_EXTRUDE_MORE);
+//                        gamepad1XHandler.reset();
+//                    }
 //End Extrude H slide
 
 //Begin  open and close of intakeclaw 12122024 finetuned
@@ -248,8 +248,6 @@ public class HuxiaTeleOpTeletubbies extends LinearOpMode {
                             // Other tasks can be processed here
                         } // 防止快速连击导致模式快速切换
 //                    sleep(500);
-
-
                         robot.OArmL.setPosition(OArmTransferPosition);//transfer position
                         robot.OArmR.setPosition(OArmTransferPosition);
                         robot.OClaw.setPosition(OClawOpen); // close 0.543 hold
@@ -296,18 +294,28 @@ public class HuxiaTeleOpTeletubbies extends LinearOpMode {
                         } // 防止快速连击导致模式快速切换
                         robot.OArmL.setPosition(OArmBucket);
                         robot.OArmR.setPosition(OArmBucket);
-                    }
-
-
-//******************Begin  IArm L and R****************
-
-                    if (gamepad1.y) { //up
-                        robot.IArmL.setPosition(IArmLUp);  // always same as hardware IArmL.setPosition(0.6);
-                        robot.IArmR.setPosition(IArmRUp);
+//                    }
+////******************Begin  IArm L and R***************
+//                    if (gamepad1.y) { //up
+//                        robot.IArmL.setPosition(IArmLUp);  // always same as hardware IArmL.setPosition(0.6);
+//                        robot.IArmR.setPosition(ArmRUp);
                     }
                     if (gamepad1.a ) { //down
-                        robot.IArmL.setPosition(IArmLDownForPick);
-                        robot.IArmR.setPosition(IArmRDownForPick); //
+                        robot.IArmL.setPosition(0.75);
+                        robot.IArmR.setPosition(0.75);
+                        delayTimer.reset();
+                        while (delayTimer.milliseconds() < 700 && opModeIsActive()) {
+//                        startHSlidePIDControl(30);
+                            // Other tasks can be processed here
+                        } // 防止快速连击导致模式快速切换
+                        robot.IClaw.setPosition(IClawCloseLose);
+                        delayTimer.reset();
+                        while (delayTimer.milliseconds() < 700 && opModeIsActive()) {
+//                        startHSlidePIDControl(30);
+                            // Other tasks can be processed here
+                        } // 防止快速连击导致模式快速切换
+                        robot.IArmL.setPosition(IArmLUp);
+                        robot.IArmR.setPosition(IArmRUp);
                     }
 
 //******************end  IArm L and R*****************
@@ -340,7 +348,10 @@ public class HuxiaTeleOpTeletubbies extends LinearOpMode {
 //                    while (delayTimer.milliseconds() < 600 && opModeIsActive()) {
 //                        // Other tasks can be processed here
 //                    }
-
+                        if (gamepad2.dpad_left) { //IN
+                            startHSlidePIDControl(POSITION_X_IN);
+                            gamepad2BHandler.reset();
+                        }
                         gamepad2XHandler.reset();
                     }
 //                    if (gamepad2.dpad_up) { //EXTRUDE_MORE  //moveVSlideToPositionPID(POSITION_Y_HIGH);
