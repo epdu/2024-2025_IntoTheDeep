@@ -13,11 +13,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.DcMotor
 import org.firstinspires.ftc.teamcode.roadrunner.PinpointDrive
 import org.firstinspires.ftc.teamcode.subsystems.CollectionArm
-import org.firstinspires.ftc.teamcode.subsystems.SampleClaw
-import org.firstinspires.ftc.teamcode.subsystems.ScoringArm
-import org.firstinspires.ftc.teamcode.subsystems.ScoringArm.ArmState
-import org.firstinspires.ftc.teamcode.subsystems.SpecimenClaw
-import org.firstinspires.ftc.teamcode.subsystems.SpecimenClaw.ClawState
 
 @TeleOp(name = "OldCompetitionTeleop")
 //@Disabled
