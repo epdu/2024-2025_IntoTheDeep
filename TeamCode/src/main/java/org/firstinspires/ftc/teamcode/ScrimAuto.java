@@ -29,6 +29,7 @@ public class ScrimAuto extends LinearOpMode {
 //        gyro.robot.init(hardwareMap);
 
         waitForStart();
+
         robot.LBMotor.setPower(-0.6);
         robot.LFMotor.setPower(-0.6);
         robot.RBMotor.setPower(-0.6);
