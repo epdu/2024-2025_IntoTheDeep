@@ -1,11 +1,14 @@
 package org.firstinspires.ftc.teamcode;
 
+import static org.firstinspires.ftc.teamcode.Constants_CS.IClawCloseInitialization;
+
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -19,7 +22,11 @@ public class HardwareScrim {
     public DcMotorEx RBMotor;
     public DcMotorEx LBMotor;
 
+    public Servo blocker;
+
     public DcMotorEx IntakeMotor;
+
+    public DcMotorEx ShooterMotor;
 
     public VoltageSensor voltageCHub;
     public VoltageSensor voltageExHub;
@@ -40,8 +47,8 @@ public class HardwareScrim {
         LBMotor   = hwMap.get(DcMotorEx.class, "LBMotor");//11072025 control hub port 1
         RBMotor  = hwMap.get(DcMotorEx.class, "RBMotor"); //11072025 expansion hub port 1
 
-        RBMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        RFMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        LBMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        LFMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         LFMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         RFMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -53,8 +60,17 @@ public class HardwareScrim {
         LBMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         RBMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
+        blocker = hwMap.get(Servo.class, "blocker");//control hub port 5
+//        blocker.setPosition(0);
+
         IntakeMotor  = hwMap.get(DcMotorEx.class, "IntakeMotor"); //11072025 expansion hub port 2
         IntakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        IntakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
+
+        ShooterMotor  = hwMap.get(DcMotorEx.class, "ShooterMotor"); //11072025 expansion hub port 2
+        ShooterMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        ShooterMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         voltageCHub = hwMap.get(VoltageSensor.class, "Control Hub");
 
@@ -66,7 +82,7 @@ public class HardwareScrim {
         imu = hwMap.get(IMU.class, "imu");  //control I2C port 1
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
                 RevHubOrientationOnRobot.LogoFacingDirection.RIGHT,
-                RevHubOrientationOnRobot.UsbFacingDirection.DOWN));
+                RevHubOrientationOnRobot.UsbFacingDirection.UP));
         double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
         imu.initialize(parameters);
 
