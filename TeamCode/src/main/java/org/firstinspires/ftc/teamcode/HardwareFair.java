@@ -43,7 +43,7 @@ import static org.firstinspires.ftc.teamcode.Constants_CS.*;
  *
  */
 //Good version 02082024
-public class HardwareTeletubbies
+public class HardwareFair
 {
     /* local OpMode members. */
     HardwareMap hwMap =  null;
@@ -53,33 +53,17 @@ public class HardwareTeletubbies
     public DcMotorEx RBMotor;
     public DcMotorEx LBMotor;
     public Servo IClaw;
-    public Servo OClaw;
-    public Servo Wrist;
-    public Servo Wristzyaw;
-    public Servo Wristxpitch;
+
     public VoltageSensor voltageCHub;
     public VoltageSensor voltageExHub;
-    /*
-           x right side of the robot
-           y forward
-           z celling
-           z--yaw
-           x--pitch
-           y-- roll
-    */
-    public Servo IArmL;
-    public Servo IArmR;
-    public ServoImplEx OArmL;
-    public ServoImplEx OArmR;
-    public DcMotorEx HSMotor; //horizontal Slides motor  extruder
-    public DcMotorEx VSMotorL; //vertical Slides motor left
+
     public DcMotorEx VSMotorR; //vertical Slides motor right
-    GoBildaPinpointDriver odo; // Declare OpMode member for the Odometry Computer
-    public GoBildaPinpointDriverRR pinpoint;
-    public double GlobalX = 0;
-    public double GlobalY = 0;
-    public double GlobalH = 0;
-    public Servo TServo; // For testing
+//    GoBildaPinpointDriver odo; // Declare OpMode member for the Odometry Computer
+//    public GoBildaPinpointDriverRR pinpoint;
+//    public double GlobalX = 0;
+//    public double GlobalY = 0;
+//    public double GlobalH = 0;
+//    public Servo TServo; // For testing
     //   public ServoImplEx myServo;
     public ServoImplEx myServo;
 //           public DcMotor TMotor; // For testing
@@ -123,31 +107,10 @@ public class HardwareTeletubbies
         voltageExHub = hwMap.get(VoltageSensor.class, "Expansion Hub 2");
 
 
-        // End Definition and Initialization of Drivetrain Motors
-/*
- Expansion port 1 output is reversed
- Expansion port 1 output is reversed
- Expansion port 1 output is reversed
- */
-
-//Begin Definition and Initialization of Horizontal Slides  Motor
-
-        HSMotor = hwMap.get(DcMotorEx.class, "HSMotor");// expansion  hub  port 3
-        int positionH = HSMotor.getCurrentPosition();
-        HSMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        HSMotor.setZeroPowerBehavior((DcMotor.ZeroPowerBehavior.BRAKE));
-//End Definition and Initialization of Horizontal Slides  Motor
-
-
-//Begin Definition and Initialization of Vertical Slides Motors
-
-        VSMotorL = hwMap.get(DcMotorEx.class, "VSMotorL");// expansion  hub port 0
-        int positionVL = VSMotorL.getCurrentPosition();
-        VSMotorL.setZeroPowerBehavior((DcMotor.ZeroPowerBehavior.BRAKE));
-        VSMotorL.setDirection(DcMotorSimple.Direction.REVERSE);
         VSMotorR = hwMap.get(DcMotorEx.class, "VSMotorR");// expansion  hub port 2
         int positionVR = VSMotorR.getCurrentPosition();
         VSMotorR.setZeroPowerBehavior((DcMotor.ZeroPowerBehavior.BRAKE));
+        VSMotorR.setDirection(DcMotorSimple.Direction.REVERSE);
 
 //End Definition and Initialization of Vertical Slides Motors
 
@@ -158,61 +121,11 @@ public class HardwareTeletubbies
 
         IClaw = hwMap.get(Servo.class, "IClaw");//control hub port 5
 //               IClaw.setPosition(0.543);// 12122024
-        IClaw.setPosition(IClawCloseInitialization);
-
-//End Definition and Initialization of intake Claw Servo
-
-//Begin Definition and Initialization of Wristzyaw Servo
-
-        Wristzyaw = hwMap.get(Servo.class, "Wristzyaw");//control hub port 1
-        Wristzyaw.setPosition(0.5);// 12122024
-
-//End Definition and Initialization of Wristzyaw Servo
-
-//Begin Definition and Initialization of Wristxpitch Servo
-
-        Wristxpitch = hwMap.get(Servo.class, "Wristxpitch");//control hub port 4
-//        Wristxpitch.setDirection(Servo.Direction.REVERSE); //moved servo from one side to the other side
-        Wristxpitch.setPosition(0.3);//
-
-//End Definition and Initialization of Wristxpitch Servo
-
-//Begin Definition and Initialization of intake ArmL and ArmR Servos
-
-        IArmL = hwMap.get(Servo.class, "IArmL");//control hub port 2
-        IArmR = hwMap.get(Servo.class, "IArmR");//control hub port 3
-        IArmR.setDirection(Servo.Direction.REVERSE);
-        IArmL.setPosition(0.6);//  12132024
-        IArmR.setPosition(0.6);//
-
-//End Definition and Initialization of intake ArmL and ArmR Servos
-
-//Begin Definition and Initialization of outtake Claw Servo
-        OClaw = hwMap.get(Servo.class, "OClaw");//expansion hub port  0==>5
-//               OClaw.setPosition(0.548);//  12122024
-        OClaw.setPosition(OClawCloseInitialization);// 02142025
-        OClaw.setPosition(OClawCloseSuperTight);  //feel too loose updated on 0214
-//End Definition and Initialization of outtake Claw Servo
-
-//Begin Definition and Initialization of outtake ArmL and ArmR Servos
-
-        OArmL = hwMap.get(ServoImplEx.class, "OArmL");//expansion hub port 5==>2
-        OArmR = hwMap.get(ServoImplEx.class, "OArmR");;//expansion hub port 2==>0
-        OArmL.setPwmRange(new PwmControl.PwmRange(500, 2500));
-        OArmR.setPwmRange(new PwmControl.PwmRange(500, 2500));
-        OArmR.setDirection(Servo.Direction.REVERSE);
-        initializeOArmPosition();
-
-//        OArmL.setPosition(0.8);// a lil higher than below
-//        OArmR.setPosition(0.8);//
+//        IClaw.setPosition(IClawCloseInitialization);
 
 
-////End Definition and Initialization of outtake ArmL and ArmR Servos
-//////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-///////////////////////////////////////GoBildaPinpointDriver//////////////////////////////
-        odo = hwMap.get(GoBildaPinpointDriver.class,"odo"); //expansion hub i2c port 1
+//        odo = hwMap.get(GoBildaPinpointDriver.class,"odo"); //expansion hub i2c port 1
 //        pinpoint = hwMap.get(GoBildaPinpointDriverRR.class, "pinpoint"); // guess for RR only
          /*
         Set the odometry pod positions relative to the point that the odometry computer tracks around.
@@ -224,7 +137,7 @@ public class HardwareTeletubbies
          */
         //  odo.setOffsets(-84.0, -224.0); //these are tuned for 3110-0002-0001 Product Insight #1
 //        odo.setOffsets(23.0, -8.0);  before 0210 this is to pinpoint center
-        odo.setOffsets(28.5, 156.0);
+//        odo.setOffsets(28.5, 156.0);
         //02102025 update the off to be center of robot by suggestion for Ethan
         // robot measured with length  Y=35.8cm X=29.3cm.X pod 11.8 to the left wall
         // Y pod 2.3 cm behind the front wall
@@ -235,15 +148,15 @@ public class HardwareTeletubbies
         If you're using another kind of odometry pod, uncomment setEncoderResolution and input the
         number of ticks per mm of your odometry pod.
          */
-        odo.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
+//        odo.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
         //odo.setEncoderResolution(13.26291192);
         /*
         Set the direction that each of the two odometry pods count. The X (forward) pod should
         increase when you move the robot forward. And the Y (strafe) pod should increase when
         you move the robot to the left.
          */
-        odo.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.REVERSED, GoBildaPinpointDriver.EncoderDirection.FORWARD);
- //       odo.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.REVERSED, GoBildaPinpointDriver.EncoderDirection.FORWARD);
+//        odo.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.REVERSED, GoBildaPinpointDriver.EncoderDirection.FORWARD);
+        //       odo.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.REVERSED, GoBildaPinpointDriver.EncoderDirection.FORWARD);
 
 
         //REVERSED  FORWARD
@@ -255,10 +168,10 @@ public class HardwareTeletubbies
         This is recommended before you run your autonomous, as a bad initial calibration can cause
         an incorrect starting value for x, y, and heading.
          */
-        odo.recalibrateIMU();
-        odo.resetPosAndIMU();
+//        odo.recalibrateIMU();
+//        odo.resetPosAndIMU();
 
-  ///////////////////////////////////////GoBildaPinpointDriver/////////////////////////////
+        ///////////////////////////////////////GoBildaPinpointDriver/////////////////////////////
 
 
 //Begin Definition and Initialization of Testing Motors and Servos
@@ -323,16 +236,5 @@ public class HardwareTeletubbies
     public void setAllPower(double p){
         setMotorPower(p,p,p,p);
     }
-    public void initializeOArmPosition() {
-        if (SpecimenFourTwoPlusTwo.lastOArmLPosition > 0 || SpecimenFourTwoPlusTwo.lastOArmRPosition > 0) { // Restore saved position
-            OArmL.setPosition(SpecimenFourTwoPlusTwo.lastOArmLPosition);
-            OArmR.setPosition(SpecimenFourTwoPlusTwo.lastOArmRPosition);
-        } else { // Default position if no saved value
-            OArmL.setPosition(Constants_CS.OArmLInitializationhigher);
-            OArmR.setPosition(Constants_CS.OArmRInitializationhigher);
-        }
-    }
-
-
 }
 
