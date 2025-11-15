@@ -86,13 +86,18 @@ public class LonghornScrim extends LinearOpMode {
             if (gamepad1.right_trigger > 0.3 && gamepad1.right_trigger <= 0.7) { // 轻按
                 double intakepower = 0.77;
                     robot.IntakeMotor.setPower(intakepower);
+                robot.ShooterMotor.setPower(-0.2);
+
             }
             if (gamepad1.right_bumper) { //top stop
                 robot.IntakeMotor.setPower(0);
+                robot.ShooterMotor.setPower(0);
             }
             if (gamepad1.y) { //bottom
                 double intakepower1 = 0.4;
                 robot.IntakeMotor.setPower(intakepower1);
+                robot.ShooterMotor.setPower(0);
+
             }
             if (gamepad1.a) { //bottom
                 double intakepower2 = -0.4;
