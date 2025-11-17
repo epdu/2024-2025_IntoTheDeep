@@ -76,6 +76,7 @@ public class LonghornScrim extends LinearOpMode {
             gamepad1BackHandler.update(gamepad1.back);
 
 
+
             if (gamepad1.left_trigger > 0.3 && gamepad1.left_trigger <= 0.7) { // 轻按
                 double shooterpower = 0.5;
                 robot.ShooterMotor.setPower(shooterpower);
