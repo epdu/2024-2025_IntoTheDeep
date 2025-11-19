@@ -1,29 +1,28 @@
 package org.firstinspires.ftc.teamcode;
 
-import static org.firstinspires.ftc.teamcode.Constants_CS.SLIDE_POWER_V;
 import static org.firstinspires.ftc.teamcode.Constants_CS.speedMultiplier;
-
 import android.annotation.SuppressLint;
-
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
-@TeleOp(name = "A Longhorn Scrim")
-public class LonghornScrim extends LinearOpMode {
+@TeleOp(name = "A TeleOp ShooterPID")
+public class ShooterPID extends LinearOpMode {
     public float DriveTrains_ReducePOWER = 0.8f;
     HardwareScrim robot = new HardwareScrim();
 
     public String fieldOrRobotCentric = "robot";
     boolean move = false;
-
+    private boolean pidActiveShooter = false; // PID 控制是否激活
+    private int pidTargetSpeedShooter = 0; // PID 控制目标位置
+    private PIDController pidControllerShooter = new PIDController(0.005, 0.0000005, 0.0002);// (0.005, 0.0000005, 0.0002) good for target 300 (1.9, 0.014, 4.9)
+    // Tune these values  POSITION_B_EXTRUDETransfer = 600;//horizontal slides  out //600 is too much
     int controlMode = 1;
-
     ButtonHandler dpadDownHandler = new ButtonHandler();
     ButtonHandler dpadUpHandler = new ButtonHandler();
     ButtonHandler dpadLeftHandler = new ButtonHandler();
@@ -35,17 +34,14 @@ public class LonghornScrim extends LinearOpMode {
     ButtonHandler gamepad1YHandler = new ButtonHandler();
     ButtonHandler gamepad1AHandler = new ButtonHandler();
     ButtonHandler gamepad1BackHandler = new ButtonHandler();
-
     ButtonHandler gamepad2XHandler = new ButtonHandler();
     ButtonHandler gamepad2BHandler = new ButtonHandler();
     ButtonHandler gamepad2YHandler = new ButtonHandler();
     ButtonHandler gamepad2AHandler = new ButtonHandler();
     ButtonHandler gamepad2BackHandler = new ButtonHandler();
-
     Gyro gyro = new Gyro(); // 创建 Gyro 类的对象
     private volatile boolean isRunning = true;
     ElapsedTime delayTimer = new ElapsedTime();
-
 
     @SuppressLint("SuspiciousIndentation")
     @Override
@@ -56,16 +52,23 @@ public class LonghornScrim extends LinearOpMode {
         Thread driveTrainThread = new Thread(this::runDriveTrain);
         Thread intakeThread = new Thread(this::runIntake);
         Thread outtakeThread = new Thread(this::runOuttake);
+        Thread updateShooterPIDControl = new Thread(this::runupdateShooterPIDControl);
 
         driveTrainThread.start();
         intakeThread.start();
         outtakeThread.start();
+        updateShooterPIDControl();
 
+        // Turns on bulk reading
+        for (LynxModule module : hardwareMap.getAll(LynxModule.class)) {
+            module.setBulkCachingMode(LynxModule.BulkCachingMode.AUTO);
+        }
+
+        // Insert whatever other initialization stuff you do here
         waitForStart();
 
         while(opModeIsActive()) {
 //
-
             dpadDownHandler.update(gamepad1.dpad_down);
             dpadUpHandler.update(gamepad1.dpad_up);
             dpadLeftHandler.update(gamepad1.dpad_left);
@@ -77,8 +80,6 @@ public class LonghornScrim extends LinearOpMode {
             gamepad1YHandler.update(gamepad1.y);
             gamepad1AHandler.update(gamepad1.a);
             gamepad1BackHandler.update(gamepad1.back);
-
-
 
             if (gamepad1.left_trigger > 0.3 && gamepad1.left_trigger <= 0.7) { // 轻按
                 double shooterpower = 0.5;
@@ -98,7 +99,6 @@ public class LonghornScrim extends LinearOpMode {
                 double intakepower = 0.77;
                     robot.IntakeMotor.setPower(intakepower);
                     robot.ShooterMotor.setPower(-0.2);
-
             }
             if (gamepad1.right_bumper) { //top stop
                 robot.IntakeMotor.setPower(0);
@@ -137,13 +137,13 @@ public class LonghornScrim extends LinearOpMode {
 
 
             //put driver2 commands in
-
                 moveDriveTrain_FieldCentric() ;
 //                moveDriveTrain_RobotCentric();
                 intake();
                 outtake();
+                updateShooterPIDControl();
 
-////////////////////////////////////
+/////////////////////////////////////////////////
 
 
             } //end of while loop
@@ -193,6 +193,15 @@ public class LonghornScrim extends LinearOpMode {
                 }
             }
         }
+    private void runupdateShooterPIDControl() {
+        while (isRunning) {
+            updateShooterPIDControl();
+//            sleep(50); // Add a short delay to prevent CPU overutilization
+            while (delayTimer.milliseconds() < 50 && opModeIsActive()) {
+                // Other tasks can be processed here
+            }
+        }
+    }
 
 
         public void intake () {
@@ -203,6 +212,63 @@ public class LonghornScrim extends LinearOpMode {
 
         public void servoGamepadControl () {
         }
+////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////
+
+//    motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER)
+//    setPower()
+//    RUN_USING_ENCODER
+//    setVelocity(ticks per second)
+
+///////////startShooterPIDControl///////////////
+
+    /// 初始化 PID 控制器
+    private void startShooterPIDControl(int targetPosition) {
+        robot.ShooterMotorL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.ShooterMotorR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        pidControllerShooter.reset();
+        pidControllerShooter.enable();
+        pidControllerShooter.setSetpoint(targetPosition);
+        pidControllerShooter.setTolerance(10); // 允许误差范围
+        pidTargetSpeedShooter = targetPosition;
+        pidActiveShooter = true; // 激活 PID 控制
+    }
+    // 在主循环中调用的非阻塞 PID 控制逻辑
+    private void updateShooterPIDControl() {
+        if (!pidActiveShooter) return; // 如果 PID 未激活，直接返回
+
+        int currentPositionL = robot.ShooterMotorL.getCurrentPosition();
+
+        // 计算 PID 输出
+        double powerL = pidControllerShooter.performPID(currentPositionL);
+        robot.ShooterMotorL.setPower(powerL*0.8); // change it to make it move faster both at the same time
+        robot.ShooterMotorR.setPower(powerL*0.8); // change it to make it move faster
+
+        // 输出 Telemetry 信息
+        telemetry.addData("PID Target", pidTargetSpeedShooter);
+        telemetry.addData("Current Position L", currentPositionL);
+        telemetry.addData("Power L", powerL);
+        telemetry.update();
+
+//        // 如果达到目标位置，停止滑轨运动，但保持抗重力功率
+//        if (pidControllerShooter.onTarget()) {
+//            robot.ShooterMotorL.setPower(0.1); // 保持位置的最小功率
+//            robot.ShooterMotorR.setPower(0.1);
+//            pidActiveShooter = false; // 停止 PID 控制
+//        }
+        // 在 updateShooterPIDControl 中加入抗重力逻辑
+        if (!pidActiveShooter && Math.abs(robot.ShooterMotorL.getCurrentPosition() - pidTargetSpeedShooter) > 10) {
+            double holdPowerVS = pidControllerShooter.performPID(robot.ShooterMotorL.getCurrentPosition());
+            robot.ShooterMotorL.setPower(holdPowerVS);
+            robot.ShooterMotorR.setPower(holdPowerVS);
+            pidActiveShooter = false; // 停止 PID 控制
+        }
+
+    }
+
+    //////////////startShooterPIDControl///////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
 
         public void moveDriveTrain_FieldCentric () {
             double y = gamepad1.left_stick_y * (0.45); // Remember, Y stick value is reversed
