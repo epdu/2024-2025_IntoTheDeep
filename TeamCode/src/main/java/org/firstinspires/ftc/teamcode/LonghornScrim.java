@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode;
 import static org.firstinspires.ftc.teamcode.Constants_CS.SLIDE_POWER_V;
 import static org.firstinspires.ftc.teamcode.Constants_CS.speedMultiplier;
 
+import android.annotation.SuppressLint;
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -45,6 +47,7 @@ public class LonghornScrim extends LinearOpMode {
     ElapsedTime delayTimer = new ElapsedTime();
 
 
+    @SuppressLint("SuspiciousIndentation")
     @Override
     public void runOpMode() {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
@@ -76,23 +79,36 @@ public class LonghornScrim extends LinearOpMode {
             gamepad1BackHandler.update(gamepad1.back);
 
 
+
             if (gamepad1.left_trigger > 0.3 && gamepad1.left_trigger <= 0.7) { // 轻按
                 double shooterpower = 0.5;
                 robot.ShooterMotor.setPower(shooterpower);
             }
+            if (gamepad1.left_trigger > 0.7 && gamepad1.left_trigger <= 1.0) { // 轻按
+                double shooterpower = 0.5;
+                robot.ShooterMotor.setPower(shooterpower);
+                double intakepower1 = 0.4;
+                robot.IntakeMotor.setPower(intakepower1);
+            }
+
             if (gamepad1.left_bumper) { //low
                 robot.ShooterMotor.setPower(0);
             }
             if (gamepad1.right_trigger > 0.3 && gamepad1.right_trigger <= 0.7) { // 轻按
                 double intakepower = 0.77;
                     robot.IntakeMotor.setPower(intakepower);
+                    robot.ShooterMotor.setPower(-0.2);
+
             }
             if (gamepad1.right_bumper) { //top stop
                 robot.IntakeMotor.setPower(0);
+                robot.ShooterMotor.setPower(0);
             }
             if (gamepad1.y) { //bottom
                 double intakepower1 = 0.4;
                 robot.IntakeMotor.setPower(intakepower1);
+                robot.ShooterMotor.setPower(0);
+
             }
             if (gamepad1.a) { //bottom
                 double intakepower2 = -0.4;
@@ -122,8 +138,8 @@ public class LonghornScrim extends LinearOpMode {
 
             //put driver2 commands in
 
-
-                moveDriveTrain_RobotCentric();
+                moveDriveTrain_FieldCentric() ;
+//                moveDriveTrain_RobotCentric();
                 intake();
                 outtake();
 
@@ -188,33 +204,33 @@ public class LonghornScrim extends LinearOpMode {
         public void servoGamepadControl () {
         }
 
-//        public void moveDriveTrain_FieldCentric () {
-//            double y = gamepad1.left_stick_y * (0.45); // Remember, Y stick value is reversed
-//            double x = -gamepad1.left_stick_x * (0.45);
-//            double rx = -gamepad1.right_stick_x * (0.45); //*(0.5) is fine
-//
-//            double botHeading = robot.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
-//
-//            // Rotate the movement direction counter to the bot's rotation
-//            double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
-//            double rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
-//
-//            rotX = rotX * 1.1;  // Counteract imperfect strafing
-//
-//            // Denominator is the largest motor power (absolute value) or 1
-//            // This ensures all the powers maintain the same ratio,
-//            // but only if at least one is out of the range [-1, 1]
-//            double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rx), 1);
-//            double frontLeftPower = (rotY + rotX + rx) / denominator;
-//            double backLeftPower = (rotY - rotX + rx) / denominator;
-//            double frontRightPower = (rotY - rotX - rx) / denominator;
-//            double backRightPower = (rotY + rotX - rx) / denominator;
-//
-//            robot.LFMotor.setPower(frontLeftPower * DriveTrains_ReducePOWER);
-//            robot.LBMotor.setPower(backLeftPower * DriveTrains_ReducePOWER);
-//            robot.RFMotor.setPower(frontRightPower * DriveTrains_ReducePOWER);
-//            robot.RBMotor.setPower(backRightPower * DriveTrains_ReducePOWER);
-//        }
+        public void moveDriveTrain_FieldCentric () {
+            double y = gamepad1.left_stick_y * (0.45); // Remember, Y stick value is reversed
+            double x = -gamepad1.left_stick_x * (0.45);
+            double rx = -gamepad1.right_stick_x * (0.45); //*(0.5) is fine
+
+            double botHeading = robot.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+
+            // Rotate the movement direction counter to the bot's rotation
+            double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
+            double rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
+
+            rotX = rotX * 1.1;  // Counteract imperfect strafing
+
+            // Denominator is the largest motor power (absolute value) or 1
+            // This ensures all the powers maintain the same ratio,
+            // but only if at least one is out of the range [-1, 1]
+            double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rx), 1);
+            double frontLeftPower = (rotY + rotX + rx) / denominator;
+            double backLeftPower = (rotY - rotX + rx) / denominator;
+            double frontRightPower = (rotY - rotX - rx) / denominator;
+            double backRightPower = (rotY + rotX - rx) / denominator;
+
+            robot.LFMotor.setPower(frontLeftPower * DriveTrains_ReducePOWER);
+            robot.LBMotor.setPower(backLeftPower * DriveTrains_ReducePOWER);
+            robot.RFMotor.setPower(frontRightPower * DriveTrains_ReducePOWER);
+            robot.RBMotor.setPower(backRightPower * DriveTrains_ReducePOWER);
+        }
 
         public void moveDriveTrain_RobotCentric () {
             double robot_y = gamepad1.left_stick_y; // Remember, Y stick value is reversed
