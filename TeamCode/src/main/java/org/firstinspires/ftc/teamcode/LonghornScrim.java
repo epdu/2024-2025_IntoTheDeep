@@ -86,7 +86,7 @@ public class LonghornScrim extends LinearOpMode {
             if (gamepad1.right_trigger > 0.3 && gamepad1.right_trigger <= 0.7) { // 轻按
                 double intakepower = 0.77;
                     robot.IntakeMotor.setPower(intakepower);
-                robot.ShooterMotor.setPower(-0.2);
+                robot.ShooterMotor.setPower(-0.4);
 
             }
             if (gamepad1.right_bumper) { //top stop
@@ -94,9 +94,9 @@ public class LonghornScrim extends LinearOpMode {
                 robot.ShooterMotor.setPower(0);
             }
             if (gamepad1.y) { //bottom
-                double intakepower1 = 0.4;
+                double intakepower1 = 0.77;
                 robot.IntakeMotor.setPower(intakepower1);
-                robot.ShooterMotor.setPower(0);
+//                robot.ShooterMotor.setPower(0);
 
             }
             if (gamepad1.a) { //bottom
