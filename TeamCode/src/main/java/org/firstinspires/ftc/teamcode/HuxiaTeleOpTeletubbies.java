@@ -41,10 +41,68 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
-@TeleOp(name = "AAAAA TeleOp 01292025 V1")
+
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import com.qualcomm.robotcore.util.ElapsedTime;
+import static org.firstinspires.ftc.teamcode.Constants_CS.*;
+import static org.firstinspires.ftc.teamcode.Constants_CS.POSITION_X_IN;
+import static org.firstinspires.ftc.teamcode.Constants_CS.POSITION_B_EXTRUDE;
+import static org.firstinspires.ftc.teamcode.Constants_CS.POSITION_B_EXTRUDETransfer;
+import static org.firstinspires.ftc.teamcode.Constants_CS.POSITION_B_EXTRUDETransferC;
+import static org.firstinspires.ftc.teamcode.Constants_CS.POSITION_B_EXTRUDE_MORE;
+import static org.firstinspires.ftc.teamcode.Constants_CS.POSITION_A_BOTTOM;
+import static org.firstinspires.ftc.teamcode.Constants_CS.POSITION_Y_LOW;
+import static org.firstinspires.ftc.teamcode.Constants_CS.POSITION_Y_HIGH;
+import static org.firstinspires.ftc.teamcode.Constants_CS.POSITION_Y_HIGHH;
+import static org.firstinspires.ftc.teamcode.Constants_CS.POSITION_Y_HIGHHH;
+import static org.firstinspires.ftc.teamcode.Constants_CS.SLIDE_POWER_H;
+import static org.firstinspires.ftc.teamcode.Constants_CS.SLIDE_POWER_V;
+import static org.firstinspires.ftc.teamcode.Constants_CS.IClawOpen;
+import static org.firstinspires.ftc.teamcode.Constants_CS.IClawCloseLose;
+import static org.firstinspires.ftc.teamcode.Constants_CS.IClawCloseTight;
+import static org.firstinspires.ftc.teamcode.Constants_CS.OClawOpen;
+import static org.firstinspires.ftc.teamcode.Constants_CS.OClawCloseLose;
+import static org.firstinspires.ftc.teamcode.Constants_CS.OClawCloseTight;
+import static org.firstinspires.ftc.teamcode.Constants_CS.OArmTransferPosition;
+import static org.firstinspires.ftc.teamcode.Constants_CS.OArmRearSpecimenPick;
+import static org.firstinspires.ftc.teamcode.Constants_CS.OClawSpecimenChambers;
+import static org.firstinspires.ftc.teamcode.Constants_CS.SERVO_STEP;
+import static org.firstinspires.ftc.teamcode.Constants_CS.SLIDE_POWER;
+import static org.firstinspires.ftc.teamcode.Constants_CS.speedMultiplier;
+import static org.firstinspires.ftc.teamcode.Constants_CS.speedLimiter1;
+import static org.firstinspires.ftc.teamcode.Constants_CS.WristzyawRight;
+import static org.firstinspires.ftc.teamcode.Constants_CS.WristzyawLeft;
+import static org.firstinspires.ftc.teamcode.Constants_CS.IArmLDown;
+import static org.firstinspires.ftc.teamcode.Constants_CS.IArmRDown;
+import static org.firstinspires.ftc.teamcode.Constants_CS.WristxpitchDown;
+import static org.firstinspires.ftc.teamcode.Constants_CS.WristxpitchUp;
+import static org.firstinspires.ftc.teamcode.Constants_CS.IArmLUp;
+import static org.firstinspires.ftc.teamcode.Constants_CS.IArmRUp;
+import static org.firstinspires.ftc.teamcode.Constants_CS.IArmLDownForPick;
+import static org.firstinspires.ftc.teamcode.Constants_CS.IArmRDownForPick;
+import static org.firstinspires.ftc.teamcode.Constants_CS.WristxpitchIntermedia4PositionAdjust;
+import static org.firstinspires.ftc.teamcode.Constants_CS.OClawCloseSuperTight;
+import static org.firstinspires.ftc.teamcode.Constants_CS.speedLimiterFaster;
+import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion;
+import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
+import org.firstinspires.ftc.teamcode.HardwareTeletubbies;
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad1;
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+import static org.firstinspires.ftc.teamcode.FieldCentricMecanumTeleOpTeletubbies.DriveTrains_ReducePOWER;
+import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
+
+@TeleOp(name = "AAAA Huxia TeleOp 04122025 V1")
 //V1 with pid for both slides but not odo
-public class IntoTheDeepTeleOpTeletubbies01292025 extends LinearOpMode {
-    public float DriveTrains_ReducePOWER=0.75f;
+public class HuxiaTeleOpTeletubbies extends LinearOpMode {
+    public float DriveTrains_ReducePOWER=0.6f;
     //   DriveTrains_ReducePOWER = 0.75f;
 //    DriveTrains_ReducePOWER = speedLimiterSlower;//************************
     HardwareTeletubbies robot = new HardwareTeletubbies();
@@ -65,7 +123,6 @@ public class IntoTheDeepTeleOpTeletubbies01292025 extends LinearOpMode {
     private PIDController pidControllerHS = new PIDController(0.005, 0.0000005, 0.0002);// (0.005, 0.0000005, 0.0002) good for target 300 (1.9, 0.014, 4.9)
     // Tune these values  POSITION_B_EXTRUDETransfer = 600;//horizontal slides  out //600 is too much
 
-
     ButtonHandler dpadDownHandler = new ButtonHandler();
     ButtonHandler dpadUpHandler = new ButtonHandler();
     ButtonHandler dpadLeftHandler = new ButtonHandler();
@@ -77,6 +134,12 @@ public class IntoTheDeepTeleOpTeletubbies01292025 extends LinearOpMode {
     ButtonHandler gamepad1YHandler = new ButtonHandler();
     ButtonHandler gamepad1AHandler = new ButtonHandler();
     ButtonHandler gamepad1BackHandler = new ButtonHandler();
+
+    ButtonHandler gamepad2XHandler = new ButtonHandler();
+    ButtonHandler gamepad2BHandler = new ButtonHandler();
+    ButtonHandler gamepad2YHandler = new ButtonHandler();
+    ButtonHandler gamepad2AHandler = new ButtonHandler();
+    ButtonHandler gamepad2BackHandler = new ButtonHandler();
     Gyro gyro = new Gyro(); // 创建 Gyro 类的对象
     private volatile boolean isRunning = true;
     ElapsedTime delayTimer = new ElapsedTime();
@@ -107,40 +170,237 @@ public class IntoTheDeepTeleOpTeletubbies01292025 extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-//            telemetry.addData("Status", "All systems running...");
-//            telemetry.update();
-//            moveDriveTrain_RobotCentric(); // Select either RobotCentricDriveTrain() or FieldCentricDriveTrain() based on your requirements.
-            if (gamepad1.right_stick_button) { //fix it later;
-                DriveTrains_ReducePOWER = 0.25f;
-                telemetry.addData("DriveTrains_ReducePOWER", DriveTrains_ReducePOWER);
-                telemetry.update();
-                // Non-blocking delay to prevent rapid mode switching
-                delayTimer.reset();
-                while (delayTimer.milliseconds() < 300 && opModeIsActive()) {
-                    // Other tasks can be processed here
-                } // 防止快速连击导致模式快速切换
-            }
-            if (gamepad1.left_stick_button) { //fix it later;
-                DriveTrains_ReducePOWER = 0.75f;
-                telemetry.addData("DriveTrains_ReducePOWER", DriveTrains_ReducePOWER);
-                telemetry.update();
-                // Non-blocking delay to prevent rapid mode switching
-                delayTimer.reset();
-                while (delayTimer.milliseconds() < 300 && opModeIsActive()) {
-                    // Other tasks can be processed here
-                } // 防止快速连击导致模式快速切换
-            }
+//
 
-            if (gamepad1.start) { // 切换控制模式
-                controlMode = (controlMode + 1) % 2; // 假设两种模式 0 和 1
-                telemetry.addData("Control Mode", controlMode == 0 ? "Mode 0: Standard" : "Mode 1: Advanced");
-                telemetry.update();
-                // Non-blocking delay to prevent rapid mode switching
-                delayTimer.reset();
-                while (delayTimer.milliseconds() < 300 && opModeIsActive()) {
-                    // Other tasks can be processed here
-                } // 防止快速连击导致模式快速切换
-            }
+                    dpadDownHandler.update(gamepad1.dpad_down);
+                    dpadUpHandler.update(gamepad1.dpad_up);
+                    dpadLeftHandler.update(gamepad1.dpad_left);
+                    dpadRightHandler.update(gamepad1.dpad_right);
+                    leftBumperHandler.update(gamepad1.left_bumper);
+                    rightBumperHandler.update(gamepad1.right_bumper);
+                    gamepad1XHandler.update(gamepad1.x);
+                    gamepad1BHandler.update(gamepad1.b);
+                    gamepad1YHandler.update(gamepad1.y);
+                    gamepad1AHandler.update(gamepad1.a);
+                    gamepad1BackHandler.update(gamepad1.back);
+
+//Begin  Extrude H slide
+//                    if (gamepad1.dpad_left) { //IN
+//                        startHSlidePIDControl(POSITION_X_IN);
+//                        gamepad1BHandler.reset();
+//                    }
+//                    if (gamepad1.dpad_down) { //EXTRUDE
+//                        startHSlidePIDControl(POSITION_B_EXTRUDE);
+//                        gamepad1XHandler.reset();
+//                    }
+//                    if (gamepad1.dpad_up) { //EXTRUDE_MORE
+//                        startHSlidePIDControl(POSITION_B_EXTRUDETransferC);
+//                        gamepad1XHandler.reset();
+//                    }
+//                    if (gamepad1.dpad_right) { //EXTRUDE_MORE
+//                        startHSlidePIDControl(POSITION_B_EXTRUDE_MORE);
+//                        gamepad1XHandler.reset();
+//                    }
+//End Extrude H slide
+
+//Begin  open and close of intakeclaw 12122024 finetuned
+
+                    if (gamepad1.left_trigger > 0.3 && gamepad1.left_trigger <= 0.7) { // 轻按
+                        robot.IClaw.setPosition(IClawOpen); //12122024
+                    }
+                    if (gamepad1.right_trigger > 0.3 && gamepad1.right_trigger <= 0.7) { // 轻按
+                        robot.IClaw.setPosition(IClawCloseLose); //0.54 moveable 0.542 barely movable 0.543 hold
+                    }
+//                if (gamepad1.right_trigger > 0.7) { // 深按
+//                    robot.IClaw.setPosition(IClawCloseTight); //0.54 moveable 0.542 barely movable 0.543 hold
+//                }
+
+//End open and close of intakeclaw
+
+
+//Begin  Wristzyaw
+                    if (gamepad1.b) { //right
+                        robot.Wristzyaw.setPosition(WristzyawRight); //Wristzyaw right 45 degree 12122024
+                    }
+                    if (gamepad1.x) { //left
+                        robot.Wristzyaw.setPosition(WristzyawLeft); // Wristzyaw left 45 degree 12122024 // robot.Wristzyaw.setPosition(0.65); for left
+                    }
+
+//one key ready for pick
+                    if (gamepad1.left_bumper) { //up if arm is Horizontal, the the wrist is vertical up and down
+                        delayTimer.reset();
+                        while (delayTimer.milliseconds() < 200 && opModeIsActive()) {
+                            // Other tasks can be processed here
+                        }
+                        robot.Wristxpitch.setPosition(WristxpitchDown);
+                        robot.IClaw.setPosition(IClawOpen);
+                        robot.IArmL.setPosition(IArmLDown);
+                        robot.IArmR.setPosition(IArmRDown);
+                    }
+
+//one key ready for transfer
+                    if (gamepad2.right_bumper) { //
+                        startHSlidePIDControl(10);
+//                    moveHSlideToPosition(30);
+                        delayTimer.reset();
+                        while (delayTimer.milliseconds() < 700 && opModeIsActive()) {
+//                        startHSlidePIDControl(30);
+                            // Other tasks can be processed here
+                        } // 防止快速连击导致模式快速切换
+//                    sleep(500);
+                        robot.OArmL.setPosition(OArmTransferPosition);//transfer position
+                        robot.OArmR.setPosition(OArmTransferPosition);
+                        robot.OClaw.setPosition(OClawOpen); // close 0.543 hold
+                        robot.Wristxpitch.setPosition(WristxpitchIntermedia4PositionAdjust); // Wristxpitch
+//                    sleep(600);
+                        delayTimer.reset();
+                        while (delayTimer.milliseconds() < 900 && opModeIsActive()) {
+                            // Other tasks can be processed here
+                        } // 防止快速连击导致模式快速切换
+//                    robot.IClaw.setPosition(IClawCloseTight); //  0.543
+                        robot.IClaw.setPosition(IClawCloseSuperTight); //  0.544
+                        startHSlidePIDControl(10);
+//                    moveHSlideToPosition(30);
+                        delayTimer.reset();
+                        while (delayTimer.milliseconds() < 700 && opModeIsActive()) {
+//                        startHSlidePIDControl(30);
+                            // Other tasks can be processed here
+                        } // 防止快速连击导致模式快速切换
+//                    sleep(500);
+                        robot.Wristxpitch.setPosition(0.05); // Wristxpitch
+                        delayTimer.reset();
+                        while (delayTimer.milliseconds() < 600 && opModeIsActive()) {
+                            // Other tasks can be processed here
+                        } // 防止快速连击导致模式快速切换
+                        robot.IArmL.setPosition(0.605);
+                        robot.IArmR.setPosition(0.605);
+                        startHSlidePIDControl(10);
+                        delayTimer.reset();
+                        while (delayTimer.milliseconds() < 600 && opModeIsActive()) {
+                            // Other tasks can be processed here
+                        } // 防止快速连击导致模式快速切换
+//                    sleep(500);
+                        robot.OClaw.setPosition(OClawCloseTight); // close 0.543 hold
+//                    sleep(500);
+                        delayTimer.reset();
+                        while (delayTimer.milliseconds() < 600 && opModeIsActive()) {
+                            // Other tasks can be processed here
+                        } // 防止快速连击导致模式快速切换
+                        robot.IClaw.setPosition(IClawOpen); //open
+//                    sleep(300);
+                        delayTimer.reset();
+                        while (delayTimer.milliseconds() < 600 && opModeIsActive()) {
+                            // Other tasks can be processed here
+                        } // 防止快速连击导致模式快速切换
+                        robot.OArmL.setPosition(OArmBucket);
+                        robot.OArmR.setPosition(OArmBucket);
+//                    }
+////******************Begin  IArm L and R***************
+//                    if (gamepad1.y) { //up
+//                        robot.IArmL.setPosition(IArmLUp);  // always same as hardware IArmL.setPosition(0.6);
+//                        robot.IArmR.setPosition(ArmRUp);
+                    }
+                    if (gamepad1.a ) { //down
+                        robot.IArmL.setPosition(0.75);
+                        robot.IArmR.setPosition(0.75);
+                        delayTimer.reset();
+                        while (delayTimer.milliseconds() < 700 && opModeIsActive()) {
+//                        startHSlidePIDControl(30);
+                            // Other tasks can be processed here
+                        } // 防止快速连击导致模式快速切换
+                        robot.IClaw.setPosition(IClawCloseLose);
+                        delayTimer.reset();
+                        while (delayTimer.milliseconds() < 700 && opModeIsActive()) {
+//                        startHSlidePIDControl(30);
+                            // Other tasks can be processed here
+                        } // 防止快速连击导致模式快速切换
+                        robot.IArmL.setPosition(IArmLUp);
+                        robot.IArmR.setPosition(IArmRUp);
+                    }
+
+//******************end  IArm L and R*****************
+
+                    // out take
+                    dpadDownHandler.update(gamepad2.dpad_down);
+                    dpadUpHandler.update(gamepad2.dpad_up);
+                    dpadLeftHandler.update(gamepad2.dpad_left);
+                    dpadRightHandler.update(gamepad2.dpad_right);
+                    leftBumperHandler.update(gamepad2.left_bumper);
+                    rightBumperHandler.update(gamepad2.right_bumper);
+                    gamepad2XHandler.update(gamepad2.x);
+                    gamepad2BHandler.update(gamepad2.b);
+                    gamepad2YHandler.update(gamepad2.y);
+                    gamepad2AHandler.update(gamepad2.a);
+
+//Begin  moveVSlideToPosition
+                    // 左触发器双功能：轻按和深按
+                    if (gamepad2.dpad_down) { //IN
+                        startVSlidePIDControl(POSITION_A_BOTTOM);
+                            robot.OArmL.setPosition(OArmTransferPosition);//arm in front of robot
+                            robot.OArmR.setPosition(OArmTransferPosition);
+                    }
+                    if (gamepad2.dpad_up) { //EXTRUDE
+                        startVSlidePIDControl(POSITION_Y_HIGHH);//bucket high
+                        robot.OArmL.setPosition(OArmBucket);
+                        robot.OArmR.setPosition(OArmBucket);
+                        armPositionCuzBorS = "POSITION_Y_HIGHH"; //arm is going to go front of robo
+//                    delayTimer.reset();
+//                    while (delayTimer.milliseconds() < 600 && opModeIsActive()) {
+//                        // Other tasks can be processed here
+//                    }
+                        if (gamepad2.dpad_left) { //IN
+                            startHSlidePIDControl(POSITION_X_IN);
+                            gamepad2BHandler.reset();
+                        }
+                        gamepad2XHandler.reset();
+                    }
+//                    if (gamepad2.dpad_up) { //EXTRUDE_MORE  //moveVSlideToPositionPID(POSITION_Y_HIGH);
+//                        startVSlidePIDControl(POSITION_Y_HIGH);
+//                        robot.OArmL.setPosition(OArmTransferPosition);
+//                        robot.OArmR.setPosition(OArmTransferPosition);
+//                        gamepad1XHandler.reset();
+//                    }
+//                    if (gamepad2.dpad_right) { //EXTRUDE_MORE
+//                        startVSlidePIDControl(POSITION_Y_HIGHHH);// very high//specimen high
+//                        armPositionCuzBorS = "POSITION_Y_HIGHHH"; //arm is going to go back of robo
+//                        gamepad2XHandler.reset();
+//
+//                    }
+
+
+
+
+//one key ready for transfer
+
+//Begin  OArm L and R
+
+                    if (gamepad2.y) { //rear specimen    OArmTransferPosition   OArmRearSpecimenPick
+                        robot.OArmL.setPosition(OArmBucket);
+                        robot.OArmR.setPosition(OArmBucket);
+                    }
+                    if (gamepad2.a) { //front transfer
+                        robot.OArmL.setPosition(OArmTransferPosition);
+                        robot.OArmR.setPosition(OArmTransferPosition);
+                    }
+
+//end  OArm L and R
+
+//Begin  open and close of outtakeclaw 12122024 finetuned
+
+                    if (gamepad2.left_trigger > 0.3 && gamepad2.left_trigger <= 0.7) { // 轻按
+                        robot.OClaw.setPosition(OClawOpen); //12122024
+                    }
+                    if (gamepad2.right_trigger > 0.3 && gamepad2.right_trigger <= 0.7) { // 轻按
+                        robot.OClaw.setPosition(OClawCloseTight);
+                    }
+//                if (gamepad1.right_trigger > 0.7) { // 深按
+//                    robot.OClaw.setPosition(OClawCloseSuperTight); //
+//                }
+
+//End open and close of outtakeclaw
+
+//End Definition and Initialization of gamepad
+
 
             moveDriveTrain_FieldCentric() ;
             updateVSlidePIDControl();
@@ -222,281 +482,6 @@ public class IntoTheDeepTeleOpTeletubbies01292025 extends LinearOpMode {
 
     //Begin Definition and Initialization of intake()
     public void intake() {
-
-//Begin Definition and Initialization of gamepad
-//        if (gamepad1.start) { // 切换控制模式
-//            controlMode = (controlMode + 1) % 2; // 假设两种模式 0 和 1
-//            telemetry.addData("Control Mode", controlMode == 0 ? "Mode 0: Standard" : "Mode 1: Advanced");
-//            telemetry.update();
-//            sleep(300); // 防止快速连击导致模式快速切换
-//        }
-// 根据不同模式定义按键功能
-        switch (controlMode) {
-            case 0:
-
-                dpadDownHandler.update(gamepad1.dpad_down);
-                dpadUpHandler.update(gamepad1.dpad_up);
-                dpadLeftHandler.update(gamepad1.dpad_left);
-                dpadRightHandler.update(gamepad1.dpad_right);
-                leftBumperHandler.update(gamepad1.left_bumper);
-                rightBumperHandler.update(gamepad1.right_bumper);
-                gamepad1XHandler.update(gamepad1.x);
-                gamepad1BHandler.update(gamepad1.b);
-                gamepad1YHandler.update(gamepad1.y);
-                gamepad1AHandler.update(gamepad1.a);
-                gamepad1BackHandler.update(gamepad1.back);
-
-//Begin  Extrude H slide
-                if (gamepad1.dpad_left) { //IN
-                    startHSlidePIDControl(POSITION_X_IN);
-                    gamepad1BHandler.reset();
-                }
-                if (gamepad1.dpad_down) { //EXTRUDE
-                    startHSlidePIDControl(POSITION_B_EXTRUDE);
-                    gamepad1XHandler.reset();
-                }
-                if (gamepad1.dpad_up) { //EXTRUDE_MORE
-                    startHSlidePIDControl(POSITION_B_EXTRUDETransferC);
-                    gamepad1XHandler.reset();
-                }
-                if (gamepad1.dpad_right) { //EXTRUDE_MORE
-                    startHSlidePIDControl(POSITION_B_EXTRUDE_MORE);
-                    gamepad1XHandler.reset();
-                }
-//End Extrude H slide
-
-//Begin  open and close of intakeclaw 12122024 finetuned
-
-                if (gamepad1.left_trigger > 0.3 && gamepad1.left_trigger <= 0.7) { // 轻按
-                    robot.IClaw.setPosition(IClawOpen); //12122024
-                }
-                if (gamepad1.right_trigger > 0.3 && gamepad1.right_trigger <= 0.7) { // 轻按
-                    robot.IClaw.setPosition(IClawCloseLose); //0.54 moveable 0.542 barely movable 0.543 hold
-                }
-                if (gamepad1.right_trigger > 0.7) { // 深按
-                    robot.IClaw.setPosition(IClawCloseTight); //0.54 moveable 0.542 barely movable 0.543 hold
-                }
-
-//End open and close of intakeclaw
-
-
-//Begin  Wristzyaw
-                if (gamepad1.b) { //right
-                    robot.Wristzyaw.setPosition(WristzyawRight); //Wristzyaw right 45 degree 12122024
-                }
-                if (gamepad1.x) { //left
-                    robot.Wristzyaw.setPosition(WristzyawLeft); // Wristzyaw left 45 degree 12122024 // robot.Wristzyaw.setPosition(0.65); for left
-                }
-
-//one key ready for pick
-                if (gamepad1.left_bumper) { //up if arm is Horizontal, the the wrist is vertical up and down
-                    robot.OClaw.setPosition(OClawOpen); //
-                    delayTimer.reset();
-                    while (delayTimer.milliseconds() < 200 && opModeIsActive()) {
-                        // Other tasks can be processed here
-                    }
-                    robot.Wristxpitch.setPosition(WristxpitchDown);
-                    robot.IClaw.setPosition(IClawOpen);
-                    robot.IArmL.setPosition(IArmLDown);
-                    robot.IArmR.setPosition(IArmRDown);
-                }
-
-//one key ready for transfer
-                if (gamepad1.right_bumper) { //
-                    robot.OArmL.setPosition(OArmTransferPosition);//transfer position
-                    robot.OArmR.setPosition(OArmTransferPosition);
-                    robot.Wristxpitch.setPosition(WristxpitchIntermedia4PositionAdjust); // Wristxpitch
-//                    sleep(600);
-                    delayTimer.reset();
-                    while (delayTimer.milliseconds() < 600 && opModeIsActive()) {
-                        // Other tasks can be processed here
-                    } // 防止快速连击导致模式快速切换
-//                    robot.IClaw.setPosition(IClawCloseTight); //  0.543
-                    robot.IClaw.setPosition(IClawCloseSuperTight); //  0.544
-                    startHSlidePIDControl(30);
-//                    moveHSlideToPosition(30);
-                    sleep(500);
-                    robot.Wristxpitch.setPosition(0.05); // Wristxpitch
-                    robot.IArmL.setPosition(0.65);
-                    robot.IArmR.setPosition(0.65);
-                    sleep(500);
-                    robot.OClaw.setPosition(OClawCloseTight); // close 0.543 hold
-                    sleep(500);
-                    robot.IClaw.setPosition(IClawOpen); //open
-                    sleep(300);
-                    robot.OArmL.setPosition(OArmRearSpecimenPick);
-                    robot.OArmR.setPosition(OArmRearSpecimenPick);
-//                      startVSlidePIDControl(POSITION_Y_HIGHH);
-
-
-                }
-//one key ready for transfer
-
-
-//******************Begin  IArm L and R****************
-
-                if (gamepad1.y) { //up
-                    robot.IArmL.setPosition(IArmLUp);  // always same as hardware IArmL.setPosition(0.6);
-                    robot.IArmR.setPosition(IArmRUp);
-                }
-                if (gamepad1.a ) { //down
-                    robot.IArmL.setPosition(IArmLDownForPick);
-                    robot.IArmR.setPosition(IArmRDownForPick); //
-                }
-
-//******************end  IArm L and R*****************
-
-                break;
-
-
-
-            case 1:
-                // out take
-                dpadDownHandler.update(gamepad1.dpad_down);
-                dpadUpHandler.update(gamepad1.dpad_up);
-                dpadLeftHandler.update(gamepad1.dpad_left);
-                dpadRightHandler.update(gamepad1.dpad_right);
-                leftBumperHandler.update(gamepad1.left_bumper);
-                rightBumperHandler.update(gamepad1.right_bumper);
-                gamepad1XHandler.update(gamepad1.x);
-                gamepad1BHandler.update(gamepad1.b);
-                gamepad1YHandler.update(gamepad1.y);
-                gamepad1AHandler.update(gamepad1.a);
-
-//Begin  moveVSlideToPosition
-                // 左触发器双功能：轻按和深按
-                if (gamepad1.dpad_left) { //IN
-                    startVSlidePIDControl(POSITION_A_BOTTOM);
-                    if (armPositionCuzBorS =="POSITION_Y_HIGHHH") {
-                        robot.OArmL.setPosition(OArmRearSpecimenPick);//arm in back of robot
-                        robot.OArmR.setPosition(OArmRearSpecimenPick);
-                    }
-                    if (armPositionCuzBorS =="POSITION_Y_HIGHH") {
-                        robot.OArmL.setPosition(OArmTransferPosition);//arm in front of robot
-                        robot.OArmR.setPosition(OArmTransferPosition);
-                    }
-                    gamepad1BHandler.reset();
-                }
-                if (gamepad1.dpad_down) { //EXTRUDE
-                    startVSlidePIDControl(POSITION_Y_HIGHH);//bucket high
-                    robot.OArmL.setPosition(OArmBucket);
-                    robot.OArmR.setPosition(OArmBucket);
-                    armPositionCuzBorS = "POSITION_Y_HIGHH"; //arm is going to go front of robo
-//                    delayTimer.reset();
-//                    while (delayTimer.milliseconds() < 600 && opModeIsActive()) {
-//                        // Other tasks can be processed here
-//                    }
-
-                    gamepad1XHandler.reset();
-                }
-                if (gamepad1.dpad_up) { //EXTRUDE_MORE  //moveVSlideToPositionPID(POSITION_Y_HIGH);
-                    startVSlidePIDControl(POSITION_Y_HIGH);
-                    robot.OArmL.setPosition(OArmTransferPosition);
-                    robot.OArmR.setPosition(OArmTransferPosition);
-                    gamepad1XHandler.reset();
-                }
-                if (gamepad1.dpad_right) { //EXTRUDE_MORE
-                    startVSlidePIDControl(POSITION_Y_HIGHHH);// very high//specimen high
-                    armPositionCuzBorS = "POSITION_Y_HIGHHH"; //arm is going to go back of robo
-                    gamepad1XHandler.reset();
-
-                }
-
-
-//************End  moveVSlideToPosition***************
-
-
-//one key ready for pick
-                if (gamepad1.left_bumper) { //up if arm is Horizontal, the the wrist is vertical up and down
-//                    robot.OArmL.setPosition(OArmRearSpecimenPick);
-//                    robot.OArmR.setPosition(OArmRearSpecimenPick);
-                    robot.OClaw.setPosition(OClawOpen); //
-                    delayTimer.reset();
-                    while (delayTimer.milliseconds() < 200 && opModeIsActive()) {
-                        // Other tasks can be processed here
-                    }
-                    robot.Wristxpitch.setPosition(WristxpitchDown);
-                    robot.IClaw.setPosition(IClawOpen);
-                    robot.IArmL.setPosition(IArmLDown);
-                    robot.IArmR.setPosition(IArmRDown);
-                    //                    moveHSlideToPosition(POSITION_B_EXTRUDETransferC);
-//                    sleep(500);
-                    //                    robot.OClaw.setPosition(OClawOpen); //open
-                }
-
-//one key ready for pick up
-
-//one key ready for transfer
-                if (gamepad1.right_bumper) { //
-                    robot.OArmL.setPosition(OArmTransferPosition);//transfer position
-                    robot.OArmR.setPosition(OArmTransferPosition);
-                    robot.Wristxpitch.setPosition(WristxpitchIntermedia4PositionAdjust); // Wristxpitch
-//                    sleep(600);
-                    delayTimer.reset();
-                    while (delayTimer.milliseconds() < 600 && opModeIsActive()) {
-                        // Other tasks can be processed here
-                    } // 防止快速连击导致模式快速切换
-//                    robot.IClaw.setPosition(IClawCloseTight); //  0.54
-                    robot.IClaw.setPosition(OClawCloseSuperTight);
-                    startHSlidePIDControl(POSITION_X_IN);
-//                    moveHSlideToPosition(POSITION_X_IN);
-                    sleep(500);
-                    robot.Wristxpitch.setPosition(0.05); // Wristxpitch
-                    robot.IArmL.setPosition(0.65);
-                    robot.IArmR.setPosition(0.65);
-                    sleep(500);
-                    robot.OClaw.setPosition(OClawCloseTight); // close 0.543 hold
-                    sleep(500);
-                    robot.IClaw.setPosition(IClawOpen); //open
-                    sleep(300);
-//                    moveHSlideToPosition(POSITION_B_EXTRUDETransferC);
-//                    sleep(300);
-                    robot.OArmL.setPosition(OArmRearSpecimenPick);
-                    robot.OArmR.setPosition(OArmRearSpecimenPick);
-//                    sleep(600);
-//                    moveVSlideToPosition(-POSITION_Y_HIGH);// high
-//                    moveVSlideToPositionPID(-POSITION_Y_HIGH);// high
-
-                }
-
-//one key ready for transfer
-
-//Begin  OArm L and R
-
-                if (gamepad1.y) { //rear specimen    OArmTransferPosition   OArmRearSpecimenPick
-                    robot.OArmL.setPosition(OArmRearSpecimenPick);
-                    robot.OArmR.setPosition(OArmRearSpecimenPick);
-                }
-                if (gamepad1.a) { //front transfer
-                    robot.OArmL.setPosition(OArmTransferPosition);
-                    robot.OArmR.setPosition(OArmTransferPosition);
-                }
-
-//end  OArm L and R
-
-//Begin  open and close of outtakeclaw 12122024 finetuned
-
-                if (gamepad1.left_trigger > 0.3 && gamepad1.left_trigger <= 0.7) { // 轻按
-                    robot.OClaw.setPosition(OClawOpen); //12122024
-                }
-                if (gamepad1.right_trigger > 0.3 && gamepad1.right_trigger <= 0.7) { // 轻按
-                    robot.OClaw.setPosition(OClawCloseTight);
-                }
-                if (gamepad1.right_trigger > 0.7) { // 深按
-                    robot.OClaw.setPosition(OClawCloseSuperTight); //
-                }
-
-//End open and close of outtakeclaw
-
-//End Definition and Initialization of gamepad
-
-                break;
-
-            // 如果需要更多模式，可以继续添加 case。
-        }
-
-
-
     }
 //End Definition and Initialization of intake()
 
@@ -506,68 +491,13 @@ public class IntoTheDeepTeleOpTeletubbies01292025 extends LinearOpMode {
     }
 //End Definition and Initialization of outtake()
 
-//Begin Definition and Initialization of steptestservo()    //Begin debugging with a step increment of 0.05  SGC - servoGamepadControl
-public void servoGamepadControl() {
-
-/**
- * This code snippet controls the position of a servo motor using the gamepad triggers.
- *
- * **Purpose**:
- * - The left trigger (`gamepad1.left_trigger`) increases the servo's position by a fixed step (`SERVO_STEP`).
- * - The right trigger (`gamepad1.right_trigger`) decreases the servo's position by a fixed step (`SERVO_STEP`).
- * - The servo position is constrained between 0.01 (minimum) and 0.99 (maximum) to prevent invalid values.
- * - The current servo position is displayed on the telemetry for real-time monitoring.
- *
- * **Usage Instructions**:
- * 1. Press the **left trigger** (`gamepad1.left_trigger`) to move the servo incrementally towards its maximum position.
- * 2. Press the **right trigger** (`gamepad1.right_trigger`) to move the servo incrementally towards its minimum position.
- * 3. The servo's position is updated with a small delay (`sleep(200)` milliseconds) to prevent rapid changes from multiple trigger presses.
- * 4. Adjust `SERVO_STEP` as needed to control the increment size for finer or coarser adjustments.
- *
- * **Setup**:
- * - Ensure the servo is connected to the correct port and initialized in the `robot.TServo` variable.
- * - Configure the `SERVO_STEP` variable to determine how much the position changes with each trigger press.
- * - Calibrate the servo movement range (e.g., 0.01 to 0.99) based on your servo's physical limits to avoid damage.
- */
-
-
-//            if (gamepad1.left_trigger > 0.3) {
-//                servoPosition = servoPosition + SERVO_STEP;
-//                if (servoPosition >= 1.0) {
-//                    servoPosition = 0.99; // 限制最大值
-//                }
-//                robot.TServo.setPosition(servoPosition);
-//                telemetry.addData("Servo Position", servoPosition);
-//                telemetry.update();
-//                sleep(200);
-//            }
-//            if (gamepad1.right_trigger > 0.3) {
-//                servoPosition = servoPosition - SERVO_STEP;
-//                if (servoPosition <= 0.0) {
-//                    servoPosition = 0.01; // 限制最小值
-//                }
-//                robot.TServo.setPosition(servoPosition);
-//                telemetry.addData("Servo Position", servoPosition);
-//                telemetry.update();
-//                sleep(200);
-//            }
-
-//End debugging with a step increment of 0.05
-
-}
+    //Begin Definition and Initialization of steptestservo()    //Begin debugging with a step increment of 0.05  SGC - servoGamepadControl
+    public void servoGamepadControl() {
+    }
 ///////////////////End Definition and Initialization of steptestservo()
 
 //End Definition and Initialization of gamepad
 
-
-
-
-
-
-///////////////////////////////////////
-
-
-    ///////////startVSlidePIDControl///////////////
 
     /// 初始化 PID 控制器
     private void startVSlidePIDControl(int targetPosition) {
@@ -588,8 +518,8 @@ public void servoGamepadControl() {
 
         // 计算 PID 输出
         double powerL = pidControllerVS.performPID(currentPositionL);
-        robot.VSMotorL.setPower(powerL*0.8); // change it to make it move faster both at the same time
-        robot.VSMotorR.setPower(powerL*0.8); // change it to make it move faster
+        robot.VSMotorL.setPower(powerL*0.6); // change it to make it move faster both at the same time
+        robot.VSMotorR.setPower(powerL*0.6); // change it to make it move faster
 
         // 输出 Telemetry 信息
         telemetry.addData("PID Target", pidTargetPositionVS);
@@ -636,7 +566,7 @@ public void servoGamepadControl() {
 
         // 计算 PID 输出
         double powerH = pidControllerHS.performPID(currentPositionH);
-        robot.HSMotor.setPower(powerH*0.6);
+        robot.HSMotor.setPower(powerH*0.5);
 
 
         // 输出 Telemetry 信息
@@ -655,7 +585,7 @@ public void servoGamepadControl() {
         if (!pidActiveHS && Math.abs(robot.HSMotor.getCurrentPosition() - pidTargetPositionHS) > 10) {
             double holdPowerHS = pidControllerHS.performPID(robot.HSMotor.getCurrentPosition());
             robot.HSMotor.setPower(holdPowerHS);
-             pidActiveHS = false; // 停止 PID 控制
+            pidActiveHS = false; // 停止 PID 控制
         }
 
     }
@@ -663,10 +593,10 @@ public void servoGamepadControl() {
 
 
 
-     public void moveDriveTrain_FieldCentric() {
-        double y = gamepad1.left_stick_y * (1); // Remember, Y stick value is reversed
-        double x = -gamepad1.left_stick_x * (1);
-        double rx = -gamepad1.right_stick_x * (1); //*(0.5) is fine
+    public void moveDriveTrain_FieldCentric() {
+        double y = gamepad1.left_stick_y * (0.45); // Remember, Y stick value is reversed
+        double x = -gamepad1.left_stick_x * (0.45);
+        double rx = -gamepad1.right_stick_x * (0.45); //*(0.5) is fine
 
         // This button choice was made so that it is hard to hit on accident,
         // it can be freely changed based on preference.
@@ -883,11 +813,6 @@ public void servoGamepadControl() {
             telemetry.update();
         }
     }
-
-
-//End Definition and Initialization of Vertical Slides
-//End Definition and Initialization of Horizontal Slides
-
 }
 
 
