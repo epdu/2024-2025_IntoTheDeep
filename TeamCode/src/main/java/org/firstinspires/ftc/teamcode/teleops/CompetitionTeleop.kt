@@ -10,13 +10,6 @@ import com.acmerobotics.roadrunner.Vector2d
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.hardware.DcMotor
 import org.firstinspires.ftc.teamcode.roadrunner.PinpointDrive
-import org.firstinspires.ftc.teamcode.subsystems.Hanging
-import org.firstinspires.ftc.teamcode.subsystems.NewCollectionArm
-import org.firstinspires.ftc.teamcode.subsystems.SampleClaw
-import org.firstinspires.ftc.teamcode.subsystems.ScoringArm
-import org.firstinspires.ftc.teamcode.subsystems.ScoringArm.ArmState
-import org.firstinspires.ftc.teamcode.subsystems.SpecimenClaw
-import org.firstinspires.ftc.teamcode.subsystems.SpecimenClaw.ClawState
 
 abstract class CompetitionTeleop : OpMode() {
     private lateinit var drive: PinpointDrive

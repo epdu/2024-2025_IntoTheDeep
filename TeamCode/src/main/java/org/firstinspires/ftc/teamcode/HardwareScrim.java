@@ -21,7 +21,8 @@ public class HardwareScrim {
     public DcMotorEx LFMotor;
     public DcMotorEx RBMotor;
     public DcMotorEx LBMotor;
-
+    public DcMotorEx ShooterMotorL;
+    public DcMotorEx ShooterMotorR;
     public Servo blocker;
 
     public DcMotorEx IntakeMotor;
@@ -60,7 +61,24 @@ public class HardwareScrim {
         LBMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         RBMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        blocker = hwMap.get(Servo.class, "blocker");//control hub port 5
+
+
+        ShooterMotorL   = hwMap.get(DcMotorEx.class, "ShooterMotorL");//11072025 control hub port 000
+        ShooterMotorR = hwMap.get(DcMotorEx.class, "ShooterMotorR"); //11072025 expansion hub port 000
+
+        ShooterMotorL.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        ShooterMotorL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        ShooterMotorR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        int ShooterMotorLV = ShooterMotorL.getCurrentPosition(); ////xxxxxxxx
+        int ShooterMotorRV = ShooterMotorR.getCurrentPosition(); ////xxxxxxxx
+
+        double ShooterMotorLVelo = ShooterMotorL.getVelocity();
+        double ShooterMotorRVelo = ShooterMotorR.getVelocity();
+
+        ShooterMotorL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        ShooterMotorR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 //        blocker.setPosition(0);
 
         IntakeMotor  = hwMap.get(DcMotorEx.class, "IntakeMotor"); //11072025 expansion hub port 2
